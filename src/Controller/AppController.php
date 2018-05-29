@@ -2,11 +2,16 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use \Crud\Controller\ControllerTrait;
 
 class AppController extends Controller {
 
-    use \Crud\Controller\ControllerTrait;
-
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Flash');
+    }
+    
     public $components = [
         'RequestHandler',
         'Crud.Crud' => [

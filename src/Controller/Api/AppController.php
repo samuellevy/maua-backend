@@ -6,7 +6,6 @@ use Cake\Event\Event;
 
 class AppController extends Controller
 {
-
     use \Crud\Controller\ControllerTrait;
 
     public function initialize()
@@ -25,9 +24,10 @@ class AppController extends Controller
             'listeners' => [
                 'Crud.Api',
                 'Crud.ApiPagination',
-                'Crud.ApiQueryLog'
+                // 'Crud.ApiQueryLog'
             ]
         ]);
+
         $this->loadComponent('Auth', [
             'storage' => 'Memory',
             'authenticate' => [
