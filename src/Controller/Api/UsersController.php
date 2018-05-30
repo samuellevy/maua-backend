@@ -36,12 +36,13 @@ class UsersController extends AppController
     {
         $user = $this->Auth->identify();
         if (!$user) {
-            throw new UnauthorizedException('Invalid username or password');
+            throw new UnauthorizedException('CPF ou senha incorreto(s)');
         }
 
         $this->set([
             'success' => true,
             'data' => [
+                'user' => $user['username'],
                 'token' => JWT::encode([
                     'sub' => $user['id'],
                     'exp' =>  time() + 604800
