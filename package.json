@@ -1,0 +1,37 @@
+{
+  "name": "rest",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app) [![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build-manager": "cd plugins/gerenciador && gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuellevy/rest-cake.git"
+  },
+  "author": "Samuel Levy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samuellevy/rest-cake/issues"
+  },
+  "homepage": "https://github.com/samuellevy/rest-cake#readme",
+  "devDependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "browser-sync": "^2.18.13",
+    "gulp": "^3.9.1",
+    "gulp-cache": "^1.0.1",
+    "gulp-imagemin": "^4.0.0",
+    "gulp-inject": "^4.3.0",
+    "require-dir": "^0.3.2",
+    "run-sequence": "^2.2.0"
+  },
+  "dependencies": {
+    "del": "^3.0.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.1"
+  }
+}
