@@ -29,6 +29,9 @@ class Question extends Entity
     protected $_accessible = [
         'title' => true,
         'points' => true,
+        'value' => true,
+        'status' => true,
+        'question_id'=>true,
         'created' => true,
         'modified' => true,
         'options' => true

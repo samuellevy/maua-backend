@@ -37,6 +37,8 @@ $(document).ready(function(){
     $('.remove[data-uid='+uid+']').hide();
     $('.form-file[data-uid='+uid+']').val('');
   });
+
+  questions.init();
 });
 
 function removeFileFromServer(id){
@@ -50,12 +52,12 @@ function removeFileFromServer(id){
   });
 }
 
-function changeStatus(id){
+function changeStatus(model, field, id){
   var responder = "";
   $.ajax({
-    url: "./menu/changeStatus/"+id,
+    url: "./"+model+"/changeStatus/"+id,
     cache: false,
-    data: {status: "toggle"},
+    data: {status: "toggle", field: field},
     method: 'POST'
   })
   .done(function( html ) {
@@ -68,3 +70,17 @@ $('.sidebar-dropdown a').click(function(){
   $('.sidebar-dropdown[data-id='+id+'] ul').toggleClass("show-sidebar-dropdown");
   $('.sidebar-dropdown[data-id='+id+'] .i-absolute').toggleClass("i-absolute-transform");
 });
+
+var questions = {
+  init: function(){
+    this.options();
+  },
+  options: function(){
+    var qtd = $('.option').length;    
+    $('button[data-function=addNewOption]').click(function(){
+      var element = '<div class="option" data-id="'+qtd+'"><input type="radio" name="value" value="'+qtd+'"/><input placeholder="Nova opção" class="form-control questionOption" name="options['+qtd+'][title]"/></div>';
+      qtd+=1;
+      $('.options').append(element);
+    });
+  }
+}

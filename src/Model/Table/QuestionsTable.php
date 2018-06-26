@@ -60,7 +60,7 @@ class QuestionsTable extends Table
 
         $validator
             ->scalar('title')
-            ->maxLength('title', 11)
+            ->maxLength('title', 255)
             ->allowEmpty('title');
 
         $validator

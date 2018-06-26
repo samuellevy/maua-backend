@@ -32,3 +32,17 @@
     padding: 0;
     border: 0;
 }
+
+.option{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  input[type=radio]{
+    margin-right: 10px;
+  }
+}
+
+.questionOption{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
