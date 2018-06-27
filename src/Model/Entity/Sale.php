@@ -4,17 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Question Entity
+ * Sale Entity
  *
  * @property int $id
- * @property string $title
- * @property int $points
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property int $store_id
+ * @property int $quantity
+ * @property int $goal
+ * @property string $month
  *
- * @property \App\Model\Entity\Option[] $options
+ * @property \App\Model\Entity\Store $store
  */
-class Question extends Entity
+class Sale extends Entity
 {
 
     /**
@@ -27,14 +27,10 @@ class Question extends Entity
      * @var array
      */
     protected $_accessible = [
-        'title' => true,
-        'points' => true,
-        'value' => true,
-        'status' => true,
-        'question_id'=>true,
-        'course_id'=>true,
-        'created' => true,
-        'modified' => true,
-        'options' => true
+        'store_id' => true,
+        'quantity' => true,
+        'goal' => true,
+        'month' => true,
+        'store' => true
     ];
 }

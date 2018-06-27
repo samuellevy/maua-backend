@@ -22,6 +22,14 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <?php echo $this->Form->control('course_id', ['class'=>'form-control', 'label'=>'Aula', 'options'=>$courses]);?>
+              </div>
+            </div>
+          </div>
           
           <div class="row">
             <div class="col-md-12">

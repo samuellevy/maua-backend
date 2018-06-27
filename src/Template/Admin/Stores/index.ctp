@@ -11,30 +11,28 @@
             <thead>
               <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('course_id', ['label'=>'Aula']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('title', ['label'=>'Título']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('points', ['label'=>'Valor']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Título']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('category', ['label'=>'Categoria']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('status', ['label'=>'Status']) ?></th>
                 <th scope="col" class="actions"><?= __('Opções') ?></th>
               </tr>
             </thead>
             <tbody>
-              <?php //die(debug($questions));?>
-              <?php foreach ($questions as $question): ?>
+              <?php //die(debug($stores));?>
+              <?php foreach ($stores as $store): ?>
                 <tr>
-                  <td><?= $this->Number->format($question->id) ?></td>
-                  <td><?= $question->course->title ?></td>
-                  <td><?= $question->title ?></td>
-                  <td><?= $question->points ?></td>
+                  <td><?= $this->Number->format($store->id) ?></td>
+                  <td><?= $store->name ?></td>
+                  <td><?= $store->category ?></td>
                   <td>
                     <div class="switch__container">
-                      <input id="switch-flat-s-<?=$question->id?>" class="switch switch--flat" type="checkbox" <?=$question->status==1?"checked":""?> onclick="changeStatus('questions','status',<?=$question->id?>);">
-                      <label for="switch-flat-s-<?=$question->id?>" class="general-switch"></label>
+                      <input id="switch-flat-s-<?=$store->id?>" class="switch switch--flat" type="checkbox" <?=$store->status==1?"checked":""?> onclick="changeStatus('stores','status',<?=$store->id?>);">
+                      <label for="switch-flat-s-<?=$store->id?>" class="general-switch"></label>
                     </div>
                   </td>
                   <td class="actions">
-                    <?= $this->Html->link(__('Editar'), ['action' => 'edit', $question->id]) ?>
-                    <?= $this->Form->postLink(__('Remover'), ['action' => 'delete', $question->id], ['confirm' => __('Are you sure you want to delete # {0}?', $question->id)]) ?>
+                    <?= $this->Html->link(__('Editar'), ['action' => 'edit', $store->id]) ?>
+                    <?= $this->Form->postLink(__('Remover'), ['action' => 'delete', $store->id], ['confirm' => __('Are you sure you want to delete # {0}?', $store->id)]) ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -48,7 +46,7 @@
               <?= $this->Paginator->numbers() ?>
               <?= $this->Paginator->next(__('próximo') . ' >') ?>
               <?= $this->Paginator->last(__('último') . ' >>') ?>
-              <li><a href="<?= $this->Url->build(["controller" => "questions", "action" => "add"]);?>">Novo</a></li>
+              <li><a href="<?= $this->Url->build(["controller" => "stores", "action" => "add"]);?>">Novo</a></li>
             </ul>
             <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
           </div>

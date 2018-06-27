@@ -8,7 +8,7 @@ class QuestionsController extends AppController
   public function index()
   {
     $questions = $this->paginate($this->Questions, [
-
+      'contain'=>['Courses']
     ]);
 
     $this->set(compact('questions'));
@@ -17,7 +17,9 @@ class QuestionsController extends AppController
 
   public function add()
 	{
-		$question = $this->Questions->newEntity();
+    $question = $this->Questions->newEntity();
+    $courses = $this->Questions->Courses->find('list');
+
 		if ($this->request->is('post')) {
       $question = $this->Questions->patchEntity($question, $this->request->getData());
       // die(debug($question));
@@ -29,8 +31,8 @@ class QuestionsController extends AppController
 			}
     }
     
-		$this->set(compact(['question']));
-		$this->set('_serialize', ['question']);
+		$this->set(compact(['question', 'courses']));
+		$this->set('_serialize', ['question', 'courses']);
   }
   
   public function edit($id = null)
@@ -38,8 +40,11 @@ class QuestionsController extends AppController
       $question = $this->Questions->get($id, [
           'contain' => ['Options']
       ]);
+      $courses = $this->Questions->Courses->find('list');
+
       if ($this->request->is(['patch', 'post', 'put'])) {
           $question = $this->Questions->patchEntity($question, $this->request->getData());
+          // die(debug($question));
           foreach($question->options as $key=>$option){
             if($option->title == ''){
               $entity = $this->Questions->Options->get($option->id);
@@ -53,8 +58,8 @@ class QuestionsController extends AppController
           }
           $this->Flash->error(__('Não pôde ser salvo.'));
       }
-      $this->set(compact('question'));
-      $this->set('_serialize', ['question']);
+      $this->set(compact('question', 'courses'));
+      $this->set('_serialize', ['question', 'courses']);
   }
 
 

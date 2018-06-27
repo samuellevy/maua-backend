@@ -26,12 +26,21 @@
             </div>
 
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group">
-                  <?php echo $this->Form->control('role_id', ['class'=>'form-control', 'label'=>'Atribuição','options' => $roles, 'empty' => true]); ?>
+                  <?php echo $this->Form->control('role_id', ['class'=>'form-control', 'label'=>'Atribuição','options' => $roles]); ?>
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <?php echo $this->Form->control('sotre_id', ['class'=>'form-control', 'label'=>'Loja','options' => $stores]); ?>
+                </div>
+              </div>
+            </div>
+
 
             <div class="row">
               <div class="col-md-6">

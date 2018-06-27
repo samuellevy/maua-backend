@@ -44,6 +44,10 @@ class QuestionsTable extends Table
         $this->hasMany('Options', [
             'foreignKey' => 'question_id'
         ]);
+
+        $this->belongsTo('Courses', [
+            'foreignKey' => 'course_id'
+        ]);
     }
 
     /**

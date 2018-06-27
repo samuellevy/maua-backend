@@ -9,6 +9,9 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $Roles
+ * @property \App\Model\Table\StoresTable|\Cake\ORM\Association\BelongsTo $Stores
+ *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
@@ -38,6 +41,13 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsTo('Roles', [
+            'foreignKey' => 'role_id'
+        ]);
+        $this->belongsTo('Stores', [
+            'foreignKey' => 'store_id'
+        ]);
     }
 
     /**
@@ -53,16 +63,29 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->allowEmpty('name');
+
+        $validator
             ->scalar('username')
             ->maxLength('username', 50)
             ->requirePresence('username', 'create')
             ->notEmpty('username');
 
         $validator
-            ->scalar('password')
-            ->maxLength('password', 255)
-            ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->allowEmpty('password');
+
+        $validator
+          ->add(
+            'confirm_password',
+            'compareWith', [
+              'rule' => ['compareWith', 'password'],
+              'message' => 'Passwords not equal.'
+            ]
+          )
+          ->allowEmpty('confirm_password');
+
 
         $validator
             ->boolean('active')
@@ -81,6 +104,8 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['username']));
+        $rules->add($rules->existsIn(['role_id'], 'Roles'));
+        $rules->add($rules->existsIn(['store_id'], 'Stores'));
 
         return $rules;
     }

@@ -54,13 +54,15 @@ class UsersController extends AppController
     }
 
     public function me(){
-        $user = $this->Auth->identify();
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales']]);
+
         $this->set([
             'success' => true,
             'user' => [
-                'username' => $user['username'],
-                'name' => $user['name'],
-                'loja' => '3aW - Brasil',
+                'username' => $identity['username'],
+                'name' => $identity['name'],
+                'loja' => $user->store->name,
                 'ranking' => '4',
                 'pontuacao' => '510'
             ],

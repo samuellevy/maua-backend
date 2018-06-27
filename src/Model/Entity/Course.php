@@ -4,17 +4,20 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Question Entity
+ * Course Entity
  *
  * @property int $id
  * @property string $title
- * @property int $points
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property string $subtitle
+ * @property string $description
+ * @property string $video_url
+ * @property int $active
+ * @property int $right
  *
- * @property \App\Model\Entity\Option[] $options
+ * @property \App\Model\Entity\Question[] $questions
+ * @property \App\Model\Entity\Quiz[] $quiz
  */
-class Question extends Entity
+class Course extends Entity
 {
 
     /**
@@ -28,13 +31,12 @@ class Question extends Entity
      */
     protected $_accessible = [
         'title' => true,
-        'points' => true,
-        'value' => true,
-        'status' => true,
-        'question_id'=>true,
-        'course_id'=>true,
-        'created' => true,
-        'modified' => true,
-        'options' => true
+        'subtitle' => true,
+        'description' => true,
+        'video_url' => true,
+        'active' => true,
+        'right' => true,
+        'questions' => true,
+        'quiz' => true
     ];
 }

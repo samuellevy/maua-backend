@@ -6,7 +6,7 @@
           <h4 class="title">Nova questão</h4>
         </div>
         <div class="content">
-          <?= $this->Form->create($question) ?>
+          <?= $this->Form->create($course) ?>
           
           <div class="row">
             <div class="col-md-12">
@@ -18,7 +18,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <?php echo $this->Form->control('points', ['class'=>'form-control', 'label'=>'Valor da questão', 'value'=>1]);?>
+                <?php echo $this->Form->control('subtitle', ['class'=>'form-control', 'label'=>'Subtítulo']);?>
               </div>
             </div>
           </div>
@@ -26,25 +26,15 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <?php echo $this->Form->control('course_id', ['class'=>'form-control', 'label'=>'Aula', 'options'=>$courses]);?>
+                <?php echo $this->Form->control('video_url', ['class'=>'form-control', 'label'=>'URL do vídeo']);?>
               </div>
             </div>
           </div>
-          
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <Label>Opções</Label>
-                <?php echo $this->Form->hidden('value');?>
-                <div class="options">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <button type="button" class="btn btn-fill" data-function="addNewOption">Adicionar nova opção</button>
+                <?php echo $this->Form->control('description', ['class'=>'form-control', 'label'=>'Descrição']);?>
               </div>
             </div>
           </div>

@@ -30,9 +30,7 @@ class QuestionsController extends AppController
         $question = $this->Questions->find('all', ['conditions'=>['Questions.course_id'=>$course_id, 'status'=>1], 'contain'=>['Options']]);
         $this->set([
             'success' => true,
-            'question' => [
-                $question
-            ],
+            'question' => $question,
             '_serialize' => ['success', 'question']
         ]);
     }

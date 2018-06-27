@@ -68,7 +68,8 @@ class UsersController extends AppController
             $this->Flash->error(__('Não pôde ser salvo.'));
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'roles'));
+        $stores = $this->Users->Stores->find('list', ['limit' => 200]);
+        $this->set(compact('user', 'roles', 'stores'));
         $this->set('_serialize', ['user']);
     }
 
@@ -99,7 +100,8 @@ class UsersController extends AppController
             $this->Flash->error(__('Não pôde ser salvo.'));
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'roles'));
+        $stores = $this->Users->Stores->find('list', ['limit' => 200]);
+        $this->set(compact('user', 'roles', 'stores'));
         $this->set('_serialize', ['user']);
     }
 
