@@ -62,11 +62,54 @@ class UsersController extends AppController
             'user' => [
                 'username' => $identity['username'],
                 'name' => $identity['name'],
+                'email' => $user->email, 
                 'loja' => $user->store->name,
+                'phone' => $user->phone,
                 'ranking' => '4',
                 'pontuacao' => '510'
             ],
             '_serialize' => ['success', 'user']
         ]);
+    }
+
+    public function edit($who=null){
+       
+
+        if($who == 'me'){
+            $identity = $this->Auth->identify();
+
+            $user = $this->Users->get($identity['id'], [
+                'contain' => ['Stores']
+            ]);
+            if ($this->request->is('post')) {
+                $user = $this->Users->patchEntity($user, $this->request->getData());
+                $user->phone = $user->tel;
+                if($user->senha!=''){
+                    $user->password = $user->senha;
+                }
+
+                if ($this->Users->save($user)) {
+                    $return = 'Salvo com sucesso';
+                }else{
+                    $return = 'Erro ao salvar';
+                }
+            }
+
+            $this->set([
+                'success' => true,
+                'message' => $return,
+                'user' => [
+                    'username' => $identity['username'],
+                    'name' => $identity['name'],
+                    'email' => $user->email, 
+                    'loja' => $user->store->name,
+                    'phone' => $user->phone,
+                    'senha' => $user->senha,
+                    'ranking' => '4',
+                    'pontuacao' => '510'
+                ],
+                '_serialize' => ['success', 'user']
+            ]);
+        }
     }
 }
