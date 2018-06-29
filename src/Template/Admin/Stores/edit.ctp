@@ -22,7 +22,32 @@
               </div>
             </div>
           </div>
-
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <Label>Usuários</Label>
+                <?php echo $this->Form->hidden('value');?>
+                <div class="options">
+                  <table class="table">
+                    <tbody>
+                      <?php foreach($store->users as $key=>$user):?>
+                      <tr data-id="<?=$user->id;?>" class="user_block">
+                        <td><?=$user->name?></td>
+                        <td class="td-actions text-right">
+                          <button model-id="<?=$store->id;?>"  data-id="<?=$user->id;?>" type="button" rel="tooltip" class="btn btn-danger btn-simple btn-link btn-remove">
+                            <i class="fa fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <?php endforeach;?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">

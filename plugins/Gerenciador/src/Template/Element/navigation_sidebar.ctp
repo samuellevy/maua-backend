@@ -1,58 +1,44 @@
 <ul class="nav">
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Pages","action" => "index"]);?>" <?=$params['controller']=='Pages'?"class='active'":""?>>
-      <i class="pe-7s-albums"></i>
-      <p>Páginas</p>
+    <a href="<?= $this->Url->build(["controller" => "courses","action" => "index"]);?>" <?=$params['controller']=='courses'?"class='active'":""?>>
+      <i class="pe-7s-note2"></i>
+      <p>Cursos</p>
     </a>
   </li>
   
 
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Convenios","action" => "index"]);?>" <?=$params['controller']=='Convenios'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "questions","action" => "index"]);?>" <?=$params['controller']=='questions'?"class='active'":""?>>
       <i class="pe-7s-share"></i>
-      <p>Convênios</p>
+      <p>Questões</p>
     </a>
   </li>
   
   <li>
-    <a href="<?= $this->Url->build(["controller" => "ServicesTabs","action" => "index"]);?>" <?=$params['controller']=='ServicesTabs'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "stores","action" => "index"]);?>" <?=$params['controller']=='stores'?"class='active'":""?>>
       <i class="pe-7s-copy-file"></i>
-      <p>Abas de Serviços</p>
+      <p>Lojas</p>
     </a>
   </li>
 
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Services","action" => "index"]);?>" <?=$params['controller']=='Services'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "posts","action" => "index"]);?>" <?=$params['controller']=='posts'?"class='active'":""?>>
       <i class="pe-7s-folder"></i>
-      <p>Serviços</p>
+      <p>x Blog</p>
     </a>
   </li>
 
   <li>
     <a href="<?= $this->Url->build(["controller" => "Specialties","action" => "index"]);?>" <?=$params['controller']=='Specialties'?"class='active'":""?>>
       <i class="pe-7s-note2"></i>
-      <p>Especialidades</p>
+      <p>x Vendas</p>
     </a>
   </li>
   
   <li>
     <a href="<?= $this->Url->build(["controller" => "Team","action" => "index"]);?>" <?=$params['controller']=='Team'?"class='active'":""?>>
       <i class="pe-7s-users"></i>
-      <p>Team</p>
-    </a>
-  </li>
-
-  <li>
-    <a href="<?= $this->Url->build(["controller" => "Departments","action" => "index"]);?>" <?=$params['controller']=='Departments'?"class='active'":""?>>
-      <i class="pe-7s-portfolio"></i>
-      <p>Departamentos</p>
-    </a>
-  </li>
-  
-  <li>
-    <a href="<?= $this->Url->build(["controller" => "Timeline","action" => "index"]);?>" <?=$params['controller']=='Timeline'?"class='active'":""?>>
-      <i class="pe-7s-network"></i>
-      <p>Timeline</p>
+      <p>x Páginas</p>
     </a>
   </li>
   

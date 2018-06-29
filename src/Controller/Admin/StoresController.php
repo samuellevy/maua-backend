@@ -35,7 +35,12 @@ class StoresController extends AppController
   
   public function edit($id = null)
   {
+    if($id = 'me'){
+      $id = $this->Auth->user('store_id');
+    }
+
       $store = $this->Stores->get($id, [
+        'contain'=>['Users' => ['conditions'=>['Users.active'=>1]]]
       ]);
       if ($this->request->is(['patch', 'post', 'put'])) {
           $store = $this->Stores->patchEntity($store, $this->request->getData());
@@ -86,6 +91,18 @@ class StoresController extends AppController
 		
 		$table = $this->Stores->patchEntity($entity, $post_data);
 		$this->Stores->save($table);  //update record
-	}
+  }
+  
+  public function deleteUser(){
+    $data = $this->request->data();
+		$this->autoRender = false;
+    $entity = $this->Stores->Users->get($data['user_id']);
+    
+		$post_data = ['active'=>0];
+    $table = $this->Stores->Users->patchEntity($entity, $post_data);
+  
+		$this->Stores->Users->save($table);  //update record
+  }
+
 
 }

@@ -39,6 +39,7 @@ $(document).ready(function(){
   });
 
   questions.init();
+  users.init();
 });
 
 function removeFileFromServer(id){
@@ -81,6 +82,32 @@ var questions = {
       var element = '<div class="option" data-id="'+qtd+'"><input type="radio" name="value" value="'+qtd+'"/><input placeholder="Nova opção" class="form-control questionOption" name="options['+qtd+'][title]"/></div>';
       qtd+=1;
       $('.options').append(element);
+    });
+  }
+}
+
+var users = {
+  init: function(){
+    this.remove();
+  },
+  remove: function(){
+    $('button.btn-remove').click(function(){
+      var id = $(this).attr('model-id');
+      var user_id = $(this).attr('data-id');
+
+      $('.user_block[data-id='+user_id+']').remove();
+      users.delete('stores',id,user_id);
+    });
+  },
+  delete: function(model,id,user_id){
+    $.ajax({
+      url: "./"+model+"/deleteUser",
+      cache: false,
+      data: {id: id, user_id: user_id},
+      method: 'POST'
+    })
+    .done(function( html ) {
+      responder = html;
     });
   }
 }
