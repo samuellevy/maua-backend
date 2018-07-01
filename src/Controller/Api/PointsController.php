@@ -11,6 +11,7 @@ class PointsController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadComponent('FormatDate');
     }
 
     public function index(){
@@ -27,11 +28,19 @@ class PointsController extends AppController
             throw new UnauthorizedException('Não autorizado');
         }
 
-        $points = $this->Points->find('all', ['contain'=>'Stores']);
+        $points = $this->Points->find('all', ['contain'=>'Stores'])->all();
+        $points = $points->toArray();
+        $total = 0;
+        foreach($points as $key=>$point):
+            $points[$key]->date = $this->FormatDate->formatDate(h($point->created),'mes_ano');
+            $total += $point->point;
+        endforeach;
+
         $this->set([
             'success' => true,
-            'sales' => $points,
-            '_serialize' => ['success', 'sales']
+            'total' => $total,
+            'points' => $points,
+            '_serialize' => ['success', 'points', 'total']
         ]);
     }
 }
