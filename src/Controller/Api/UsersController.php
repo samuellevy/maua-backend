@@ -57,6 +57,10 @@ class UsersController extends AppController
     public function me(){
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales']]);
+        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+        foreach($stores as $key=>$store):
+            $stores[$key]->ranking = $key + 1;
+        endforeach;
 
         $this->set([
             'success' => true,
@@ -66,8 +70,8 @@ class UsersController extends AppController
                 'email' => $user->email, 
                 'loja' => $user->store->name,
                 'phone' => $user->phone,
-                'ranking' => '4',
-                'pontuacao' => '510'
+                'ranking' => $stores[$user->store->id]->ranking,
+                'pontuacao' => $stores[$user->store->id]->total
             ],
             '_serialize' => ['success', 'user']
         ]);

@@ -43,4 +43,26 @@ class PointsController extends AppController
             '_serialize' => ['success', 'points', 'total']
         ]);
     }
+
+    public function performance(){
+        $identity = $this->Auth->identify();
+        $this->loadModel('Users');
+        $user = $this->Users->get($identity['id'], ['contain'=>[]]);
+
+        if (!$user) {
+            throw new UnauthorizedException('Não autorizado');
+        }
+
+        $this->loadModel('Sales');
+        $sales = $this->Sales->find('all', ['conditions'=>['Sales.store_id'=>$user->store_id], 'order'=>['Sales.month DESC']])->first();
+        // $sales = $sales->toArray();
+        $sales->percent = ($sales->quantity * 100)/$sales->goal;
+        $sales->percent = number_format((float)$sales->percent, 0, '.', '');
+
+        $this->set([
+            'success' => true,
+            'sales' => $sales,
+            '_serialize' => ['success', 'sales']
+        ]);
+    }
 }
