@@ -13,26 +13,7 @@ class UsersController extends AppController
         parent::initialize();
         $this->Auth->allow(['add', 'token']);
     }
-
-    // public function add()
-    // {
-    //     $this->Crud->on('afterSave', function(Event $event) {
-    //         if ($event->subject->created) {
-    //             $this->set('data', [
-    //                 'id' => $event->subject->entity->id,
-    //                 'token' => JWT::encode(
-    //                     [
-    //                         'sub' => $event->subject->entity->id,
-    //                         'exp' =>  time() + 604800
-    //                     ],
-    //                 Security::salt())
-    //             ]);
-    //             $this->Crud->action()->config('serialize.data', 'data');
-    //         }
-    //     });
-    //     return $this->Crud->execute();
-    // }
-
+    
     public function token()
     {
         $user = $this->Auth->identify();
