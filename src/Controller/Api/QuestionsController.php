@@ -27,11 +27,11 @@ class QuestionsController extends AppController
             throw new UnauthorizedException('Curso não definido');
         }
 
-        $question = $this->Questions->find('all', ['conditions'=>['Questions.course_id'=>$course_id, 'status'=>1], 'contain'=>['Options']]);
+        $questions = $this->Questions->find('all', ['conditions'=>['Questions.course_id'=>$course_id, 'status'=>1], 'contain'=>['Options']]);
         $this->set([
             'success' => true,
-            'question' => $question,
-            '_serialize' => ['success', 'question']
+            'questions' => $questions,
+            '_serialize' => ['success', 'questions']
         ]);
     }
 }

@@ -23,7 +23,13 @@ class CoursesController extends AppController
         if (!$user) {
             throw new UnauthorizedException('Não autorizado');
         }
-        $courses = $this->Courses->find('all', ['conditions'=>['status'=>1]]);
+        $courses = $this->Courses->find('all', ['contain'=>['CourseProgress'=>['conditions'=>['user_id'=>1]]], 'conditions'=>['status'=>1]]);
+        $courses = $courses->toArray();
+        $progress = [0=>'Novo',1=>'Em curso',2=>'Completo'];
+        foreach($courses as $key=>$course){
+            $course_progress = $courses[$key]['course_progres'];
+            $courses[$key]['progress']=$courses[$key]['course_progres']==null?'Novo':'Completo';
+        }
         $this->set([
             'success' => true,
             'courses' => $courses,

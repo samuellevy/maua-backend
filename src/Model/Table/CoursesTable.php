@@ -45,6 +45,10 @@ class CoursesTable extends Table
         $this->hasMany('Quiz', [
             'foreignKey' => 'course_id'
         ]);
+
+        $this->hasOne('CourseProgress', [
+            'foreignKey' => 'course_id'
+        ]);
     }
 
     /**
