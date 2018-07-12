@@ -33,12 +33,15 @@ class QuestionsController extends AppController
             'questions' => $questions,
             '_serialize' => ['success', 'questions']
         ]);
+
+        // die(debug($questions));
     }
 
     public function answer(){
         $identity = $this->Auth->identify();
+       
         $data = $this->request->getData();
-        // die(debug($data));
+
         $this->loadModel('Answers');
         if ($this->request->is('post')) {
             try{
@@ -53,6 +56,18 @@ class QuestionsController extends AppController
                 $return = false;
             }
         }
+        
+        $this->loadModel('Questions');
+        $question_id = $data['answers'][0]['question_id'];
+        $question = $this->Questions->find('all', ['conditions'=>['Questions.id'=>$question_id]])->first();
+        
+        $this->loadModel('CourseProgress');
+        $progress['user_id'] = $identity['id'];
+        $progress['course_id'] = $question->course_id;
+        $progress['progress'] = 1;
+        $course_progress = $this->CourseProgress->newEntity();
+        $course_progress = $this->CourseProgress->patchEntity($course_progress, $progress);
+        $this->CourseProgress->save($course_progress);
 
         if($return){
             $this->set([

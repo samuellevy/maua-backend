@@ -23,7 +23,8 @@ class CoursesController extends AppController
         if (!$user) {
             throw new UnauthorizedException('Não autorizado');
         }
-        $courses = $this->Courses->find('all', ['contain'=>['CourseProgress'=>['conditions'=>['user_id'=>1]]], 'conditions'=>['status'=>1]]);
+        $user_id = $user['id'];
+        $courses = $this->Courses->find('all', ['contain'=>['CourseProgress'=>['conditions'=>['user_id'=>$user_id]]], 'conditions'=>['status'=>1]]);
         $courses = $courses->toArray();
         $progress = [0=>'Módulo Novo',1=>'Completo'];
         foreach($courses as $key=>$course){
@@ -36,6 +37,8 @@ class CoursesController extends AppController
             'courses' => $courses,
             '_serialize' => ['success', 'courses']
         ]);
+
+        // die(debug($courses));
     }
 
     public function getLastCourse(){
