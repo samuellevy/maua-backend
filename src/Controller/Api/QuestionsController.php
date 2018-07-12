@@ -34,4 +34,38 @@ class QuestionsController extends AppController
             '_serialize' => ['success', 'questions']
         ]);
     }
+
+    public function answer(){
+        $identity = $this->Auth->identify();
+        $data = $this->request->getData();
+        // die(debug($data));
+        $this->loadModel('Answers');
+        if ($this->request->is('post')) {
+            try{
+                foreach($data['answers'] as $item){
+                    $item['user_id']=$identity['id'];
+                    $answer = $this->Answers->newEntity();
+                    $answer = $this->Answers->patchEntity($answer, $item);
+                    $this->Answers->save($answer);
+                    $return = true;
+                }
+            } catch (Exception $e) {
+                $return = false;
+            }
+        }
+
+        if($return){
+            $this->set([
+                'success' => true,
+                'message' => 'Enviado com sucesso',
+                '_serialize' => ['success', 'message']
+            ]);
+        }else{
+            $this->set([
+                'success' => false,
+                'message' => 'Erro',
+                '_serialize' => ['success', 'message']
+            ]);
+        }
+    }
 }

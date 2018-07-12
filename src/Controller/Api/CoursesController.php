@@ -25,10 +25,11 @@ class CoursesController extends AppController
         }
         $courses = $this->Courses->find('all', ['contain'=>['CourseProgress'=>['conditions'=>['user_id'=>1]]], 'conditions'=>['status'=>1]]);
         $courses = $courses->toArray();
-        $progress = [0=>'Novo',1=>'Em curso',2=>'Completo'];
+        $progress = [0=>'Módulo Novo',1=>'Completo'];
         foreach($courses as $key=>$course){
             $course_progress = $courses[$key]['course_progres'];
-            $courses[$key]['progress']=$courses[$key]['course_progres']==null?'Novo':'Completo';
+            $progress_value = $courses[$key]['course_progres']['progress'];
+            $courses[$key]['progress']=$courses[$key]['course_progres']==null?'Módulo Novo':$progress[$progress_value];
         }
         $this->set([
             'success' => true,
