@@ -37,7 +37,7 @@ class UsersController extends AppController
 
     public function me(){
         $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales']]);
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales','Roles']]);
         $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
         foreach($stores as $key=>$store):
             $stores[$key]->ranking = $key + 1;
@@ -52,7 +52,9 @@ class UsersController extends AppController
                 'loja' => $user->store->name,
                 'phone' => $user->phone,
                 'ranking' => $stores[$user->store->id]->ranking,
-                'pontuacao' => $stores[$user->store->id]->total
+                'pontuacao' => $stores[$user->store->id]->total,
+                'role_id' => $user->role->id,
+                'role' => $user->role->name
             ],
             '_serialize' => ['success', 'user']
         ]);
@@ -61,7 +63,7 @@ class UsersController extends AppController
 
     public function list(){
         $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Users']]);
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Users', 'Roles']]);
         foreach($user->store->users as $key=>$item){
             $user->store->users[$key]->completed = true;
             $user->store->users[$key]->course_status = 'Todos os módulos foram completos';

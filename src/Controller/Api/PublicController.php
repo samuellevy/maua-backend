@@ -16,7 +16,7 @@ class PublicController extends AppController
     public function home(){
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales']]);
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales', 'Roles']]);
         $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
         foreach($stores as $key=>$store):
             $stores[$key]->ranking = $key + 1;
@@ -31,7 +31,9 @@ class PublicController extends AppController
                 'loja' => $user->store->name,
                 'phone' => $user->phone,
                 'ranking' => $stores[$user->store->id]->ranking,
-                'pontuacao' => $stores[$user->store->id]->total
+                'pontuacao' => $stores[$user->store->id]->total,
+                'role_id' => $user->role->id,
+                'role' => $user->role->name
             ],
             '_serialize' => ['success', 'user']
         ]);
