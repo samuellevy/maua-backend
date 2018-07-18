@@ -44,6 +44,10 @@ class StoresTable extends Table
         $this->hasMany('Sales', [
             'foreignKey' => 'store_id'
         ]);
+
+        $this->hasMany('Points', [
+            'foreignKey' => 'store_id'
+        ]);
     }
 
     /**

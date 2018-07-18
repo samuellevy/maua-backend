@@ -36,7 +36,7 @@ class PagesController extends AppController
     $page = $this->Pages->newEntity();
     if ($this->request->is('post')) {
       $page = $this->Pages->patchEntity($page, $this->request->getData());
-      $page->type = 1;
+
       if ($this->Pages->save($page)) {
         $this->Flash->success(__('Salvo com sucesso.'));
 
@@ -50,16 +50,10 @@ class PagesController extends AppController
 
   public function edit($id = null)
   {
-    $page = $this->Pages->get($id, [
-      'contain' => [
-        'PagesComponents'=>[
-           'sort'=>['sort'=>'asc']
-        ]
-      ]
-    ]);
+    $page = $this->Pages->get($id);
     if ($this->request->is(['patch', 'post', 'put'])) {
       $page = $this->Pages->patchEntity($page, $this->request->getData());
-        // die(debug($page));
+        
       if ($this->Pages->save($page)) {
         $this->Flash->success(__('Salvo com sucesso.'));
 

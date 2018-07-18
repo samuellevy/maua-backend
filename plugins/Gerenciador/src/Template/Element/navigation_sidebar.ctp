@@ -24,7 +24,7 @@
   <li>
     <a href="<?= $this->Url->build(["controller" => "posts","action" => "index"]);?>" <?=$params['controller']=='posts'?"class='active'":""?>>
       <i class="pe-7s-folder"></i>
-      <p>x Blog</p>
+      <p>Blog</p>
     </a>
   </li>
 
@@ -36,9 +36,9 @@
   </li>
   
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Team","action" => "index"]);?>" <?=$params['controller']=='Team'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "pages","action" => "index"]);?>" <?=$params['controller']=='Team'?"class='active'":""?>>
       <i class="pe-7s-users"></i>
-      <p>x Páginas</p>
+      <p>Páginas</p>
     </a>
   </li>
   
