@@ -18,7 +18,7 @@ class PagesController extends AppController
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC'], 'Stores.Points', 'Roles']]);
 
-        if($user->role->name=='Lojista'){
+        if($user->role->name=='Lojista' && $slug=='about'){
             $slug='about_lojista';
         }
         $this->loadModel('Pages');

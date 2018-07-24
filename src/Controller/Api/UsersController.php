@@ -11,7 +11,7 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['add', 'token']);
+        $this->Auth->allow(['add', 'token', 'forget', 'saveNewPass']);
     }
     
     public function token()
@@ -125,7 +125,6 @@ class UsersController extends AppController
                 ]);
                 if ($this->request->is('post')) {
                     $user = $this->Users->patchEntity($user, $this->request->getData());
-                    $user->phone = $user->tel;
                     if($user->senha!=''){
                         $user->password = $user->senha;
                     }
@@ -149,18 +148,15 @@ class UsersController extends AppController
     public function add(){
         $identity = $this->Auth->identify();
         $data = $this->request->getData();
-        $data['phone']=$data['tel'];
         $data['store_id']=$identity['store_id'];
         $data['active']=1;
         $data['role_id']=6;
+        $data['username']=$data['email'];
+        $data['password']='quementendevendemaua';
 
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $data);
-
-            if($user->senha!=''){
-                $user->password = $user->senha;
-            }
 
             if ($this->Users->save($user)) {
                 $return = true;
@@ -215,5 +211,49 @@ class UsersController extends AppController
                 '_serialize' => ['success', 'message']
             ]);
         }
+    }
+
+    public function forget(){
+        $identity = $this->Auth->identify();
+        $data = $this->request->data;
+
+        $user = $this->Users->find('all', ['conditions'=>['email'=>$data['email'], 'phone'=>$data['phone']]])->first();
+        $hasUser = count($user);
+
+        if($hasUser){
+            $this->set([
+                'success' => true,
+                'user' => $user,
+                'data' => $data,
+                '_serialize' => ['success', 'user', 'data']
+                ]
+            );
+        }else{
+            $this->set([
+                'success' => false,
+                'message' => 'Usuário não encontrado',
+                '_serialize' => ['success', 'message']
+                ]
+            );
+        }
+    }
+
+    public function saveNewPass(){
+        $identity = $this->Auth->identify();
+        $data = $this->request->data;
+
+        $user = $this->Users->find('all', ['conditions'=>['email'=>$data['email'], 'phone'=>$data['phone']]])->first();
+        $hasUser = count($user);
+        $user = $this->Users->get($user->id);
+        $user = $this->Users->patchEntity($user, $data);
+        $this->Users->save($user);
+
+        $this->set([
+            'success' => true,
+            'user' => $user,
+            'data' => $data,
+            '_serialize' => ['success', 'user', 'data']
+            ]
+        );
     }
 }

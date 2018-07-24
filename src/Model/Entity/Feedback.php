@@ -9,10 +9,12 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property int $rating
- * @property int $question_id
+ * @property int $course_id
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Question $question
+ * @property \App\Model\Entity\Course $course
  */
 class Feedback extends Entity
 {
@@ -29,8 +31,10 @@ class Feedback extends Entity
     protected $_accessible = [
         'user_id' => true,
         'rating' => true,
-        'question_id' => true,
+        'course_id' => true,
+        'created' => true,
+        'modified' => true,
         'user' => true,
-        'question' => true
+        'course' => true
     ];
 }

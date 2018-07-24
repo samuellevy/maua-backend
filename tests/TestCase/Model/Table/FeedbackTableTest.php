@@ -26,7 +26,7 @@ class FeedbackTableTest extends TestCase
     public $fixtures = [
         'app.feedback',
         'app.users',
-        'app.questions'
+        'app.courses'
     ];
 
     /**

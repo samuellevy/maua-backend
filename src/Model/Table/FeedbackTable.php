@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * Feedback Model
  *
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\QuestionsTable|\Cake\ORM\Association\BelongsTo $Questions
+ * @property \App\Model\Table\CoursesTable|\Cake\ORM\Association\BelongsTo $Courses
  *
  * @method \App\Model\Entity\Feedback get($primaryKey, $options = [])
  * @method \App\Model\Entity\Feedback newEntity($data = null, array $options = [])
@@ -20,6 +20,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Feedback patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Feedback[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Feedback findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class FeedbackTable extends Table
 {
@@ -38,11 +40,13 @@ class FeedbackTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'
         ]);
-        $this->belongsTo('Questions', [
-            'foreignKey' => 'question_id'
+        $this->belongsTo('Courses', [
+            'foreignKey' => 'course_id'
         ]);
     }
 
@@ -75,7 +79,7 @@ class FeedbackTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['question_id'], 'Questions'));
+        $rules->add($rules->existsIn(['course_id'], 'Courses'));
 
         return $rules;
     }

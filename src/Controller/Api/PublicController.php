@@ -149,7 +149,20 @@ class PublicController extends AppController
                 'content'=>$rules->content,
                 'url'=>$rules->url,
             ],
-            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'page', 'rules']
+            'push' => [
+                'exist'=>false,
+                'name'=>'new_ranking',
+                'title'=>'PARABÉNS!',
+                'value'=>2,
+                'subtitle'=>'Sua loja chegou ao 2º lugar!',
+                'description'=>'Ainda dá tempo de melhorar a sua premiação.',
+                'color'=>'#FCB415',
+                'image'=>'4-ranking',
+                'action'=>'Ranking',
+                'button_label'=>'Acompanhar Ranking'
+                
+            ],
+            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'page', 'rules', 'push']
             ]
         );
     }
@@ -206,6 +219,32 @@ class PublicController extends AppController
         $message = $this->Messages->newEntity();
         $message = $this->Messages->patchEntity($message, $data);
         $this->Messages->save($message);
+
+        $this->set([
+            'success' => true,
+            'user' => $user,
+            'data' => $data,
+            '_serialize' => ['success', 'user', 'data']
+            ]
+        );
+    }
+
+    public function sendfeedback(){
+        $this->loadModel('Users');
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id']);
+
+        $data = $this->request->data;
+        $data['user_id'] = $user->id;
+
+        $this->loadModel('Questions');
+        $question = $this->Questions->find('all', ['conditions'=>['id'=>$data['question_id']]])->first();
+        $data['course_id'] = $question->course_id;
+
+        $this->loadModel('Feedback');
+        $feedback = $this->Feedback->newEntity();
+        $feedback = $this->Feedback->patchEntity($feedback, $data);
+        $this->Feedback->save($feedback);
 
         $this->set([
             'success' => true,
