@@ -72,7 +72,22 @@ class PublicController extends AppController
         
         $this->loadModel('Pages');
         $page = $this->Pages->find('all', ['conditions'=>['slug'=>'about'],'limit'=>1])->first();
-        
+        $rules = $this->Pages->find('all', ['conditions'=>['slug'=>'rules'],'limit'=>1])->first();
+
+        $this->set([
+            'success' => true,
+            'page' => [
+                'id'=>$page->id,
+                'slug'=>$page->slug,
+                'title'=>$page->title,
+                'description'=>$page->description,
+                'content'=>$page->content,
+                'url'=>$page->url,
+            ],
+            '_serialize' => ['success', 'page']
+        ]);
+
+
         $this->set([
             'success' => true,
             'user' => [
@@ -115,7 +130,15 @@ class PublicController extends AppController
                 'description'=>$page->description,
                 'url'=>$page->url,
             ],
-            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'page']
+            'rules' => [
+                'id'=>$rules->id,
+                'slug'=>$rules->slug,
+                'title'=>$rules->title,
+                'description'=>$rules->description,
+                'content'=>$rules->content,
+                'url'=>$rules->url,
+            ],
+            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'page', 'rules']
             ]
         );
     }
@@ -145,7 +168,6 @@ class PublicController extends AppController
         $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
         
         $store_key = null;
-        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
         foreach($stores as $key=>$store):
             $stores[$key]->ranking = $key + 1;
             $store_key = $store['id']==$user->store_id?$key:$store_key;
@@ -156,6 +178,28 @@ class PublicController extends AppController
             'my_store' => $stores[$store_key],
             'stores' => $stores,
             '_serialize' => ['success', 'my_store', 'stores']
+            ]
+        );
+    }
+
+    public function contact(){
+        $this->loadModel('Users');
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id']);
+
+        $data = $this->request->data;
+        $data['user_id'] = $user->id;
+
+        $this->loadModel('Messages');
+        $message = $this->Messages->newEntity();
+        $message = $this->Messages->patchEntity($message, $data);
+        $this->Messages->save($message);
+
+        $this->set([
+            'success' => true,
+            'user' => $user,
+            'data' => $data,
+            '_serialize' => ['success', 'user', 'data']
             ]
         );
     }

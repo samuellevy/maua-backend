@@ -18,6 +18,13 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
+                <?php echo $this->Form->control('explanation', ['class'=>'form-control', 'label'=>'Sobre resposta']);?>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
                 <?php echo $this->Form->control('points', ['class'=>'form-control', 'label'=>'Valor da questão', 'value'=>1]);?>
               </div>
             </div>

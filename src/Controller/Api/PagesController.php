@@ -16,7 +16,11 @@ class PagesController extends AppController
     public function get($slug=null){
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC'], 'Stores.Points', 'Roles']]);
 
+        if($user->role->name=='Lojista'){
+            $slug='about_lojista';
+        }
         $this->loadModel('Pages');
         $page = $this->Pages->find('all', ['conditions'=>['slug'=>$slug],'limit'=>1])->first();
 
@@ -30,7 +34,17 @@ class PagesController extends AppController
                 'content'=>$page->content,
                 'url'=>$page->url,
             ],
-            '_serialize' => ['success', 'page']
+            'user' => [
+                'username' => $identity['username'],
+                'name' => $identity['name'],
+                'email' => $user->email, 
+                'loja' => $user->store->name,
+                'phone' => $user->phone,
+                'pontuacao' => $user->store->total,
+                'role_id' => $user->role->id,
+                'role' => $user->role->name
+            ],
+            '_serialize' => ['success', 'page', 'user']
         ]);
     }
 }

@@ -54,7 +54,8 @@ class UsersController extends AppController
                 'ranking' => $stores[$user->store->id]->ranking,
                 'pontuacao' => $stores[$user->store->id]->total,
                 'role_id' => $user->role->id,
-                'role' => $user->role->name
+                'role' => $user->role->name,
+                'first_access' => $user->first_access
             ],
             '_serialize' => ['success', 'user']
         ]);
@@ -86,7 +87,7 @@ class UsersController extends AppController
                 ]);
                 if ($this->request->is('post')) {
                     $user = $this->Users->patchEntity($user, $this->request->getData());
-                    $user->phone = $user->tel;
+
                     if($user->senha!=''){
                         $user->password = $user->senha;
                     }
@@ -98,12 +99,16 @@ class UsersController extends AppController
                     }
                 }
 
+                $user = $this->Users->get($identity['id'], [
+                    'contain' => ['Stores']
+                ]);
+
                 $this->set([
                     'success' => true,
                     'message' => $return,
                     'user' => [
                         'username' => $identity['username'],
-                        'name' => $identity['name'],
+                        'name' => $user['name'],
                         'email' => $user->email, 
                         'loja' => $user->store->name,
                         'phone' => $user->phone,

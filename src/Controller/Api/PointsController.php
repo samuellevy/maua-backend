@@ -59,9 +59,13 @@ class PointsController extends AppController
         $sales->percent = ($sales->quantity * 100)/$sales->goal;
         $sales->percent = number_format((float)$sales->percent, 0, '.', '');
 
+        $this->loadModel('Users');
+        $user = $this->Users->find('all', ['conditions'=>['Store.Points']])->first();
+
         $this->set([
             'success' => true,
             'sales' => $sales,
+            'user' => $user,
             '_serialize' => ['success', 'sales']
         ]);
     }
