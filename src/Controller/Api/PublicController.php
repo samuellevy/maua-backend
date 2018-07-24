@@ -57,13 +57,24 @@ class PublicController extends AppController
             $stores[$key]->ranking = $key + 1;
             $store_key = $store['id']==$user->store_id?$key:$store_key;
         endforeach;
+
+        if(count($stores)==0){
+            $store_key = 0;
+            $stores[$store_key]->ranking = 99;
+        }
         
         $this->loadComponent('FormatDate');
         foreach($user->store->points as $iey=>$point):
             $user->store->points[$iey]->date = $this->FormatDate->formatDate($point->created,'mes_ano');
         endforeach;
+
+        // die(debug($user->store));
         
-        $percent = round(($user->store->sales[0]->quantity*100)/$user->store->sales[0]->goal);
+        if(isset($user->store->sales[0])){
+            $percent = round(($user->store->sales[0]->quantity*100)/$user->store->sales[0]->goal);
+        }else{
+            $percent = 0;
+        }
         $month = [1=>'Janeiro',2=>'Fevereiro',3=>'Março',4=>'Abril',5=>'Maio',6=>'Junho',7=>'Julho',8=>'Agosto',9=>'Setembro',10=>'Outubro',11=>'Novembro',12=>'Dezembro'];
         
         $this->loadModel('Posts');
@@ -107,10 +118,10 @@ class PublicController extends AppController
                 'ranking' => $stores[$store_key]->ranking,
             ],
             'sales' => [
-                'quantity'=>$user->store->sales[0]->quantity,
-                'goal'=>$user->store->sales[0]->goal,
-                'month'=>$user->store->sales[0]->month,
-                'month_name'=>$month[$user->store->sales[0]->month],
+                'quantity'=>isset($user->store->sales[0])?$user->store->sales[0]->quantity:0,
+                'goal'=>isset($user->store->sales[0])?$user->store->sales[0]->goal:0,
+                'month'=>isset($user->store->sales[0])?$user->store->sales[0]->month:0,
+                'month_name'=>isset($user->store->sales[0])?$month[$user->store->sales[0]->month]:0,
                 'percent'=> $percent,
                 'year'=>'2018',
                 'message' => "Quase lá"
@@ -168,6 +179,7 @@ class PublicController extends AppController
         $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
         
         $store_key = null;
+        
         foreach($stores as $key=>$store):
             $stores[$key]->ranking = $key + 1;
             $store_key = $store['id']==$user->store_id?$key:$store_key;
