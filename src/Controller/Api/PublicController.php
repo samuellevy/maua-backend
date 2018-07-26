@@ -160,7 +160,6 @@ class PublicController extends AppController
                 'image'=>'4-ranking',
                 'action'=>'Ranking',
                 'button_label'=>'Acompanhar Ranking'
-                
             ],
             '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'page', 'rules', 'push']
             ]

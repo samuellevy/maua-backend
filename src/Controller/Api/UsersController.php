@@ -64,15 +64,15 @@ class UsersController extends AppController
 
     public function list(){
         $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Users', 'Roles']]);
-        foreach($user->store->users as $key=>$item){
-            $user->store->users[$key]->completed = true;
-            $user->store->users[$key]->course_status = 'Todos os módulos foram completos';
+        $users = $this->Users->find('all', ['conditions'=>['store_id'=>$identity['store_id'], 'Users.active'=>1, 'NOT'=>['Users.id'=>$identity['id']]]], ['contain'=>['Stores.Users', 'Roles']])->all()->toArray();
+        foreach($users as $key=>$item){
+            $users[$key]->completed = true;
+            $users[$key]->course_status = 'Todos os módulos foram completos';
         }
         
         $this->set([
             'success' => true,
-            'users' => $user->store->users,
+            'users' => $users,
             '_serialize' => ['success', 'users']
         ]);
     }

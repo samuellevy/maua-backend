@@ -46,12 +46,14 @@ class CoursesController extends AppController
         if (!$user) {
             throw new UnauthorizedException('Não autorizado');
         }
-        $courses = $this->Courses->find('all', ['conditions'=>['status'=>1], 'limit'=>'1', 'order'=>['id DESC']]);
-        $courses = $courses->toArray();
+        $course = $this->Courses->find('all', ['conditions'=>['status'=>1], 'limit'=>'1', 'order'=>['id DESC']])->first();
+        $course = $course;
+
         $this->set([
             'success' => true,
-            'course' => $courses[0],
+            'course' => $course,
             '_serialize' => ['success', 'course']
         ]);
+
     }
 }
