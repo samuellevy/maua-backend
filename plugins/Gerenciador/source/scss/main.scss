@@ -106,9 +106,6 @@
 }
 
 /* bg-colors */
-.bg-gray {
-
-}
 /*
 .bg-blue {
   background-color: #1DC7EA !important;
@@ -186,10 +183,6 @@
       font-weight: bold;
     }
   }
-}
-
-.switch__container {
-
 }
 
 .switch {
@@ -275,3 +268,19 @@
 }
 
 @import 'components/general';
+
+.role-search{
+    width: 30%;
+    padding: 15px;
+    select.form-control{
+      border: 1px solid #E3E3E3 !important;
+      border-right: none !important;
+      border-radius: 4px 0px 0px 4px !important;
+    }
+    .input-group-btn{
+      .btn-default{
+        padding: 10px;
+        height: 100%;
+      }
+    }
+}

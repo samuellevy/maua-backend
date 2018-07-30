@@ -6,6 +6,16 @@
           <h4 class="title">Usuários</h4>
           <p class="category">Lista de todos os usuários</p>
         </div>
+        <?= $this->Form->create("Ticket");?>
+          <div class="input-group input-group-sm role-search">
+          
+          <?php $roles[0]='Todos'; ksort($roles);?>
+             <?= $this->Form->input("role_search", ['type'=>'select', 'options'=>$roles, 'class'=>"form-control", 'label'=>false]);?>
+            <div class="input-group-btn">
+              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        <?= $this->Form->end(); ?>
         <div class="content table-responsive table-full-width">
           <table class="table table-hover table-striped">
             <thead>
@@ -25,7 +35,7 @@
                   <td><?= h($user->name) ?></td>
                   <td><?= h($user->email) ?></td>
                   <td><?= h($user->username) ?></td>
-                  <td><?= $user->has('role') ? $this->Html->link($user->role->role, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
+                  <td><?= $user->role->name;?></td>
                   <td class="actions">
                       <?= $this->Html->link(__('Ver'), ['action' => 'view', $user->id]) ?>
                       <?= $this->Html->link(__('Editar'), ['action' => 'edit', $user->id]) ?>

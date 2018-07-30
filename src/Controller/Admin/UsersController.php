@@ -24,13 +24,27 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $this->loadModel('Roles');
+        $roles = $this->Roles->find('list')->toArray();
+        $conditions = [];
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $role_id = $this->request->data['role_search'];
+            if($role_id != 0){
+                $conditions = ['role_id'=>$role_id];       
+            }
+        }
+
         $this->paginate = [
-            //'contain' => ['Roles']
+            'contain'=>['Roles'],
+            'conditions'=>$conditions
         ];
         $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);
+
+        $this->set(compact('roles'));
+        $this->set('_serialize', ['roles']);
     }
 
     /**
