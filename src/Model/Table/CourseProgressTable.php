@@ -20,6 +20,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\CourseProgres patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\CourseProgres[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\CourseProgres findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class CourseProgressTable extends Table
 {
@@ -37,6 +39,8 @@ class CourseProgressTable extends Table
         $this->setTable('course_progress');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'

@@ -10,6 +10,8 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property int $course_id
  * @property int $progress
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Course $course
@@ -30,6 +32,8 @@ class CourseProgres extends Entity
         'user_id' => true,
         'course_id' => true,
         'progress' => true,
+        'created' => true,
+        'modified' => true,
         'user' => true,
         'course' => true
     ];
