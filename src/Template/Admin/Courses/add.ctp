@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="header">
-          <h4 class="title">Nova questão</h4>
+          <h4 class="title">Novo curso</h4>
         </div>
         <div class="content">
           <?= $this->Form->create($course) ?>
