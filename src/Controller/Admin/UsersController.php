@@ -158,7 +158,7 @@ class UsersController extends AppController
 
     public function list(){
         $this->loadModel('Stores');
-        $stores = $this->Stores->find('all', ['contain'=>['Users'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles'], 'conditions'=>['id >='=>10]])->all();
         $this->set(compact('stores'));
     }
 }
