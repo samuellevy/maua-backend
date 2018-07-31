@@ -50,7 +50,7 @@ class PublicController extends AppController
     public function infos(){
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC'], 'Stores.Points', 'Roles']]);
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points', 'Roles']]);
         $store_key = null;
         $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
         foreach($stores as $key=>$store):
@@ -79,7 +79,7 @@ class PublicController extends AppController
         
         $this->loadModel('Posts');
         $post = $this->Posts->find('all',['contain'=>['Files'], 'limit'=>1,'order'=>['id DESC']])->first();
-        $url = 'http://192.168.2.71/rest/uploads/files/';
+        $url = 'http://dev2.3aww.com.br/lafargemaua/uploads/files/';
         
         $this->loadModel('Pages');
         $page = $this->Pages->find('all', ['conditions'=>['slug'=>'about'],'limit'=>1])->first();

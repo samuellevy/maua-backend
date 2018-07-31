@@ -152,7 +152,7 @@ class UsersController extends AppController
         $data['active']=1;
         $data['role_id']=6;
         $data['username']=$data['email'];
-        $data['password']='quementendevendemaua';
+        $data['password']='quementendevende';
 
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
