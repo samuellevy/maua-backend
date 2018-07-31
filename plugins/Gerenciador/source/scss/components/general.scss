@@ -47,3 +47,8 @@
   margin-bottom: 10px;
 }
 
+tr{
+  &.green{
+    background-color:#00a65a; color: #fff;
+  }
+}

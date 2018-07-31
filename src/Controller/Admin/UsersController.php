@@ -155,4 +155,10 @@ class UsersController extends AppController
     public function logout(){
       return $this->redirect($this->Auth->logout());
     }
+
+    public function list(){
+        $this->loadModel('Stores');
+        $stores = $this->Stores->find('all', ['contain'=>['Users'], 'conditions'=>['id >='=>10]])->all();
+        $this->set(compact('stores'));
+    }
 }
