@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="content table-responsive table-full-width">
                 <?php foreach ($stores as $store): ?>
-                <?php if(count($store->users)>0): ?>
+                <?php if($store->users[0]->first_access == 0): ?>
                 <div class="card">
                     <h4 style="padding: 10px;">#<?= $store->id; ?> - <?= $store->name; ?></h4>
                     <table class="table table-hover table">
