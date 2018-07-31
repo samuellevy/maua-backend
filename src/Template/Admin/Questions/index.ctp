@@ -6,6 +6,16 @@
           <h4 class="title">Perguntas</h4>
           <p class="category">Lista de todos os itens</p>
         </div>
+        <?= $this->Form->create("Ticket");?>
+          <div class="input-group input-group-sm role-search">
+          
+          <?php $courses[0]='Todos'; ksort($courses);?>
+            <?= $this->Form->input("course_search", ['type'=>'select', 'options'=>$courses, 'class'=>"form-control", 'label'=>false]);?>
+            <div class="input-group-btn">
+              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        <?= $this->Form->end(); ?>
         <div class="content table-responsive table-full-width">
           <table class="table table-hover table-striped">
             <thead>

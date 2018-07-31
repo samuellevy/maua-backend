@@ -7,9 +7,25 @@ class QuestionsController extends AppController
 {
   public function index()
   {
-    $questions = $this->paginate($this->Questions, [
-      'contain'=>['Courses']
-    ]);
+
+    $this->loadModel('Courses');
+    $courses = $this->Courses->find('list')->toArray();
+    $conditions = [];
+    if ($this->request->is(['patch', 'post', 'put'])) {
+        $course_id = $this->request->data['course_search'];
+        if($course_id != 0){
+            $conditions = ['course_id'=>$course_id];       
+        }
+    }
+
+    $this->paginate = [
+        'contain'=>['Courses'],
+        'conditions'=>$conditions
+    ];
+    $questions = $this->paginate($this->Questions);
+
+    $this->set(compact('courses'));
+    $this->set('_serialize', ['courses']);
 
     $this->set(compact('questions'));
     $this->set('_serialize', ['questions']);
