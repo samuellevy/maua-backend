@@ -90,9 +90,9 @@
                 <div class="options">
                   <?php foreach($question->options as $key=>$option):?>
                       <div class="option" data-id="<?=$key?>">
-                        <input type="radio" name="value" value="<?=$key?>"
+                        <input disabled type="radio" name="value" value="<?=$key?>"
                         <?=$question->value==$key?'checked':'';?>/>
-                        <input placeholder="Nova opção" class="form-control questionOption" name="options[<?=$key?>][title]" value="<?=$option->title?>"/>
+                        <input disabled placeholder="Nova opção" class="form-control questionOption" name="options[<?=$key?>][title]" value="<?=$option->title?>"/>
                         <input type="hidden" name="options[<?=$key?>][id]" value="<?=$option->id?>"/>
                       </div>
                   <?php endforeach;?>
@@ -104,7 +104,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <button type="button" class="btn btn-fill" data-function="addNewOption">Adicionar nova opção</button>
+                <!-- <button type="button" class="btn btn-fill" data-function="addNewOption">Adicionar nova opção</button> -->
               </div>
             </div>
           </div>
