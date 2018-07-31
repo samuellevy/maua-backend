@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="header">
-          <h4 class="title">Perguntas</h4>
+          <h4 class="title">Cursos</h4>
           <p class="category">Lista de todos os itens</p>
         </div>
         <div class="content table-responsive table-full-width">

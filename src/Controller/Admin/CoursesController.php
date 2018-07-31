@@ -30,7 +30,8 @@ class CoursesController extends AppController
     }
     
 		$this->set(compact(['course']));
-		$this->set('_serialize', ['course']);
+    $this->set('_serialize', ['course']);
+
   }
   
   public function edit($id = null)
@@ -46,8 +47,19 @@ class CoursesController extends AppController
           }
           $this->Flash->error(__('Não pôde ser salvo.'));
       }
-      $this->set(compact('course'));
-      $this->set('_serialize', ['course']);
+    $this->set(compact('course'));
+    $this->set('_serialize', ['course']);
+        
+    $this->loadModel('Questions');
+    $questions = $this->Questions->find('all', [
+      'conditions'=>['course_id'=>$course->id],
+      'contain'=>[
+        'Options',
+      ]
+    ]);
+
+    $this->set(compact('questions'));
+    $this->set('_serialize', ['questions']);
   }
 
 
