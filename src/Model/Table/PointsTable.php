@@ -50,28 +50,6 @@ class PointsTable extends Table
         ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    public function validationDefault(Validator $validator)
-    {
-        $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
-
-        $validator
-            ->integer('title')
-            ->allowEmpty('title');
-
-        $validator
-            ->integer('point')
-            ->allowEmpty('point');
-
-        return $validator;
-    }
 
     /**
      * Returns a rules checker object that will be used for validating

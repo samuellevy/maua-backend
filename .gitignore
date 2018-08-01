@@ -39,7 +39,9 @@ nbproject/*
 # Sass preprocessor
 .sass-cache/
 
-
 # Node Files
 /node_modules
 /node_modules/*
+
+# Webroot
+# /webroot/files/*

@@ -160,6 +160,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $return = true;
+                $this->processPoints(['newUser', $data['store_id'], $identity['id']]);
             }else{
                 $return = false;
             }
@@ -178,6 +179,33 @@ class UsersController extends AppController
                 '_serialize' => ['success', 'message']
             ]);
         }
+    }
+
+    public function processPoints($arguments){
+        switch($arguments[0]):
+            case 'newUser':
+            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1]]])->all();
+            $count_users = count($users);
+            if($count_users == 2):
+                $pointing = 20;
+                $this->loadModel('Points');
+                $data['title'] = 'Cadastro de funcionários';
+                $data['point'] = $pointing;
+                $data['user_id'] = $arguments[2];
+                $data['store_id'] = $arguments[1];
+                $point = $this->Points->newEntity();
+                $point = $this->Points->patchEntity($point, $data);
+                $this->Points->save($point);
+
+                $this->loadModel('Stores');
+                $store = $this->Stores->get($arguments[1]);
+                $total_store = $store->total;
+                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+                // die(debug($store->total));
+                $this->Stores->save($store);
+                endif;
+            break;
+        endswitch;
     }
 
     public function remove(){

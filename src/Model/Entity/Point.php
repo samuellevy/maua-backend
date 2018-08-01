@@ -28,11 +28,6 @@ class Point extends Entity
      * @var array
      */
     protected $_accessible = [
-        'user_id' => true,
-        'title' => true,
-        'point' => true,
-        'created' => true,
-        'modified' => true,
-        'user' => true
+        '*' => true,
     ];
 }
