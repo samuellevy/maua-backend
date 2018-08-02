@@ -57,3 +57,12 @@ tr.bolder{
     font-weight: bold !important;
   }
 }
+
+.message{
+  &.success{
+    background-color: mediumseagreen;
+    padding: 15px;
+    color: #FFF;
+    margin: 14px;
+  }
+}

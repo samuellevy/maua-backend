@@ -29,9 +29,9 @@
   </li>
   
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Specialties","action" => "index"]);?>" <?=$params['controller']=='Specialties'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "sales","action" => "load"]);?>" <?=$params['controller']=='Sales'?"class='active'":""?>>
       <i class="pe-7s-note2"></i>
-      <p>x Vendas</p>
+      <p>Vendas</p>
     </a>
   </li>
   
