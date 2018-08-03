@@ -38,6 +38,8 @@ class SalesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+
         $this->belongsTo('Stores', [
             'foreignKey' => 'store_id'
         ]);
