@@ -104,5 +104,11 @@ class StoresController extends AppController
 		$this->Stores->Users->save($table);  //update record
   }
 
+  //review
+  public function review(){
+    $stores = $this->Stores->find('all', ['contain'=>['Users']])->all()->toArray();
+    $this->set(compact('stores'));
+  }
+
 
 }

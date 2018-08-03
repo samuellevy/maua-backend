@@ -12,7 +12,7 @@ class QuestionsController extends AppController
     $courses = $this->Courses->find('list')->toArray();
     $conditions = [];
     if ($this->request->is(['patch', 'post', 'put'])) {
-        $course_id = $this->request->data['course_search'];
+        $course_id = $this->request->data['course_search']; 
         if($course_id != 0){
             $conditions = ['course_id'=>$course_id];       
         }
@@ -38,7 +38,6 @@ class QuestionsController extends AppController
 
 		if ($this->request->is('post')) {
       $question = $this->Questions->patchEntity($question, $this->request->getData());
-      // die(debug($question));
 			if ($this->Questions->save($question)) {
         $this->Flash->success(__('Sua pergunta foi enviada com sucesso.'));
         $this->redirect(['action'=>'edit',$question->id]);
@@ -60,7 +59,6 @@ class QuestionsController extends AppController
 
       if ($this->request->is(['patch', 'post', 'put'])) {
           $question = $this->Questions->patchEntity($question, $this->request->getData());
-          // die(debug($question));
           foreach($question->options as $key=>$option){
             if($option->title == ''){
               $entity = $this->Questions->Options->get($option->id);

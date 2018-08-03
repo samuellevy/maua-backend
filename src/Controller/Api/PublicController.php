@@ -140,6 +140,8 @@ class PublicController extends AppController
                 'title'=>$page->title,
                 'description'=>$page->description,
                 'url'=>$page->url,
+                'movie_url'=>$page->content,
+                'video_url'=>$page->url,
             ],
             'rules' => [
                 'id'=>$rules->id,

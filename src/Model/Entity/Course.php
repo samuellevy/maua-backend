@@ -37,6 +37,8 @@ class Course extends Entity
         'active' => true,
         'right' => true,
         'questions' => true,
+        'thumb_url' => true,
+        'movie_url' => true,
         'quiz' => true
     ];
 }
