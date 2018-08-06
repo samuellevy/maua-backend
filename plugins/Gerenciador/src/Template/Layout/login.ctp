@@ -1,4 +1,4 @@
-<?php $site_name = "VER | Gerenciador"; ?>
+<?php $site_name = "3AW | Gerenciador"; ?>
 <!DOCTYPE html>
 <html>
 <head>

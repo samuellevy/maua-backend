@@ -10,7 +10,7 @@
           <div class="input-group input-group-sm role-search">
           
           <?php $roles[0]='Todos'; ksort($roles);?>
-             <?= $this->Form->input("role_search", ['type'=>'select', 'options'=>$roles, 'class'=>"form-control", 'label'=>false]);?>
+            <?= $this->Form->input("role_search", ['type'=>'select', 'options'=>$roles, 'class'=>"form-control", 'label'=>false]);?>
             <div class="input-group-btn">
               <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
             </div>
