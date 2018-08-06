@@ -85,6 +85,9 @@ class PublicController extends AppController
         $page = $this->Pages->find('all', ['conditions'=>['slug'=>'about'],'limit'=>1])->first();
         $rules = $this->Pages->find('all', ['conditions'=>['slug'=>'rules'],'limit'=>1])->first();
 
+        $this->loadModel('Sales');
+        $sale_base = $this->Sales->find('all', ['limit'=>1])->first();
+
         $this->set([
             'success' => true,
             'page' => [
@@ -163,7 +166,11 @@ class PublicController extends AppController
                 'action'=>'Ranking',
                 'button_label'=>'Acompanhar Ranking'
             ],
-            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'page', 'rules', 'push']
+            'configs' => [
+                'last_update' => isset($sale_base)?$sale_base->created:0,
+                'clean_cache' => false,
+            ],
+            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'rules', 'push', 'configs','page']
             ]
         );
     }
