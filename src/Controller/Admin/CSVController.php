@@ -5,11 +5,11 @@ use App\Controller\AppControllerAdmin;
 use Cake\Event\Event;
 
 /**
- * Report Controller
+ * CSV Controller
  *
- * @property \App\Model\Table\ReportTable $Report
+ * @property \App\Model\Table\CSVTable $CSV
  */
-class ReportController extends AppController
+class CSVController extends AppController
 {
 
     public function beforeFilter(Event $event){
@@ -19,6 +19,7 @@ class ReportController extends AppController
 
     public function index()
     {
+        $this->viewBuilder()->layout('ajax');
         $this->loadModel('Stores');
         $stores = $this->paginate($this->Stores, [
             'contain'=>['Users.CourseProgress'],

@@ -63,5 +63,19 @@
       </li>
     </ul>
   </li>
+
+    <li>
+    <a href="<?= $this->Url->build(["controller" => "report","action" => "index"]);?>" <?=$params['controller']=='Report'?"class='active'":""?>>
+      <i class="pe-7s-note2"></i>
+      <p>Relatório Quiz</p>
+    </a>
+  </li>
+
+  <li>
+    <a href="<?= $this->Url->build(["controller" => "CSV","action" => "index"]);?>" <?=$params['controller']=='CSV'?"class='active'":""?>>
+      <i class="pe-7s-download"></i>
+      <p>Gerar Relatório de Vendas</p>
+    </a>
+  </li>
   
 </ul>
