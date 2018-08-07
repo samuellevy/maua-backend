@@ -35,6 +35,33 @@ class UsersController extends AppController
         ]);
     }
 
+
+    public function get($id){
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($id, ['contain'=>['Stores.Sales','Roles']]);
+        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+        foreach($stores as $key=>$store):
+            $stores[$key]->ranking = $key + 1;
+        endforeach;
+
+        $this->set([
+            'success' => true,
+            'user' => [
+                'username' => $user->username,
+                'name' => $user->name,
+                'email' => $user->email, 
+                'loja' => $user->store->name,
+                'phone' => $user->phone,
+                'ranking' => $stores[$user->store->id]->ranking,
+                'pontuacao' => $stores[$user->store->id]->total,
+                'role_id' => $user->role->id,
+                'role' => $user->role->name,
+                'first_access' => $user->first_access
+            ],
+            '_serialize' => ['success', 'user']
+        ]);
+    }
+
     public function me(){
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales','Roles']]);
@@ -64,10 +91,20 @@ class UsersController extends AppController
 
     public function list(){
         $identity = $this->Auth->identify();
-        $users = $this->Users->find('all', ['conditions'=>['store_id'=>$identity['store_id'], 'Users.active'=>1, 'NOT'=>['Users.id'=>$identity['id']]]], ['contain'=>['Stores.Users', 'Roles']])->all()->toArray();
+        $users = $this->Users->find('all', ['conditions'=>['store_id'=>$identity['store_id'], 'Users.active'=>1, 'NOT'=>['Users.id'=>$identity['id']]], 'contain'=>['Stores.Users', 'Roles', 'CourseProgress.Courses']])->all()->toArray();
+
+        // die(debug($users));
         foreach($users as $key=>$item){
-            $users[$key]->completed = true;
-            $users[$key]->course_status = 'Todos os módulos foram completos';
+            // $users[$key]->completed = true;
+            if(isset($users[$key]['course_progress'][0])){
+                $count_cp = count($users[$key]['course_progress'])-1;
+                $course_progress = $users[$key]['course_progress'][$count_cp];
+                $users[$key]->course_status = 'Completou o módulo '.$course_progress['course']['title'].'!';
+                $users[$key]->completed = true;
+            }else{
+                $users[$key]->course_status = 'Ainda não completou nenhum módulo.';
+                $users[$key]->completed = false;
+            }
         }
         
         $this->set([

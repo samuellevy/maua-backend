@@ -27,7 +27,7 @@
                   <td><?= $this->Number->format($store->id) ?></td>
                   <td>
                   <?php foreach($store->users as $user):?>
-                   <?=$user->name;?>, 
+                    <?=$user->name;?>, 
                   <?php endforeach;?>
                   </td>
                 </tr>

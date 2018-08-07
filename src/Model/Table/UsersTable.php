@@ -48,6 +48,9 @@ class UsersTable extends Table
         $this->belongsTo('Stores', [
             'foreignKey' => 'store_id'
         ]);
+        $this->hasMany('CourseProgress', [
+            'foreignKey' => 'user_id'
+        ]);
     }
 
     /**
