@@ -29,6 +29,22 @@ class ReportController extends AppController
         $this->set('_serialize', ['stores']);
     }
 
+    public function resultados()
+    {
+        $this->viewBuilder()->layout('ajax');
+        $this->loadModel('Stores');
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles', 'Users.CourseProgress'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $stores->toArray();
+        $this->set(compact('stores'));
+    }
 
+    public function participantes()
+    {
+        $this->viewBuilder()->layout('ajax');
+        $this->loadModel('Stores');
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $stores->toArray();
+        $this->set(compact('stores'));
+    }
 
 }

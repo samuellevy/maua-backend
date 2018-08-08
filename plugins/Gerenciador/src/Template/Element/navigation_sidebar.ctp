@@ -72,14 +72,14 @@
   </li>
 
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Csv","action" => "resultados"]);?>" <?=$params['controller']=='Csv'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "Report","action" => "resultados"]);?>" <?=$params['controller']=='Report'?"class='active'":""?>>
       <i class="pe-7s-download"></i>
       <p>Gerar CSV Resultados</p>
     </a>
   </li>
 
   <li>
-    <a href="<?= $this->Url->build(["controller" => "Csv","action" => "participantes"]);?>" <?=$params['controller']=='Csv'?"class='active'":""?>>
+    <a href="<?= $this->Url->build(["controller" => "Report","action" => "participantes"]);?>" <?=$params['controller']=='Report'?"class='active'":""?>>
       <i class="pe-7s-download"></i>
       <p>Gerar CSV Participantes</p>
     </a>
