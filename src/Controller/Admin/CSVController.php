@@ -17,18 +17,23 @@ class CSVController extends AppController
         $this->Auth->allow('add');
     }
 
-    public function index()
+    public function resultados()
     {
         $this->viewBuilder()->layout('ajax');
         $this->loadModel('Stores');
-        $stores = $this->paginate($this->Stores, [
-            'contain'=>['Users.CourseProgress'],
-        ]);
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles', 'Users.CourseProgress'], 'conditions'=>['id >='=>10]])->all();
         $stores = $stores->toArray();
-        // die(debug($stores));
         $this->set(compact('stores'));
-        $this->set('_serialize', ['stores']);
     }
+
+    public function participantes()
+    {
+        $this->viewBuilder()->layout('ajax');
+        $this->loadModel('Stores');
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $stores->toArray();
+        $this->set(compact('stores'));
+        }
 
 
 

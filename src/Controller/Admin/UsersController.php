@@ -13,8 +13,8 @@ class UsersController extends AppController
 {
 
     public function beforeFilter(Event $event){
-      parent::beforeFilter($event);
-      $this->Auth->allow('add');
+        parent::beforeFilter($event);
+        $this->Auth->allow('add');
     }
 
     /**
@@ -63,7 +63,6 @@ class UsersController extends AppController
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
-
     /**
      * Add method
      *
@@ -76,7 +75,6 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Salvo com sucesso.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Não pôde ser salvo.'));
@@ -86,7 +84,6 @@ class UsersController extends AppController
         $this->set(compact('user', 'roles', 'stores'));
         $this->set('_serialize', ['user']);
     }
-
     /**
      * Edit method
      *
@@ -102,13 +99,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if(empty($user->password)){
-              unset($user->password);
-              unset($user->confirm_password);
+                unset($user->password);
+                unset($user->confirm_password);
             }
-
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Salvo com sucesso.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Não pôde ser salvo.'));
@@ -140,20 +135,20 @@ class UsersController extends AppController
     }
 
     /* Login area */
-    public function login(){
-      $this->viewBuilder()->layout('login');
-      if($this->request->is('post')){
-        $user = $this->Auth->identify();
-        if($user){
-          $this->Auth->setUser($user);
-          return $this->redirect($this->Auth->redirectUrl());
+        public function login(){
+        $this->viewBuilder()->layout('login');
+        if($this->request->is('post')){
+            $user = $this->Auth->identify();
+            if($user){
+            $this->Auth->setUser($user);
+            return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error(__('Invalid username or password.'));
         }
-        $this->Flash->error(__('Invalid username or password.'));
-      }
     }
 
     public function logout(){
-      return $this->redirect($this->Auth->logout());
+        return $this->redirect($this->Auth->logout());
     }
 
     public function list(){
