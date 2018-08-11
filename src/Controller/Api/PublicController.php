@@ -174,6 +174,25 @@ class PublicController extends AppController
             ]
         );
     }
+
+    public function basics(){
+        $this->loadModel('Users');
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id'], ['contain'=> 'Roles']);
+
+        $this->set([
+            'success' => true,
+            'user' => [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'username'=>$user->username,
+                'role'=>strtolower($user->role->name),
+                'force_login'=>$user->force_login
+            ],
+            '_serialize' => ['success', 'user']
+            ]
+        );
+    }
     
     public function posts(){
         $this->loadModel('Users');

@@ -51,6 +51,33 @@ class UsersTable extends Table
         $this->hasMany('CourseProgress', [
             'foreignKey' => 'user_id'
         ]);
+
+        $this->hasMany('ComercialStores', [
+            'className'=>'ComercialStores',
+            'foreignKey' => 'user_id',
+        ]);
+
+        $this->hasMany('ComercialStoresAmarelo', [
+            'className'=>'ComercialStores',
+            'foreignKey' => 'user_id',
+            'conditions'=>[
+                'Stores.category'=>'p'
+            ]
+        ]);
+        $this->hasMany('ComercialStoresVerde', [
+            'className'=>'ComercialStores',
+            'foreignKey' => 'user_id',
+            'conditions'=>[
+                'Stores.category'=>'m'
+            ]
+        ]);
+        $this->hasMany('ComercialStoresPreto', [
+            'className'=>'ComercialStores',
+            'foreignKey' => 'user_id',
+            'conditions'=>[
+                'Stores.category'=>'g'
+            ]
+        ]);
     }
 
     /**

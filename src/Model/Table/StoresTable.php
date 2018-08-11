@@ -48,6 +48,10 @@ class StoresTable extends Table
         $this->hasMany('Points', [
             'foreignKey' => 'store_id'
         ]);
+
+        $this->hasOne('ComercialStores',[
+            'foreignKey' => 'store_id'
+        ]);
     }
 
     /**
@@ -73,5 +77,38 @@ class StoresTable extends Table
             ->allowEmpty('category');
 
         return $validator;
+    }
+
+    public function ranking($user_id=null, $category=null, $limit=null){
+        if($limit==false){
+            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->toArray();
+        }else{
+            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'limit'=>$limit, 'contain'=>'ComercialStores'])->toArray();
+        }
+
+        return $ranking;
+    }
+
+    public function count_stores($category=null, $type=null){
+        if($type == null){
+            $total = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->all();
+            $total = count($total);
+        }
+        elseif($type=='enabled'){
+            $total = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>['ComercialStores', 'Users']])->all()->toArray();
+            
+            foreach($total as $key=>$store){
+                // die(debug($total[$key]['users'][0]['first_access']));
+                if(isset($total[$key]['users'][0])){
+                    if($total[$key]['users'][0]['first_access']){
+                        unset($total[$key]);
+                    }
+                }else{
+                    unset($total[$key]);
+                }
+            }
+            $total = count($total);
+        }
+        return $total;
     }
 }
