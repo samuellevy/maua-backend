@@ -19,7 +19,7 @@ class ManagerController extends AppController
         
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points', 'Roles']]);
         
-        $store = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['id'=>$store_id]])->first();
+        $store = $this->Users->Stores->find('all', ['contain'=>['Sales'], 'order'=>['total DESC'], 'conditions'=>['id'=>$store_id]])->first();
         $my_ranking = $this->Users->Stores->store_ranking($store_id);
         // die(debug($store));
         $this->loadComponent('FormatDate');
@@ -27,8 +27,8 @@ class ManagerController extends AppController
             $user->store->points[$iey]->date = $this->FormatDate->formatDate($point->created,'mes_ano');
         endforeach;
         
-        if(isset($user->store->sales[0])){
-            $percent = round(($user->store->sales[0]->quantity*100)/$user->store->sales[0]->goal);
+        if(isset($store->sales[0])){
+            $percent = round(($store->sales[0]->quantity*100)/$store->sales[0]->goal);
         }else{
             $percent = 0;
         }
@@ -54,7 +54,7 @@ class ManagerController extends AppController
                 'loja' => $user->store->name,
                 'phone' => $user->phone,
                 'ranking' => $my_ranking,
-                'pontuacao' => $user->store->total,
+                'pontuacao' => $store->total,
                 'role_id' => $user->role->id,
                 'role' => $user->role->name
             ],
@@ -64,10 +64,10 @@ class ManagerController extends AppController
                 'ranking' => $my_ranking,
             ],
             'sales' => [
-                'quantity'=>isset($user->store->sales[0])?$user->store->sales[0]->quantity:0,
-                'goal'=>isset($user->store->sales[0])?$user->store->sales[0]->goal:0,
-                'month'=>isset($user->store->sales[0])?$user->store->sales[0]->month:0,
-                'month_name'=>isset($user->store->sales[0])?$month[$user->store->sales[0]->month]:0,
+                'quantity'=>isset($store->sales[0])?$store->sales[0]->quantity:0,
+                'goal'=>isset($store->sales[0])?$store->sales[0]->goal:0,
+                'month'=>isset($store->sales[0])?$store->sales[0]->month:0,
+                'month_name'=>isset($store->sales[0])?$month[$store->sales[0]->month]:0,
                 'percent'=> $percent,
                 'year'=>'2018',
                 'message' => "Quase lá"

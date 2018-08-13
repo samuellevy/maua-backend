@@ -81,9 +81,9 @@ class StoresTable extends Table
 
     public function ranking($user_id=null, $category=null, $limit=null){
         if($limit==false){
-            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->toArray();
+            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>['ComercialStores', 'Sales']])->toArray();
         }else{
-            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'limit'=>$limit, 'contain'=>'ComercialStores'])->toArray();
+            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'limit'=>$limit, 'contain'=>['ComercialStores', 'Sales']])->toArray();
         }
 
         return $ranking;
