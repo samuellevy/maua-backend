@@ -89,6 +89,22 @@ class StoresTable extends Table
         return $ranking;
     }
 
+    public function store_ranking($store_id=null){
+        $my_store = $this->find('all',['conditions'=>['id'=>$store_id]])->first();
+        $category = $my_store->category;
+        $stores = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->toArray();
+        $position = 0;
+
+        foreach($stores as $key=>$store){
+            if($store->id == $my_store->id){
+                $position = $key+1;
+            }
+        }
+        // die(debug($position));
+        return $position;
+    }
+
+
     public function count_stores($category=null, $type=null){
         if($type == null){
             $total = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->all();

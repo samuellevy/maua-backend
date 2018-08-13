@@ -13,14 +13,84 @@ class ManagerController extends AppController
         parent::initialize();
     }
     
-    public function infos(){
+    public function infos($store_id=null){
+        $this->loadModel('Users');
+        $identity = $this->Auth->identify();
+        
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points', 'Roles']]);
+        
+        $store = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['id'=>$store_id]])->first();
+        $my_ranking = $this->Users->Stores->store_ranking($store_id);
+        // die(debug($store));
+        $this->loadComponent('FormatDate');
+        foreach($user->store->points as $iey=>$point):
+            $user->store->points[$iey]->date = $this->FormatDate->formatDate($point->created,'mes_ano');
+        endforeach;
+        
+        if(isset($user->store->sales[0])){
+            $percent = round(($user->store->sales[0]->quantity*100)/$user->store->sales[0]->goal);
+        }else{
+            $percent = 0;
+        }
+        $month = [1=>'Janeiro',2=>'Fevereiro',3=>'Março',4=>'Abril',5=>'Maio',6=>'Junho',7=>'Julho',8=>'Agosto',9=>'Setembro',10=>'Outubro',11=>'Novembro',12=>'Dezembro'];
+        
+        $this->loadModel('Posts');
+        $post = $this->Posts->find('all',['contain'=>['Files'], 'limit'=>1,'order'=>['id DESC']])->first();
+        $url = 'http://dev2.3aww.com.br/lafargemaua/uploads/files/';
+        
+        $this->loadModel('Pages');
+        $page = $this->Pages->find('all', ['conditions'=>['slug'=>'about'],'limit'=>1])->first();
+        $rules = $this->Pages->find('all', ['conditions'=>['slug'=>'rules'],'limit'=>1])->first();
+
+        $this->loadModel('Sales');
+        $sale_base = $this->Sales->find('all', ['limit'=>1])->first();
+
+        $this->set([
+            'success' => true,
+            'user' => [
+                'username' => $identity['username'],
+                'name' => $identity['name'],
+                'email' => $user->email, 
+                'loja' => $user->store->name,
+                'phone' => $user->phone,
+                'ranking' => $my_ranking,
+                'pontuacao' => $user->store->total,
+                'role_id' => $user->role->id,
+                'role' => $user->role->name
+            ],
+            'store' => [
+                'name' => $store->name,
+                'points' => $store->total,
+                'ranking' => $my_ranking,
+            ],
+            'sales' => [
+                'quantity'=>isset($user->store->sales[0])?$user->store->sales[0]->quantity:0,
+                'goal'=>isset($user->store->sales[0])?$user->store->sales[0]->goal:0,
+                'month'=>isset($user->store->sales[0])?$user->store->sales[0]->month:0,
+                'month_name'=>isset($user->store->sales[0])?$month[$user->store->sales[0]->month]:0,
+                'percent'=> $percent,
+                'year'=>'2018',
+                'message' => "Quase lá"
+            ],
+            'points' => $user->store->points,
+            'configs' => [
+                'last_update' => isset($sale_base)?$sale_base->created:0,
+                'clean_cache' => false,
+            ],
+            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'rules', 'push', 'configs','page']
+            ]
+        );
+    }
+
+    public function store($store_id){
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Roles']]);
         $rankingYellow = $this->Users->Stores->ranking('p');
         
-        $comercial_stores = $this->Users->ComercialStores->find('list', ['conditions'=>['user_id'=>$user->id]])->toArray();
-        
+        $comercial_stores = $this->Users->ComercialStores->find('all', ['conditions'=>['store_id'=>$store_id], 'contain'=>['Stores']])->toArray();
+        $my_ranking = $this->Users->Stores->store_ranking($store_id);
+
         $this->set([
             'success' => true,
             'user' => [
@@ -32,10 +102,9 @@ class ManagerController extends AppController
                 'role' => $user->role->name,
             ],
             'comercial_stores'=>$comercial_stores,
-            'rankingYellow' => $ranking->yellow,
-            'rankingGreen' => $ranking->green,
-            'rankingBlack' => $ranking->black,
-            '_serialize' => ['success', 'user', 'comercial_stores', 'rankingYellow', 'rankingGreen', 'rankingBlack']
+            'store'=>$comercial_stores[0]->store,
+            'ranking'=>$my_ranking,
+            '_serialize' => ['success', 'user', 'comercial_stores', 'store', 'ranking']
             ]
         );
     }
@@ -44,7 +113,7 @@ class ManagerController extends AppController
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Roles']]);
-        $ranking = $this->Users->Stores->ranking($user->id, $category, 10);
+        $ranking = $this->Users->Stores->ranking($user->id, $category, false);
         
         $comercial_stores = $this->Users->ComercialStores->find('list', ['conditions'=>['user_id'=>$user->id]])->toArray();
         // die(debug($ranking));

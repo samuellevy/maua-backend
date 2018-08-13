@@ -20,18 +20,19 @@ class UsersController extends AppController
         if (!$user) {
             throw new UnauthorizedException('Usuário ou senha incorreto(s)');
         }
-
+        // die(debug($user));
         $this->set([
             'success' => true,
             'data' => [
                 'user' => $user['username'],
+                'role_id' => $user['role_id'],
                 'token' => JWT::encode([
                     'sub' => $user['id'],
                     'exp' =>  time() + 604800
                 ],
                 Security::salt())
             ],
-            '_serialize' => ['success', 'data']
+            '_serialize' => ['success', 'data', 'role_id']
         ]);
     }
 
@@ -89,9 +90,13 @@ class UsersController extends AppController
     }
 
 
-    public function list(){
+    public function list($store_id=null){
         $identity = $this->Auth->identify();
-        $users = $this->Users->find('all', ['conditions'=>['store_id'=>$identity['store_id'], 'Users.active'=>1, 'NOT'=>['Users.id'=>$identity['id']]], 'contain'=>['Stores.Users', 'Roles', 'CourseProgress.Courses']])->all()->toArray();
+        if($store_id == null){
+            $users = $this->Users->find('all', ['conditions'=>['store_id'=>$identity['store_id'], 'Users.active'=>1, 'NOT'=>['Users.id'=>$identity['id']]], 'contain'=>['Stores.Users', 'Roles', 'CourseProgress.Courses']])->all()->toArray();
+        }else{
+            $users = $this->Users->find('all', ['conditions'=>['store_id'=>$store_id, 'Users.active'=>1, 'NOT'=>['Users.id'=>$identity['id']]], 'contain'=>['Stores.Users', 'Roles', 'CourseProgress.Courses']])->all()->toArray();
+        }
 
         // die(debug($users));
         foreach($users as $key=>$item){
