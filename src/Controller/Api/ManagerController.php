@@ -116,7 +116,7 @@ class ManagerController extends AppController
         $ranking = $this->Users->Stores->ranking($user->id, $category, false);
         
         $comercial_stores = $this->Users->ComercialStores->find('list', ['conditions'=>['user_id'=>$user->id]])->toArray();
-        // die(debug($ranking));
+        
         foreach($ranking as $key=>$item):
             $ranking[$key]['position'] = $key + 1;
             $ranking[$key]['user_id'] = $item['comercial_store']['user_id'];
@@ -144,7 +144,7 @@ class ManagerController extends AppController
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Roles']]);
-        $ranking = $this->Users->Stores->ranking($user->id, $category, false);
+        $ranking = $this->Users->Stores->ranking(null, $category, false);
         $count_stores = $this->Users->Stores->count_stores($category);
         $count_stores_enabled = $this->Users->Stores->count_stores($category, 'enabled');
 
