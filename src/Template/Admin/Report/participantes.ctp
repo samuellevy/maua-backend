@@ -21,7 +21,7 @@
         }
     }
 
-    $filename = 'Cimento Mauá - Quem entende vente - Participantes '.date('(d-m-Y)').'.csv';
+    $filename = 'Cimento Mauá - Quem entende vende - Participantes '.date('(d-m-Y)').'.csv';
     header("Content-type: text/csv; charset=utf-8");       
     header("Content-Disposition: attachment; filename=$filename");       
     $output = fopen("php://output", "w");       

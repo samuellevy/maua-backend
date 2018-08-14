@@ -1,23 +1,27 @@
 <?php
     $results = [];
     foreach ($stores as $store){
-        $id = $store->id;
-        $name = $store->name;
-        $cnpj = $store->users[0]->username;
-        $balconistas = 0;
-        $quiz = 0;
-        foreach ($store->users as $user){
-            if($user->role_id == 6){
-                $balconistas++;
-                if (isset($user->course_progress[0])){
-                    $quiz++;
+        if(!($store->users[0]->first_access)){
+            $id = $store->id;
+            $storename = $store->name;
+            $cnpj = $store->users[0]->username;
+            $name = $store->users[0]->name;
+            $email = $store->users[0]->email;
+            $balconistas = 0;
+            $quiz = 0;
+            foreach ($store->users as $user){
+                if($user->role_id == 6){
+                    $balconistas++;
+                    if (isset($user->course_progress[0])){
+                        $quiz++;
+                    }
                 }
             }
+            array_push($results,['ID'=>$id, 'LOJA'=>$store->name, 'CNPJ'=>(string)$cnpj, 'NOME'=>$name, 'EMAIL'=>$email, 'BALCONISTAS'=>$balconistas, 'VIDEO AULA ASSISTIDA'=>$quiz, 'QUIZ RESPONDIDO'=>$quiz]);
         }
-        array_push($results,['LOJA'=>$store->name, 'CNPJ'=>$cnpj, 'ID'=>$id, 'BALCONISTAS'=>$balconistas, 'VIDEO AULA ASSISTIDA'=>$quiz, 'QUIZ RESPONDIDO'=>$quiz]);
     }
 
-    $filename = 'Cimento Mauá - Quem entende vente - Resultados '.date('(d-m-Y)').'.csv';
+    $filename = 'Cimento Mauá - Quem entende vende - Resultados '.date('(d-m-Y)').'.csv';
     header("Content-type: text/csv; charset=utf-8");       
     header("Content-Disposition: attachment; filename=$filename");       
     $output = fopen("php://output", "w");       
