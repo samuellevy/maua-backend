@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="header">
-          <h4 class="title">Perguntas</h4>
+          <h4 class="title">Lojas</h4>
           <p class="category">Lista de todos os itens</p>
         </div>
         <div class="content table-responsive table-full-width">
@@ -11,18 +11,35 @@
             <thead>
               <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Título']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Loja']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Lojista']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Email']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Telefone']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('category', ['label'=>'Categoria']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('status', ['label'=>'Status']) ?></th>
                 <th scope="col" class="actions"><?= __('Opções') ?></th>
               </tr>
             </thead>
             <tbody>
-              <?php //die(debug($stores));?>
               <?php foreach ($stores as $store): ?>
                 <tr>
                   <td><?= $this->Number->format($store->id) ?></td>
                   <td><?= $store->name ?></td>
+                  <td>
+                  <?php if(isset($store->users[0])){
+                    echo $store->users[0]->name;
+                  }?>
+                  </td>
+                  <td>
+                  <?php if(isset($store->users[0])){
+                    echo $store->users[0]->email;
+                  }?>
+                  </td>
+                  <td>
+                  <?php if(isset($store->users[0])){
+                    echo $store->users[0]->telefone;
+                  }?>
+                  </td>
                   <td><?= $store->category ?></td>
                   <td>
                     <div class="switch__container">

@@ -21,6 +21,8 @@
             <thead>
               <tr>
                   <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                  <th scope="col"><?= $this->Paginator->sort('store_id', ['label'=>'ID da Loja']) ?></th>
+                  <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Nome da Loja']) ?></th>
                   <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Nome']) ?></th>
                   <th scope="col"><?= $this->Paginator->sort('email') ?></th>
                   <th scope="col"><?= $this->Paginator->sort('username') ?></th>
@@ -32,6 +34,12 @@
               <?php foreach ($users as $user): ?>
               <tr>
                   <td><?= $this->Number->format($user->id) ?></td>
+                  <?php foreach ($stores as $store):
+                    if($store->id == $user->store_id):?>
+                      <td><?= h($store->id) ?></td>
+                      <td><?= h($store->name) ?></td>
+                    <?php endif;
+                  endforeach;?>
                   <td><?= h($user->name) ?></td>
                   <td><?= h($user->email) ?></td>
                   <td><?= h($user->username) ?></td>

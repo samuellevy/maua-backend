@@ -45,6 +45,11 @@ class UsersController extends AppController
 
         $this->set(compact('roles'));
         $this->set('_serialize', ['roles']);
+
+        $this->loadModel('Stores');
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles', 'Users.CourseProgress'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $stores->toArray();
+        $this->set(compact('stores'));
     }
 
     /**
