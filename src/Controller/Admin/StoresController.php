@@ -8,7 +8,7 @@ class StoresController extends AppController
   public function index()
   {
     $stores = $this->paginate($this->Stores, [
-      'contain'=>['Users'],
+      'contain'=>['Users', 'Sales'],
     ]);
     $stores = $stores->toArray();
 

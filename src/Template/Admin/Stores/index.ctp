@@ -14,7 +14,16 @@
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Loja']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Lojista']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Email']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Telefone']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Agosto']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Agosto']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Setembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Setembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Outubro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Outubro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Novembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Novembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Dezembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Dezembro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('category', ['label'=>'Categoria']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('status', ['label'=>'Status']) ?></th>
                 <th scope="col" class="actions"><?= __('Opções') ?></th>
@@ -35,11 +44,72 @@
                     echo $store->users[0]->email;
                   }?>
                   </td>
-                  <td>
-                  <?php if(isset($store->users[0])){
-                    echo $store->users[0]->telefone;
-                  }?>
-                  </td>
+                  
+                  <?php if(isset($store->sales[0])):?>
+                    <?php foreach ($store->sales as $sale):?>
+                      <?php if ($sale->month == 8):?>
+                        <td>
+                          <?= $sale->goal;?>
+                        </td>
+                        <td>
+                        <?php if($sale->quantity == NULL) {
+                          echo "0";
+                        }else{
+                          echo $sale->quantity;
+                        }?>
+                        </td>
+                      <?php endif;?>
+                      <?php if ($sale->month == 9):?>
+                        <td>
+                          <?= $sale->goal;?>
+                        </td>
+                        <td>
+                        <?php if($sale->quantity == NULL) {
+                          echo "0";
+                        }else{
+                          echo $sale->quantity;
+                        }?>
+                        </td>
+                      <?php endif;?>
+                      <?php if ($sale->month == 10):?>
+                        <td>
+                          <?= $sale->goal;?>
+                        </td>
+                        <td>
+                        <?php if($sale->quantity == NULL) {
+                          echo "0";
+                        }else{
+                          echo $sale->quantity;
+                        }?>
+                        </td>
+                      <?php endif;?>
+                      <?php if ($sale->month == 11):?>
+                        <td>
+                          <?= $sale->goal;?>
+                        </td>
+                        <td>
+                        <?php if($sale->quantity == NULL) {
+                          echo "0";
+                        }else{
+                          echo $sale->quantity;
+                        }?>
+                        </td>
+                      <?php endif;?>
+                      <?php if ($sale->month == 12):?>
+                        <td>
+                          <?= $sale->goal;?>
+                        </td>
+                        <td>
+                        <?php if($sale->quantity == NULL) {
+                          echo "0";
+                        }else{
+                          echo $sale->quantity;
+                        }?>
+                        </td>
+                      <?php endif;?>
+                    <?php endforeach;?>
+                  <?php endif;?>
+
                   <td><?= $store->category ?></td>
                   <td>
                     <div class="switch__container">
