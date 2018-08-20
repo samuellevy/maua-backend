@@ -26,6 +26,7 @@
                   <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Nome']) ?></th>
                   <th scope="col"><?= $this->Paginator->sort('email') ?></th>
                   <th scope="col"><?= $this->Paginator->sort('username') ?></th>
+                  <th scope="col"><?= $this->Paginator->sort('phone') ?></th>
                   <th scope="col"><?= $this->Paginator->sort('role_id', ['label'=>'Função']) ?></th>
                   <th scope="col" class="actions"><?= __('opções') ?></th>
               </tr>
@@ -43,6 +44,7 @@
                   <td><?= h($user->name) ?></td>
                   <td><?= h($user->email) ?></td>
                   <td><?= h($user->username) ?></td>
+                  <td><?= h($user->phone) ?></td>
                   <td><?= $user->role->name;?></td>
                   <td class="actions">
                       <?= $this->Html->link(__('Ver'), ['action' => 'view', $user->id]) ?>

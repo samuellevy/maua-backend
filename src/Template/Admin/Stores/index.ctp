@@ -14,6 +14,7 @@
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Loja']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Lojista']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Email']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('phone', ['label'=>'Telefone']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Agosto']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Agosto']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Setembro']) ?></th>
@@ -42,6 +43,11 @@
                   <td>
                   <?php if(isset($store->users[0])){
                     echo $store->users[0]->email;
+                  }?>
+                  </td>
+                  <td>
+                  <?php if(isset($store->users[0])){
+                    echo $store->users[0]->phone;
                   }?>
                   </td>
                   
