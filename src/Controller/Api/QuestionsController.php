@@ -42,6 +42,8 @@ class QuestionsController extends AppController
     public function answer(){
         $identity = $this->Auth->identify();
        
+        $this->loadModel('Users');
+        $user = $this->Users->get($identity['id']);
         $data = $this->request->getData();
 
         $this->loadModel('Answers');
@@ -70,6 +72,7 @@ class QuestionsController extends AppController
         $course_progress = $this->CourseProgress->newEntity();
         $course_progress = $this->CourseProgress->patchEntity($course_progress, $progress);
         $this->CourseProgress->save($course_progress);
+        $this->processPoints(['type'=>'setPoint', 'course_id'=>1, 'store_id'=>$user->store_id, 'user_id'=>$user->id]);
 
         if($return){
             $this->set([
@@ -85,4 +88,54 @@ class QuestionsController extends AppController
             ]);
         }
     }
+
+    public function processPoints($arguments=null){
+        // $arguments = ['setPoint', 1, 2];
+        
+        switch($arguments['type']):
+            case 'setPoint':
+            $this->loadModel('CourseProgress');
+            $course_progress = $this->CourseProgress->getResults($arguments['course_id'],$arguments['store_id']);
+            $qtt_course_progress = count($course_progress);
+
+            $this->loadModel('Users');
+            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments['store_id'],'Users.active'=>true,'Users.role_id'=>6]])->all();
+            $count_users = count($users);
+
+            // die(debug($qtt_course_progress));
+            if($count_users == $qtt_course_progress):
+                $pointing = 25;
+                $this->loadModel('Points');
+                $data['title'] = 'Todos os funcionários concluíram o módulo';
+                $data['point'] = $pointing;
+                $data['user_id'] = $arguments['user_id'];
+                $data['store_id'] = $arguments['store_id'];
+                $point = $this->Points->newEntity();
+                $point = $this->Points->patchEntity($point, $data);
+                $this->Points->save($point);
+
+                $this->loadModel('Stores');
+                $store = $this->Stores->get($arguments['store_id']);
+                $total_store = $store->total;
+                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+                // die(debug($store->total));
+                $this->Stores->save($store);
+                return true;
+                endif;
+            break;
+        endswitch;
+    }
+
+        public function test(){
+        $this->loadModel('CourseProgress');
+        $course_progress = $this->CourseProgress->getResults(2,2);
+        $qtt_course_progress = count($course_progress);
+
+        $this->loadModel('Users');
+        $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>2,'Users.active'=>true, 'Users.role_id'=>6]])->all();
+        $count_users = count($users);
+
+        die(debug($count_users));
+    }
+
 }

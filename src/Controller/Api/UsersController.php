@@ -223,39 +223,13 @@ class UsersController extends AppController
         }
     }
 
-    public function processPoints($arguments){
-        switch($arguments[0]):
-            case 'newUser':
-            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1]]])->all();
-            $count_users = count($users);
-            if($count_users == 2):
-                $pointing = 20;
-                $this->loadModel('Points');
-                $data['title'] = 'Cadastro de funcionários';
-                $data['point'] = $pointing;
-                $data['user_id'] = $arguments[2];
-                $data['store_id'] = $arguments[1];
-                $point = $this->Points->newEntity();
-                $point = $this->Points->patchEntity($point, $data);
-                $this->Points->save($point);
-
-                $this->loadModel('Stores');
-                $store = $this->Stores->get($arguments[1]);
-                $total_store = $store->total;
-                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
-                // die(debug($store->total));
-                $this->Stores->save($store);
-                endif;
-            break;
-        endswitch;
-    }
-
     public function remove(){
         $identity = $this->Auth->identify();
         $data = $this->request->getData();
         $data['active']=0;
         
         $user = $this->Users->get($data['id'], [
+            'contain' => ['Stores']
         ]);
         
         if ($this->request->is('post')) {
@@ -263,6 +237,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $return = true;
+                $this->processPoints(['delUser', $user['store_id'], $user['id']]);
             }else{
                 $return = false;
             }
@@ -325,5 +300,57 @@ class UsersController extends AppController
             '_serialize' => ['success', 'user', 'data']
             ]
         );
+    }
+
+    /** functions */
+
+    public function processPoints($arguments){
+        switch($arguments[0]):
+            case 'newUser':
+            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
+            $count_users = count($users);
+            if($count_users == 2):
+                $pointing = 20;
+                $this->loadModel('Points');
+                $data['title'] = 'Cadastro de funcionários';
+                $data['point'] = $pointing;
+                $data['user_id'] = $arguments[2];
+                $data['store_id'] = $arguments[1];
+                $point = $this->Points->newEntity();
+                $point = $this->Points->patchEntity($point, $data);
+                $this->Points->save($point);
+
+                $this->loadModel('Stores');
+                $store = $this->Stores->get($arguments[1]);
+                $total_store = $store->total;
+                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+                // die(debug($store->total));
+                $this->Stores->save($store);
+                endif;
+            break;
+
+            case 'delUser':
+            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
+            $count_users = count($users);
+            if($count_users == 1):
+                $pointing = -20;
+                $this->loadModel('Points');
+                $data['title'] = 'Remoção de funcionários';
+                $data['point'] = $pointing;
+                $data['user_id'] = $arguments[2];
+                $data['store_id'] = $arguments[1];
+                $point = $this->Points->newEntity();
+                $point = $this->Points->patchEntity($point, $data);
+                $this->Points->save($point);
+
+                $this->loadModel('Stores');
+                $store = $this->Stores->get($arguments[1]);
+                $total_store = $store->total;
+                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+                // die(debug($store->total));
+                $this->Stores->save($store);
+                endif;
+            break;
+        endswitch;
     }
 }

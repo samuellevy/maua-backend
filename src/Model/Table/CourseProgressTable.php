@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * CourseProgress Model
@@ -82,5 +83,20 @@ class CourseProgressTable extends Table
         $rules->add($rules->existsIn(['course_id'], 'Courses'));
 
         return $rules;
+    }
+
+    public function getResults($course_id=null,$store_id=null){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT cp.*, users.name, users.store_id, stores.name as store_name
+                FROM course_progress as cp
+                RIGHT JOIN courses ON course_id = $course_id
+                JOIN users ON cp.user_id=users.id
+                JOIN stores ON users.store_id=stores.id 
+            
+                WHERE users.store_id=$store_id AND users.active=1
+            GROUP BY cp.id"
+            )->fetchAll('assoc');
+        return $results;
     }
 }
