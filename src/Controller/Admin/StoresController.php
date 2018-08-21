@@ -9,6 +9,7 @@ class StoresController extends AppController
   {
     $stores = $this->paginate($this->Stores, [
       'contain'=>['Users', 'Sales'],
+      'conditions'=>['id >='=>10]
     ]);
     $stores = $stores->toArray();
 

@@ -15,17 +15,18 @@
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Lojista']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Email']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('phone', ['label'=>'Telefone']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Agosto']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Agosto']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Setembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Setembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Outubro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Outubro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Novembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Novembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Meta Dezembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas Dezembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Agosto']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Agosto']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Setembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Setembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Outubro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Outubro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Novembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Novembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Dezembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Dezembro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('category', ['label'=>'Categoria']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('users', ['label'=>'Funcionários Cadastrados']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('status', ['label'=>'Status']) ?></th>
                 <th scope="col" class="actions"><?= __('Opções') ?></th>
               </tr>
@@ -53,70 +54,34 @@
                   
                   <?php if(isset($store->sales[0])):?>
                     <?php foreach ($store->sales as $sale):?>
-                      <?php if ($sale->month == 8):?>
-                        <td>
-                          <?= $sale->goal;?>
-                        </td>
-                        <td>
+                      <td>
                         <?php if($sale->quantity == NULL) {
-                          echo "0";
+                          echo "0/".$sale->goal;
                         }else{
-                          echo $sale->quantity;
+                          echo $sale->quantity."/".$sale->goal;
                         }?>
-                        </td>
-                      <?php endif;?>
-                      <?php if ($sale->month == 9):?>
-                        <td>
-                          <?= $sale->goal;?>
-                        </td>
-                        <td>
-                        <?php if($sale->quantity == NULL) {
-                          echo "0";
-                        }else{
-                          echo $sale->quantity;
-                        }?>
-                        </td>
-                      <?php endif;?>
-                      <?php if ($sale->month == 10):?>
-                        <td>
-                          <?= $sale->goal;?>
-                        </td>
-                        <td>
-                        <?php if($sale->quantity == NULL) {
-                          echo "0";
-                        }else{
-                          echo $sale->quantity;
-                        }?>
-                        </td>
-                      <?php endif;?>
-                      <?php if ($sale->month == 11):?>
-                        <td>
-                          <?= $sale->goal;?>
-                        </td>
-                        <td>
-                        <?php if($sale->quantity == NULL) {
-                          echo "0";
-                        }else{
-                          echo $sale->quantity;
-                        }?>
-                        </td>
-                      <?php endif;?>
-                      <?php if ($sale->month == 12):?>
-                        <td>
-                          <?= $sale->goal;?>
-                        </td>
-                        <td>
-                        <?php if($sale->quantity == NULL) {
-                          echo "0";
-                        }else{
-                          echo $sale->quantity;
-                        }?>
-                        </td>
-                      <?php endif;?>
+                      </td>
+                      <td>
+                        <?php $percent=$sale->quantity*100/$sale->goal;
+                          echo number_format($percent, 2, '.', ',')."%";
+                        ?>
+                      </td>
                     <?php endforeach;?>
                   <?php endif;?>
 
                   <td><?= $store->category ?></td>
+                  
+                  <td>
+                    <?php if(isset($store->users[0])):?>
+                      <?php 
+                      $count = 0;
+                      foreach ($store->users as $user){
+                        if ($user->role_id == 6) $count++;
+                      }
+                      echo $count;?>
+                    <?php endif;?>
+                  </td>
+
                   <td>
                     <div class="switch__container">
                       <input id="switch-flat-s-<?=$store->id?>" class="switch switch--flat" type="checkbox" <?=$store->status==1?"checked":""?> onclick="changeStatus('stores','status',<?=$store->id?>);">
