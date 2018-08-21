@@ -86,7 +86,7 @@ class SalesController extends AppController
         // die(debug($actual_points));
 
         $this->loadModel('Points');
-        $data['title'] = 'Meta mensal atingida '.$arguments['percent'];
+        $data['title'] = 'Meta mensal atingida '.$arguments['percent'].'%';
         $data['point'] = $pointing;
         $data['user_id'] = $lojista->id;
         $data['store_id'] = $arguments['store_id'];
