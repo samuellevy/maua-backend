@@ -52,7 +52,8 @@ class PublicController extends AppController
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points', 'Roles']]);
         $store_key = null;
-        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+        
         foreach($stores as $key=>$store):
             $stores[$key]->ranking = $key + 1;
             $store_key = $store['id']==$user->store_id?$key:$store_key;
@@ -87,20 +88,6 @@ class PublicController extends AppController
 
         $this->loadModel('Sales');
         $sale_base = $this->Sales->find('all', ['limit'=>1])->first();
-
-        $this->set([
-            'success' => true,
-            'page' => [
-                'id'=>$page->id,
-                'slug'=>$page->slug,
-                'title'=>$page->title,
-                'description'=>$page->description,
-                'content'=>$page->content,
-                'url'=>$page->url,
-            ],
-            '_serialize' => ['success', 'page']
-        ]);
-
 
         $this->set([
             'success' => true,
@@ -216,7 +203,7 @@ class PublicController extends AppController
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC'], 'Stores.Points', 'Roles']]);
-        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
         
         $store_key = null;
         

@@ -309,10 +309,16 @@ class UsersController extends AppController
             case 'newUser':
             $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
             $count_users = count($users);
-            if($count_users == 2):
-                $pointing = 20;
+
+            // procura se a loja já ganhou pontos por conclusao de curso de todos os funcionários
+            $this->loadModel('Points');
+            $points = $this->Points->find('all', ['conditions'=>['point'=>25, 'store_id'=>$arguments[1]]])->all();
+            $qtt_points = count($points);
+
+            if($qtt_points>0){
+                $pointing = -25;
                 $this->loadModel('Points');
-                $data['title'] = 'Cadastro de funcionários';
+                $data['title'] = 'Novo funcionário a completar módulo';
                 $data['point'] = $pointing;
                 $data['user_id'] = $arguments[2];
                 $data['store_id'] = $arguments[1];
@@ -326,8 +332,29 @@ class UsersController extends AppController
                 $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
                 // die(debug($store->total));
                 $this->Stores->save($store);
-                endif;
-            break;
+            }
+
+            if($count_users == 2):
+                $pointing = 20;
+                $this->loadModel('Points');
+                $data['title'] = 'Cadastro de funcionários';
+                $data['point'] = $pointing;
+                $data['user_id'] = $arguments[2];
+                $data['store_id'] = $arguments[1];
+                $data['type'] = 'new_user';
+                $data['month'] = 8;
+                $point = $this->Points->newEntity();
+                $point = $this->Points->patchEntity($point, $data);
+                $this->Points->save($point);
+
+                $this->loadModel('Stores');
+                $store = $this->Stores->get($arguments[1]);
+                $total_store = $store->total;
+                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+                // die(debug($store->total));
+                $this->Stores->save($store);
+            endif;
+        break;
 
             case 'delUser':
             $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
@@ -339,6 +366,8 @@ class UsersController extends AppController
                 $data['point'] = $pointing;
                 $data['user_id'] = $arguments[2];
                 $data['store_id'] = $arguments[1];
+                $data['type'] = 'del_user';
+                $data['month'] = 8;
                 $point = $this->Points->newEntity();
                 $point = $this->Points->patchEntity($point, $data);
                 $this->Points->save($point);

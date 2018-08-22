@@ -110,6 +110,8 @@ class QuestionsController extends AppController
                 $data['point'] = $pointing;
                 $data['user_id'] = $arguments['user_id'];
                 $data['store_id'] = $arguments['store_id'];
+                $data['type'] = 'completed_module';
+                $data['month'] = 8;
                 $point = $this->Points->newEntity();
                 $point = $this->Points->patchEntity($point, $data);
                 $this->Points->save($point);

@@ -5,7 +5,6 @@ use App\Controller\AppControllerAdmin;
 
 class PagesController extends AppController
 {
-
   public function home(){
 
   }
@@ -77,5 +76,23 @@ class PagesController extends AppController
     }
 
     return $this->redirect(['action' => 'index']);
+  }
+
+  // atualizar pontuacao
+  public function updatePoints(){
+    $this->loadModel('Stores');
+    $stores = $this->Stores->find('all', ['contain'=>['Points']])->all()->toArray();
+
+    foreach($stores as $key=>$store){
+      $total = 0;
+      foreach($store->points as $point){
+        $total += $point->point;
+      }
+      $stores[$key]->total = $total;
+      $entity = $this->Stores->get($store->id);
+      $entity = $this->Stores->patchEntity($entity, $store->toArray());
+      $this->Stores->save($entity);
+    }
+    die(debug($stores));
   }
 }
