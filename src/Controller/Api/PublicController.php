@@ -52,7 +52,13 @@ class PublicController extends AppController
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points', 'Roles']]);
         $store_key = null;
-        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+
+        // die(debug($user));
+        if($user->role_id == 8){
+            $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+        }else{
+            $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+        }
         
         foreach($stores as $key=>$store):
             $stores[$key]->ranking = $key + 1;
