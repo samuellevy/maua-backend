@@ -11,6 +11,7 @@ class PublicController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->Auth->allow(['review']);
     }
     
     public function home(){
@@ -273,5 +274,81 @@ class PublicController extends AppController
             '_serialize' => ['success', 'user', 'data']
             ]
         );
+    }
+
+    /** to pie */
+    public function review($type=null){
+        switch($type):
+            default:
+            case 'enabled_stores':
+                $this->loadModel('Users');
+                $count_all_stores = count($this->Users->find('all', ['conditions'=>['id >'=>10, 'role_id'=>4, 'active'=>1]])->all());
+                $count_enabled_stores = count($this->Users->find('all', ['conditions'=>['id >'=>10, 'role_id'=>4, 'first_access'=>1, 'active'=>1]])->all());
+
+                $this->set([
+                    'success' => true,
+                    'all_stores' => $count_all_stores,
+                    'enabled_stores' => $count_enabled_stores,
+                    '_serialize' => ['success', 'user', 'all_stores', 'enabled_stores']
+                    ]
+                );
+            break;
+
+            case 'module_user':
+                $category_p = [];
+                $category_m = [];
+                $category_g = [];
+
+                $category_p_all = [];
+                $category_m_all = [];
+                $category_g_all = [];
+
+                $this->loadModel('Users');
+                $count_users_cursed = $this->Users->find('all', ['conditions'=>['Users.id >'=>10, 'role_id'=>6, 'active'=>1, 'first_access'=>0], 'contain'=>['CourseProgress', 'Stores']])->all()->toArray();
+                
+                foreach($count_users_cursed as $key=>$user){
+                    if($user->store->category=='p'){
+                        array_push($category_p_all, $user);
+                    }
+                    else if($user->store->category=='m'){
+                        array_push($category_m_all, $user);
+                    }
+                    else if($user->store->category=='g'){
+                        array_push($category_g_all, $user);
+                    }
+
+                    if($user->course_progress == null){
+                        unset($count_users_cursed[$key]);
+                    }else{
+                        if($user->store->category=='p'){
+                            array_push($category_p, $user);
+                        }
+                        else if($user->store->category=='m'){
+                            array_push($category_m, $user);
+                        }
+                        else if($user->store->category=='g'){
+                            array_push($category_g, $user);
+                        }
+                    }
+                }
+                $count_users_cursed = count($count_users_cursed);
+
+                $count_users = count($this->Users->find('all', ['conditions'=>['id >'=>10, 'role_id'=>6, 'first_access'=>0, 'active'=>1]])->all());
+
+                $this->set([
+                    'success' => true,
+                    'users_cursed' => $count_users_cursed,
+                    'count_users' => $count_users,
+                    'amarelo' => count($category_p),
+                    'verde' => count($category_m),
+                    'preto' => count($category_g),
+                    'amarelo_all' => count($category_p_all),
+                    'verde_all' => count($category_m_all),
+                    'preto_all' => count($category_g_all),
+                    '_serialize' => ['success', 'user', 'users_cursed', 'count_users', 'amarelo', 'verde', 'preto', 'amarelo_all', 'verde_all', 'preto_all']
+                    ]
+                );
+            break;
+        endswitch;
     }
 }

@@ -33,7 +33,7 @@ class ReportController extends AppController
     {
         $this->viewBuilder()->layout('ajax');
         $this->loadModel('Stores');
-        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles', 'Users.CourseProgress'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles', 'Users.CourseProgress', 'Users'=>['conditions'=>['active'=>1]]], 'conditions'=>['id >='=>10]])->all();
         $stores = $stores->toArray();
         $this->set(compact('stores'));
     }
@@ -42,7 +42,7 @@ class ReportController extends AppController
     {
         $this->viewBuilder()->layout('ajax');
         $this->loadModel('Stores');
-        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles'], 'conditions'=>['id >='=>10]])->all();
+        $stores = $this->Stores->find('all', ['contain'=>['Users.Roles', 'Users'=>['conditions'=>['active'=>1]]], 'conditions'=>['id >='=>10]])->all();
         $stores = $stores->toArray();
         $this->set(compact('stores'));
     }

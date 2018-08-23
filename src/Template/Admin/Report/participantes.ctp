@@ -1,6 +1,7 @@
 <?php
     $results = [];
     foreach ($stores as $store){
+        $store_id = $store->id;
         $store_name = $store->name;
         foreach ($store->users as $user){
             $id = $user->id;
@@ -17,7 +18,7 @@
             }else{
                 $first_access = "Não";
             }
-            array_push($results,['LOJA'=>$store->name, 'ID'=>$id, 'NOME'=>$name, 'FUNÇÃO'=>$role, 'EMAIL'=>$email, 'PRIMEIRO ACESSO'=>$first_access]);
+            array_push($results,['ID LOJA'=>$store_id, 'LOJA'=>$store->name, 'ID USUÁRIO'=>$id, 'NOME'=>$name, 'FUNÇÃO'=>$role, 'EMAIL'=>$email, 'PRIMEIRO ACESSO'=>$first_access]);
         }
     }
 
