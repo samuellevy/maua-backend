@@ -273,7 +273,7 @@ var demo = {
     });
   }
 }
-__DEV__ = true;
+__DEV__ = false;
 
 var rest = {
   url: __DEV__?'http://192.168.2.71/lafarge-backend/api':'http://dev2.3aww.com.br/lafargemaua/api',
