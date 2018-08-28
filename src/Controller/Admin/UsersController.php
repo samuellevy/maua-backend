@@ -28,15 +28,21 @@ class UsersController extends AppController
         $roles = $this->Roles->find('list')->toArray();
         $conditions = [];
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $role_id = $this->request->data['role_search'];
-            if($role_id != 0){
-                $conditions = ['role_id'=>$role_id];       
+            if (isset($this->request->data['role_search'])){
+                $role_id = $this->request->data['role_search'];
+                if($role_id != 0){
+                    $conditions = ['role_id'=>$role_id];       
+                }
+            }
+            if (isset($this->request->data['id_search'])){
+                $id = $this->request->data['id_search'];
+                $conditions = ['Users.id'=>$id];       
             }
         }
 
         $this->paginate = [
             'contain'=>['Roles'],
-            'conditions'=>$conditions
+            'conditions'=>['Users.id >='=>10, $conditions]
         ];
         $users = $this->paginate($this->Users);
 

@@ -269,18 +269,29 @@
 
 @import 'components/general';
 
-.role-search{
-    width: 30%;
-    padding: 15px;
-    select.form-control{
-      border: 1px solid #E3E3E3 !important;
-      border-right: none !important;
-      border-radius: 4px 0px 0px 4px !important;
+.search-box{
+  display: flex;
+  width: 50%;
+  form{
+    width: 50%;
+    .search-field{
+        padding: 15px;
+        select.form-control{
+          border: 1px solid #E3E3E3 !important;
+          border-right: none !important;
+          border-radius: 4px 0px 0px 4px !important;
+        }
+        .input-group-btn{
+          .btn-default{
+            padding: 10px;
+            height: 100%;
+          }
+        }
+        .form-control:last-child{
+          border-left: 1px solid #E3E3E3 !important;
+          border-top-left-radius: 4px !important;
+          border-bottom-left-radius: 4px !important;
+        }
     }
-    .input-group-btn{
-      .btn-default{
-        padding: 10px;
-        height: 100%;
-      }
-    }
+  }
 }

@@ -6,6 +6,16 @@
           <h4 class="title">Lojas</h4>
           <p class="category">Lista de todos os itens</p>
         </div>
+        <div class="search-box">
+          <?= $this->Form->create("SearchID");?>
+            <div class="input-group input-group-sm search-field">
+              <?= $this->Form->input("id_search", ['type'=>'number', 'class'=>"form-control", 'label'=>false, 'placeholder'=>'Procurar por ID']);?>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          <?= $this->Form->end(); ?>
+        </div>
         <div class="content table-responsive table-full-width">
           <table class="table table-hover table-striped">
             <thead>
@@ -32,7 +42,9 @@
               </tr>
             </thead>
             <tbody>
+              <?php $counter = 0; ?>
               <?php foreach ($stores as $store): ?>
+                <?php $counter++; ?>
                 <tr>
                   <td><?= $this->Number->format($store->id) ?></td>
                   <td><?= $store->name ?></td>
@@ -96,6 +108,10 @@
               <?php endforeach; ?>
             </tbody>
           </table>
+
+          <?php if($counter == 0):?>
+            <p style="text-align: center;font-size: 16px;color: #929292;">ID não encontrada!</p>
+          <?php endif; ?>
 
           <div class="paginator">
             <ul class="pagination">
