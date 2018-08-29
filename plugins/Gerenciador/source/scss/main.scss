@@ -292,6 +292,12 @@
           border-top-left-radius: 4px !important;
           border-bottom-left-radius: 4px !important;
         }
+      &.custom-label{
+        label{
+          position: absolute;
+          top: -5px;
+        }
+      }
     }
   }
 }

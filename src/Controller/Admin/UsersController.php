@@ -38,6 +38,12 @@ class UsersController extends AppController
                 $id = $this->request->data['id_search'];
                 $conditions = ['Users.id'=>$id];       
             }
+            if (isset($this->request->data['access_search'])){
+                $first_access = $this->request->data['access_search'];
+                if($first_access == 0 || $first_access == 1){
+                    $conditions = ['Users.first_access'=>$first_access];
+                }
+            }
         }
 
         $this->paginate = [

@@ -26,6 +26,14 @@
               </div>
             </div>
           <?= $this->Form->end(); ?>
+          <?= $this->Form->create("Access");?>
+            <div class="input-group input-group-sm search-field custom-label">
+              <?= $this->Form->input("access_search", ['type'=>'select', 'options'=>['-1'=>'Selecione', '0'=>'Sim', '1'=>'Não'], 'class'=>"form-control", 'label'=>'Logou?']);?>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          <?= $this->Form->end(); ?>
         </div>
           
           
@@ -71,7 +79,7 @@
             </tbody>
           </table>
           <?php if($counter == 0):?>
-            <p style="text-align: center;font-size: 16px;color: #929292;">ID não encontrada!</p>
+            <p style="text-align: center;font-size: 16px;color: #929292;">Nenhum usuário encontrado!</p>
           <?php endif; ?>
 
           <div class="paginator">
