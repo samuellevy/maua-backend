@@ -7,9 +7,16 @@ class StoresController extends AppController
 {
   public function index()
   {
+    $conditions = [];
+    if ($this->request->is(['patch', 'post', 'put'])) {
+      if (isset($this->request->data['id_search'])){
+          $id = $this->request->data['id_search'];
+          $conditions = ['Stores.id'=>$id];       
+      }
+    }
     $stores = $this->paginate($this->Stores, [
       'contain'=>['Users', 'Sales'],
-      'conditions'=>['id >='=>10]
+      'conditions'=>['id >='=>10, $conditions]
     ]);
     $stores = $stores->toArray();
 

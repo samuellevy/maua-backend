@@ -6,6 +6,16 @@
           <h4 class="title">Lojas</h4>
           <p class="category">Lista de todos os itens</p>
         </div>
+        <div class="search-box">
+          <?= $this->Form->create("SearchID");?>
+            <div class="input-group input-group-sm search-field">
+              <?= $this->Form->input("id_search", ['type'=>'number', 'class'=>"form-control", 'label'=>false, 'placeholder'=>'Procurar por ID']);?>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          <?= $this->Form->end(); ?>
+        </div>
         <div class="content table-responsive table-full-width">
           <table class="table table-hover table-striped">
             <thead>
@@ -15,16 +25,17 @@
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Lojista']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Email']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('phone', ['label'=>'Telefone']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('total', ['label'=>'Pontos']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Agosto']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Agosto']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Setembro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Setembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Outubro']) ?></th>
+                <!-- <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Outubro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Outubro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Novembro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Novembro']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Vendas/Meta Dezembro']) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Dezembro']) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>'Porcentagem Dezembro']) ?></th> -->
                 <th scope="col"><?= $this->Paginator->sort('category', ['label'=>'Categoria']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('users', ['label'=>'Funcionários Cadastrados']) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('status', ['label'=>'Status']) ?></th>
@@ -32,7 +43,9 @@
               </tr>
             </thead>
             <tbody>
+              <?php $counter = 0; ?>
               <?php foreach ($stores as $store): ?>
+                <?php $counter++; ?>
                 <tr>
                   <td><?= $this->Number->format($store->id) ?></td>
                   <td><?= $store->name ?></td>
@@ -51,21 +64,26 @@
                     echo $store->users[0]->phone;
                   }?>
                   </td>
+                  <td><?= $store->total ?></td>
                   
                   <?php if(isset($store->sales[0])):?>
+                  <?php $count_month = 0;?>
                     <?php foreach ($store->sales as $sale):?>
-                      <td>
-                        <?php if($sale->quantity == NULL) {
-                          echo "0/".$sale->goal;
-                        }else{
-                          echo $sale->quantity."/".$sale->goal;
-                        }?>
-                      </td>
-                      <td>
-                        <?php $percent=$sale->quantity*100/$sale->goal;
-                          echo number_format($percent, 2, '.', ',')."%";
-                        ?>
-                      </td>
+                      <?php $count_month++;?>
+                      <?php if ($count_month <= 2):?>
+                        <td>
+                          <?php if($sale->quantity == NULL) {
+                            echo "0/".$sale->goal;
+                          }else{
+                            echo $sale->quantity."/".$sale->goal;
+                          }?>
+                        </td>
+                        <td>
+                          <?php $percent=$sale->quantity*100/$sale->goal;
+                            echo number_format($percent, 2, '.', ',')."%";
+                          ?>
+                        </td>
+                      <?php endif;?>
                     <?php endforeach;?>
                   <?php endif;?>
 
@@ -96,6 +114,10 @@
               <?php endforeach; ?>
             </tbody>
           </table>
+
+          <?php if($counter == 0):?>
+            <p style="text-align: center;font-size: 16px;color: #929292;">Nenhuma loja encontrada!</p>
+          <?php endif; ?>
 
           <div class="paginator">
             <ul class="pagination">
