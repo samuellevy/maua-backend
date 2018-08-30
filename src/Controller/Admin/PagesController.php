@@ -34,8 +34,11 @@ class PagesController extends AppController
   {
     $page = $this->Pages->newEntity();
     if ($this->request->is('post')) {
-      $page = $this->Pages->patchEntity($page, $this->request->getData());
-
+      $page = $this->Pages->patchEntity($page, $this->request->getData(),[
+        'associated' => [
+          'Files'
+        ],
+      ]);
       if ($this->Pages->save($page)) {
         $this->Flash->success(__('Salvo com sucesso.'));
 
@@ -49,9 +52,15 @@ class PagesController extends AppController
 
   public function edit($id = null)
   {
-    $page = $this->Pages->get($id);
+    $page = $this->Pages->get($id, [
+      'contain' => ['Files']
+    ]);
     if ($this->request->is(['patch', 'post', 'put'])) {
-      $page = $this->Pages->patchEntity($page, $this->request->getData());
+      $page = $this->Pages->patchEntity($page, $this->request->getData(),[
+        'associated' => [
+          'Files'
+        ]
+      ]);
         
       if ($this->Pages->save($page)) {
         $this->Flash->success(__('Salvo com sucesso.'));
