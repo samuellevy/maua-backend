@@ -64,4 +64,19 @@ class PointsTable extends Table
 
         return $rules;
     }
+
+
+    public function getTotal($store_id=null, $month=null){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT SUM(points.point) as total FROM points
+            WHERE points.month = $month AND points.store_id = $store_id
+            GROUP BY store_id"
+            )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
+        return $results;
+    }
 }

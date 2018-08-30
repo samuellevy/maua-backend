@@ -11,6 +11,7 @@ class QuestionsController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadComponent('ProcessPoints');
     }
 
     public function index(){
@@ -72,7 +73,9 @@ class QuestionsController extends AppController
         $course_progress = $this->CourseProgress->newEntity();
         $course_progress = $this->CourseProgress->patchEntity($course_progress, $progress);
         $this->CourseProgress->save($course_progress);
-        $this->processPoints(['type'=>'setPoint', 'course_id'=>1, 'store_id'=>$user->store_id, 'user_id'=>$user->id]);
+        
+        // $this->processPoints(['type'=>'setPoint', 'course_id'=>1, 'store_id'=>$user->store_id, 'user_id'=>$user->id]);
+        $this->ProcessPoints->execute('calculate_answer', $user['store_id'], $identity['id'], $question->course_id);
 
         if($return){
             $this->set([

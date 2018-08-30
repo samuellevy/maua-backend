@@ -95,4 +95,82 @@ class PagesController extends AppController
     }
     die(debug($stores));
   }
+
+
+  public function updateCourseProgress(){
+    /**
+     * 1 - identificar quantidade de usuarios por loja
+     * 2 - identifica quantidade de course progress
+     * 3 - se for igual, roda por course_progress e verifica sse os usuarios tem active = 1
+     */
+
+    $this->loadModel('Stores');
+    $this->loadModel('Points');
+    $stores = $this->Stores->find('all', ['contain'=>['Users'=>['conditions'=>['Users.active'=>true,'Users.role_id'=>6]], 'Users.CourseProgress']])->all();
+    $store_active=0;
+    $cp_active_users=0;
+    $coursed_stores=0;
+
+    foreach($stores as $store){
+      $count_active_users = count($store->users);
+      $pointed = false;
+      $counted_cp_store = 0;
+
+      foreach($store->users as $user){
+        $count_cp = count($user->course_progress);
+        if($count_cp>0){
+          $cp_active_users++;
+          $counted_cp_store++;
+        }
+      }
+      
+      if($count_active_users>0){
+        if($counted_cp_store == $count_active_users){
+          $coursed_stores++; //registra
+
+          $data = ['title'=>'Todos os funcionários concluíram o módulo', 'point'=>25, 'user_id'=>$user->id, 'store_id'=>$user->store_id, 'type'=>'completed_module', 'month'=> 8, 'status'=>1];
+          // die(debug($data));
+          $point = $this->Points->newEntity();
+          $point = $this->Points->patchEntity($point, $data);
+          $this->Points->save($point);
+
+        }
+        echo($counted_cp_store . ' - ' . $count_active_users);
+        echo("</br>");
+        $store_active++;
+      }
+    }
+    echo("</br>");
+    echo('Lojas pontuantes:' . $coursed_stores);
+    echo("</br>");
+    echo('Usuarios ativos:' . $cp_active_users);
+    echo("</br>");
+    echo('Lojas ativas' . $store_active);
+    // die(debug($stores));
+
+
+    die(debug('Chegou aqui'));
+  }
+
+  public function updateUsersPoints(){
+    $this->loadModel('Stores');
+    $this->loadModel('Users');
+    $this->loadModel('Points');
+    $stores = $this->Stores->find('all', ['contain'=>['Users'=>['conditions'=>['Users.active'=>true,'Users.role_id'=>6]]]])->all();
+    
+
+    foreach($stores as $store){
+      if(count($store->users)>0){
+        $owner = $this->Users->find('all', ['conditions'=>['Users.active'=>true, 'Users.role_id'=>4, 'Users.store_id'=>$store->id]])->first();
+        $data = ['title'=>'Cadastro de funcionários', 'point'=>20, 'user_id'=>$owner->id, 'store_id'=>$store->id, 'type'=>'new_user', 'month'=> 8, 'status'=>1];
+        // die(debug($data));
+        $point = $this->Points->newEntity();
+        $point = $this->Points->patchEntity($point, $data);
+        $this->Points->save($point);
+
+      }
+    }
+
+    die(debug($stores));
+  }
 }

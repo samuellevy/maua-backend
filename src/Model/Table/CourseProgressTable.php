@@ -94,9 +94,13 @@ class CourseProgressTable extends Table
                 JOIN users ON cp.user_id=users.id
                 JOIN stores ON users.store_id=stores.id 
             
-                WHERE users.store_id=$store_id AND users.active=1
+                WHERE users.store_id=$store_id AND users.active=1 AND users.role_id = 6
             GROUP BY cp.id"
             )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
         return $results;
     }
 }

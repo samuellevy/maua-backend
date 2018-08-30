@@ -12,6 +12,7 @@ class UsersController extends AppController
     {
         parent::initialize();
         $this->Auth->allow(['add', 'token', 'forget', 'saveNewPass']);
+        $this->loadComponent('ProcessPoints');
     }
     
     public function token()
@@ -202,7 +203,8 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $return = true;
-                $this->processPoints(['newUser', $data['store_id'], $identity['id']]);
+                // $this->processPoints(['newUser', $data['store_id'], $identity['id']]);
+                $this->ProcessPoints->execute('new_user', $data['store_id'], $identity['id']);
             }else{
                 $return = false;
             }
@@ -231,13 +233,16 @@ class UsersController extends AppController
         $user = $this->Users->get($data['id'], [
             'contain' => ['Stores']
         ]);
+
+        $data['username'] = '@_'.$user->username;
         
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $data);
 
             if ($this->Users->save($user)) {
                 $return = true;
-                $this->processPoints(['delUser', $user['store_id'], $user['id']]);
+                // $this->processPoints(['delUser', $user['store_id'], $user['id']]);
+                $this->ProcessPoints->execute('del_user', $user['store_id'], $identity['id'], $data['id']);
             }else{
                 $return = false;
             }
@@ -262,7 +267,7 @@ class UsersController extends AppController
         $identity = $this->Auth->identify();
         $data = $this->request->data;
 
-        $user = $this->Users->find('all', ['conditions'=>['email'=>$data['email'], 'phone'=>$data['phone']]])->first();
+        $user = $this->Users->find('all', ['conditions'=>['username'=>$data['email'], 'phone'=>$data['phone']]])->first();
         $hasUser = count($user);
 
         if($hasUser){
@@ -287,7 +292,7 @@ class UsersController extends AppController
         $identity = $this->Auth->identify();
         $data = $this->request->data;
 
-        $user = $this->Users->find('all', ['conditions'=>['email'=>$data['email'], 'phone'=>$data['phone']]])->first();
+        $user = $this->Users->find('all', ['conditions'=>['username'=>$data['email'], 'phone'=>$data['phone']]])->first();
         $hasUser = count($user);
         $user = $this->Users->get($user->id);
         $user = $this->Users->patchEntity($user, $data);
@@ -304,82 +309,85 @@ class UsersController extends AppController
 
     /** functions */
 
-    public function processPoints($arguments){
-        switch($arguments[0]):
-            case 'newUser':
-            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
-            $count_users = count($users);
+    // public function processPoints($arguments){
+    //     switch($arguments[0]):
+    //         case 'newUser':
+    //         $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
+    //         $count_users = count($users);
 
-            // procura se a loja já ganhou pontos por conclusao de curso de todos os funcionários
-            $this->loadModel('Points');
-            $points = $this->Points->find('all', ['conditions'=>['point'=>25, 'store_id'=>$arguments[1]]])->all();
-            $qtt_points = count($points);
+    //         // procura se a loja já ganhou pontos por conclusao de curso de todos os funcionários
+    //         $this->loadModel('Points');
+    //         $points = $this->Points->find('all')->all();
+    //         $qtt_points = count($points);
 
-            if($qtt_points>0){
-                $pointing = -25;
-                $this->loadModel('Points');
-                $data['title'] = 'Novo funcionário a completar módulo';
-                $data['point'] = $pointing;
-                $data['user_id'] = $arguments[2];
-                $data['store_id'] = $arguments[1];
-                $point = $this->Points->newEntity();
-                $point = $this->Points->patchEntity($point, $data);
-                $this->Points->save($point);
+    //         die(debug($points));
 
-                $this->loadModel('Stores');
-                $store = $this->Stores->get($arguments[1]);
-                $total_store = $store->total;
-                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
-                // die(debug($store->total));
-                $this->Stores->save($store);
-            }
+    //         if($qtt_points>0){
+    //             $pointing = -25;
+    //             $this->loadModel('Points');
+    //             $data['title'] = 'Novo funcionário a completar módulo';
+    //             $data['point'] = $pointing;
+    //             $data['user_id'] = $arguments[2];
+    //             $data['store_id'] = $arguments[1];
+    //             $data['status'] = 1;
+    //             $point = $this->Points->newEntity();
+    //             $point = $this->Points->patchEntity($point, $data);
+    //             $this->Points->save($point);
 
-            if($count_users == 2):
-                $pointing = 20;
-                $this->loadModel('Points');
-                $data['title'] = 'Cadastro de funcionários';
-                $data['point'] = $pointing;
-                $data['user_id'] = $arguments[2];
-                $data['store_id'] = $arguments[1];
-                $data['type'] = 'new_user';
-                $data['month'] = 8;
-                $point = $this->Points->newEntity();
-                $point = $this->Points->patchEntity($point, $data);
-                $this->Points->save($point);
+    //             $this->loadModel('Stores');
+    //             $store = $this->Stores->get($arguments[1]);
+    //             $total_store = $store->total;
+    //             $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+    //             // die(debug($store->total));
+    //             $this->Stores->save($store);
+    //         }
 
-                $this->loadModel('Stores');
-                $store = $this->Stores->get($arguments[1]);
-                $total_store = $store->total;
-                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
-                // die(debug($store->total));
-                $this->Stores->save($store);
-            endif;
-        break;
+    //         if($count_users == 2):
+    //             $pointing = 20;
+    //             $this->loadModel('Points');
+    //             $data['title'] = 'Cadastro de funcionários';
+    //             $data['point'] = $pointing;
+    //             $data['user_id'] = $arguments[2];
+    //             $data['store_id'] = $arguments[1];
+    //             $data['type'] = 'new_user';
+    //             $data['month'] = 8;
+    //             $point = $this->Points->newEntity();
+    //             $point = $this->Points->patchEntity($point, $data);
+    //             $this->Points->save($point);
 
-            case 'delUser':
-            $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
-            $count_users = count($users);
-            if($count_users == 1):
-                $pointing = -20;
-                $this->loadModel('Points');
-                $data['title'] = 'Remoção de funcionários';
-                $data['point'] = $pointing;
-                $data['user_id'] = $arguments[2];
-                $data['store_id'] = $arguments[1];
-                $data['type'] = 'del_user';
-                $data['month'] = 8;
-                $point = $this->Points->newEntity();
-                $point = $this->Points->patchEntity($point, $data);
-                $this->Points->save($point);
+    //             $this->loadModel('Stores');
+    //             $store = $this->Stores->get($arguments[1]);
+    //             $total_store = $store->total;
+    //             $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+    //             // die(debug($store->total));
+    //             $this->Stores->save($store);
+    //         endif;
+    //     break;
 
-                $this->loadModel('Stores');
-                $store = $this->Stores->get($arguments[1]);
-                $total_store = $store->total;
-                $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
-                // die(debug($store->total));
-                $this->Stores->save($store);
-                endif;
-            break;
-        endswitch;
-    }
+    //         case 'delUser':
+    //         $users = $this->Users->find('all', ['conditions'=>['Users.store_id'=>$arguments[1],'Users.active'=>true]])->all();
+    //         $count_users = count($users);
+    //         if($count_users == 1):
+    //             $pointing = -20;
+    //             $this->loadModel('Points');
+    //             $data['title'] = 'Remoção de funcionários';
+    //             $data['point'] = $pointing;
+    //             $data['user_id'] = $arguments[2];
+    //             $data['store_id'] = $arguments[1];
+    //             $data['type'] = 'del_user';
+    //             $data['month'] = 8;
+    //             $point = $this->Points->newEntity();
+    //             $point = $this->Points->patchEntity($point, $data);
+    //             $this->Points->save($point);
+
+    //             $this->loadModel('Stores');
+    //             $store = $this->Stores->get($arguments[1]);
+    //             $total_store = $store->total;
+    //             $store = $this->Stores->patchEntity($store, ['total'=>$total_store+$pointing]);
+    //             // die(debug($store->total));
+    //             $this->Stores->save($store);
+    //             endif;
+    //         break;
+    //     endswitch;
+    // }
 }
