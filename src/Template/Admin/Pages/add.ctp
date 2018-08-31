@@ -6,7 +6,7 @@
           <h4 class="title">Nova página</h4>
         </div>
         <div class="content">
-          <?= $this->Form->create($page) ?>
+          <?= $this->Form->create($page, ['type'=>'file']) ?>
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
@@ -39,6 +39,19 @@
             <div class="col-md-4">
               <div class="form-group">
                 <?php echo $this->Form->control('url', ['class'=>'form-control', 'label'=>'Url']);?>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Banner</label><br/>
+                <figure class="form-box-img">
+                  <img  class="img-rounded form-img" src="http://via.placeholder.com/688x352">
+                  <?php echo $this->Form->file('files.0.filename', ['class'=>'form-file']);?>
+                  <?php echo $this->Form->hidden('files.0.entity', ['class'=>'form-file', 'value'=>'Banner']);?>
+                  <?php echo $this->Form->hidden('files.0.obs', ['class'=>'form-file', 'value'=>'Banner']);?>
+                </figure>
               </div>
             </div>
           </div>

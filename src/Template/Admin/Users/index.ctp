@@ -8,32 +8,43 @@
         </div>
 
         <div class="search-box">
-          <?= $this->Form->create("Ticket");?>
-            <div class="input-group input-group-sm search-field">
+          <?= $this->Form->create("Ticket", ['type'=>'get']);?>
+            <div class="input-group input-group-sm search-row">
             
               <?php $roles[0]='Todos'; ksort($roles);?>
-              <?= $this->Form->input("role_search", ['type'=>'select', 'options'=>$roles, 'class'=>"form-control", 'label'=>false]);?>
+              <?php 
+                if(isset($this->request->query['role'])){
+                  $role=$this->request->query['role'];
+                }else{
+                  $role=0;
+                }
+                if(isset($this->request->query['access'])){
+                  $access=$this->request->query['access'];
+                }else{
+                  $access="all";
+                }
+              ?>
+              <?= $this->Form->input("role", ['type'=>'select', 'options'=>$roles, 'class'=>"form-control", 'label'=>'Tipo de Usuário', 'value'=>$role]);?>
+              <?= $this->Form->input("access", ['type'=>'select', 'options'=>['all'=>'Todos', '0'=>'Sim', '1'=>'Não'], 'class'=>"form-control", 'label'=>'Logou?', 'value'=>$access]);?>
               <div class="input-group-btn">
                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
               </div>
             </div>
-          <?= $this->Form->end(); ?>
-          <?= $this->Form->create("SearchID");?>
-            <div class="input-group input-group-sm search-field">
+            <?= $this->Form->end(); ?>
+            
+            <?= $this->Form->create("SearchID");?>
+            <div class="input-group input-group-sm search-row">
               <?= $this->Form->input("id_search", ['type'=>'number', 'class'=>"form-control", 'label'=>false, 'placeholder'=>'Procurar por ID']);?>
+              
+              <?= $this->Form->input("role", ['type'=>'hidden', 'label'=>false, 'value'=>0]);?>
+              <?= $this->Form->input("access", ['type'=>'hidden', 'label'=>false, 'value'=>'all']);?>
+              
               <div class="input-group-btn">
                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
               </div>
             </div>
           <?= $this->Form->end(); ?>
-          <?= $this->Form->create("Access");?>
-            <div class="input-group input-group-sm search-field custom-label">
-              <?= $this->Form->input("access_search", ['type'=>'select', 'options'=>['-1'=>'Selecione', '0'=>'Sim', '1'=>'Não'], 'class'=>"form-control", 'label'=>'Logou?']);?>
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-              </div>
-            </div>
-          <?= $this->Form->end(); ?>
+          
         </div>
           
           

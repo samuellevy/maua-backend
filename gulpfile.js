@@ -38,7 +38,7 @@ gulp.task('watch', function() {
 
 gulp.task('browserSync',[], function() {
   browserSync({
-    proxy: 'http://localhost/rest-cake/admin',
+    proxy: 'http://localhost/lafarge-backend/admin',
   });
 });
 
@@ -138,7 +138,7 @@ gulp.task('watch', function () {
 
 gulp.task('browserSync', [], function () {
     browserSync({
-        proxy: 'http://localhost/rest-cake/admin',
+        proxy: 'http://localhost/lafarge-backend/admin',
     });
 });
 

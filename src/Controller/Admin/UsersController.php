@@ -27,22 +27,19 @@ class UsersController extends AppController
         $this->loadModel('Roles');
         $roles = $this->Roles->find('list')->toArray();
         $conditions = [];
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            if (isset($this->request->data['role_search'])){
-                $role_id = $this->request->data['role_search'];
-                if($role_id != 0){
-                    $conditions = ['role_id'=>$role_id];       
-                }
+
+        $query = $this->request->query;
+        if(isset($query['role'])){
+            $role = $query['role'];
+            if($role != 0){
+                array_push($conditions, ['role_id'=>$role]);
             }
-            if (isset($this->request->data['id_search'])){
-                $id = $this->request->data['id_search'];
-                $conditions = ['Users.id'=>$id];       
-            }
-            if (isset($this->request->data['access_search'])){
-                $first_access = $this->request->data['access_search'];
-                if($first_access == 0 || $first_access == 1){
-                    $conditions = ['Users.first_access'=>$first_access];
-                }
+        }
+
+        if(isset($query['access'])){
+            $access = $query['access'];
+            if($access != "all"){
+                array_push($conditions, ['first_access'=>$access]);
             }
         }
 
@@ -51,6 +48,17 @@ class UsersController extends AppController
             'conditions'=>['Users.id >='=>10, $conditions]
         ];
         $users = $this->paginate($this->Users);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if (isset($this->request->data['id_search'])){
+                $id = $this->request->data['id_search'];
+                $conditions = ['Users.id'=>$id];
+            }
+            $users = $this->Users->find('all', [
+                'contain'=>['Roles'],
+                'conditions'=>['Users.id >='=>10, $conditions]
+            ]);
+        }
 
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);
