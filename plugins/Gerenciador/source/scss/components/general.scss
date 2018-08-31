@@ -50,6 +50,16 @@
 tr{
   &.green{
     background-color:#00a65a;
+    &:hover {
+      background-color: #10b96c !important;
+    }
+  }
+  &.red {
+    background-color: #ff0000;
+    color: white;
+    &:hover {
+      background-color: #ff2929 !important;
+    }
   }
 }
 tr.bolder{

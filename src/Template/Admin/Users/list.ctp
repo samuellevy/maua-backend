@@ -8,7 +8,7 @@
                 $registered_users = 0;
                 $logged_users = 0;
                 foreach ($stores as $store){
-                    if($store->users[0]->first_access == 0){
+                    if(isset($store->users[0]) && $store->users[0]->first_access == 0){
                         $registered_stores++;
                         foreach ($store->users as $user){
                             if($user->role_id == 6){
@@ -26,7 +26,7 @@
                 </div>
                 
                 <?php foreach ($stores as $store): ?>
-                <?php if($store->users[0]->first_access == 0): ?>
+                <?php if(isset($store->users[0]) && $store->users[0]->first_access == 0): ?>
                 <div class="card">
                     <h4 style="padding: 10px;">#<?= $store->id; ?> - <?= $store->name; ?></h4>
                     <table class="table table-hover table">
@@ -39,7 +39,7 @@
                         <tbody>
                             <?php foreach ($store->users as $user): ?>
                             
-                            <tr class="<?=$user->first_access==0?'green ':'';?><?=$user->role_id==4?'bolder':''?>">
+                            <tr class="<?=$user->first_access==0?'green ':'';?><?=$user->active==0?'red ':'';?><?=$user->role_id==4?'bolder':''?>">
                                 <td style="width: 5%"><?= $user->id; ?></td>
                                 <td style="width: 40%"><?= $user->name; ?></td>
                                 <td style="width: 40%"><?= $user->role->name; ?></td>
