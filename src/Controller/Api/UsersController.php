@@ -200,11 +200,13 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $data);
-
+            
             if ($this->Users->save($user)) {
                 $return = true;
                 // $this->processPoints(['newUser', $data['store_id'], $identity['id']]);
-                $this->ProcessPoints->execute('new_user', $data['store_id'], $identity['id']);
+                if(date('m')==8){
+                    $this->ProcessPoints->execute('new_user', $data['store_id'], $identity['id']);
+                }
             }else{
                 $return = false;
             }
@@ -242,7 +244,9 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {
                 $return = true;
                 // $this->processPoints(['delUser', $user['store_id'], $user['id']]);
-                $this->ProcessPoints->execute('del_user', $user['store_id'], $identity['id'], $data['id']);
+                if(date('m')==8){
+                    $this->ProcessPoints->execute('del_user', $user['store_id'], $identity['id'], $data['id']);
+                }
             }else{
                 $return = false;
             }

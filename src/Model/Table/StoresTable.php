@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Stores Model
@@ -126,5 +127,57 @@ class StoresTable extends Table
             $total = count($total);
         }
         return $total;
+    }
+
+    public function getAllRanking($category){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
+            JOIN stores ON stores.id=sales.store_id 
+            where stores.category = '$category' and sales.month = 8
+            GROUP BY sales.id ORDER BY total DESC, percentage DESC"
+            )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
+        return $results;
+    }
+
+    public function getComercialStores(){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT comercial_stores.store_id, comercial_stores.user_id from comercial_stores"
+            )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
+        return $results;
+    }
+
+    public function getMyRanking($category, $store_id){
+        $position = 0;
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
+            JOIN stores ON stores.id=sales.store_id 
+            where stores.category = '$category' and sales.month = 8
+            GROUP BY sales.id ORDER BY total DESC, percentage DESC"
+            )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
+
+            foreach($results as $key=>$result){
+                if($result['id']==$store_id){
+                    $result['position']=$key+1;
+                    $position = $result['position'];
+                    $results = $result;
+                    break;
+                }
+            }
+        return $position;
     }
 }

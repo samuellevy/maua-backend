@@ -54,23 +54,28 @@ class PublicController extends AppController
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points'=>['sort'=>['Points.created DESC']], 'Roles']]);
         $store_key = null;
 
-        // die(debug($user));
+        // // die(debug($user));
+        $this->loadModel('Stores');
         if($user->role_id == 8){
-            $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+            // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
+            $stores = $this->Stores->getAllRanking('p');
         }else{
-            $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+            // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+            $stores = $this->Stores->getAllRanking($user->store->category);
         }
+
+        // die(debug($stores));
         
         foreach($stores as $key=>$store):
-            $stores[$key]->ranking = $key + 1;
-            $store_key = $store['id']==$user->store_id?$key:$store_key;
+            $stores[$key]['ranking'] = $key + 1;
+            $store_key = $store['id']==$user['store_id']?$key:$store_key;
         endforeach;
 
-        if(count($stores)==0){
+        if($user->role_id == 8){
             $store_key = 0;
-            $stores[$store_key]->ranking = 99;
+            $stores[0]['ranking'] = 0;
         }
-        
+
         $this->loadComponent('FormatDate');
         foreach($user->store->points as $iey=>$point):
             $user->store->points[$iey]->date = $this->FormatDate->formatDate($point->created,'mes_ano');
@@ -104,7 +109,7 @@ class PublicController extends AppController
                 'email' => $user->email, 
                 'loja' => $user->store->name,
                 'phone' => $user->phone,
-                'ranking' => $stores[$store_key]->ranking,
+                'ranking' => $stores[$store_key]['ranking'],
                 'pontuacao' => $user->store->total,
                 'role_id' => $user->role->id,
                 'role' => $user->role->name
@@ -112,7 +117,7 @@ class PublicController extends AppController
             'store' => [
                 'name' => $user->store->name,
                 'points' => $user->store->total,
-                'ranking' => $stores[$store_key]->ranking,
+                'ranking' => $stores[$store_key]['ranking'],
             ],
             'sales' => [
                 'quantity'=>isset($user->store->sales[0])?$user->store->sales[0]->quantity:0,
@@ -210,14 +215,18 @@ class PublicController extends AppController
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC'], 'Stores.Points', 'Roles']]);
-        $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+        // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+        
+        $this->loadModel('Stores');
+        $stores = $this->Stores->getAllRanking($user->store->category);
         
         $store_key = null;
         
         foreach($stores as $key=>$store):
-            $stores[$key]->ranking = $key + 1;
-            $store_key = $store['id']==$user->store_id?$key:$store_key;
+            $stores[$key]['ranking'] = $key + 1;
+            $store_key = $store['id']==$user['store_id']?$key:$store_key;
         endforeach;
+        // die(debug($stores));
 
         $this->set([
             'success' => true,

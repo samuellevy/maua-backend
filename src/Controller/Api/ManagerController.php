@@ -20,7 +20,10 @@ class ManagerController extends AppController
         $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points', 'Roles']]);
         
         $store = $this->Users->Stores->find('all', ['contain'=>['Sales'], 'order'=>['total DESC'], 'conditions'=>['id'=>$store_id]])->first();
-        $my_ranking = $this->Users->Stores->store_ranking($store_id);
+        
+        $this->loadModel('Stores');
+        $my_ranking = $this->Stores->getMyRanking($store->category, $store->id);
+
         // die(debug($store));
         $this->loadComponent('FormatDate');
         foreach($user->store->points as $iey=>$point):
@@ -113,48 +116,32 @@ class ManagerController extends AppController
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
         $user = $this->Users->get($identity['id'], ['contain'=>['Roles']]);
-        $ranking = $this->Users->Stores->ranking($user->id, $category, false);
-        
-        $comercial_stores = $this->Users->ComercialStores->find('list', ['conditions'=>['user_id'=>$user->id]])->toArray();
-        
-        foreach($ranking as $key=>$item):
-            $ranking[$key]['position'] = $key + 1;
-            $ranking[$key]['user_id'] = $item['comercial_store']['user_id'];
-            $ranking[$key]['store_id'] = $item['comercial_store']['store_id'];
-        endforeach;
-        
-        $this->set([
-            'success' => true,
-            'user' => [
-                'id' => $user->id,
-                'username' => $identity['username'],
-                'name' => $identity['name'],
-                'email' => $user->email, 
-                'phone' => $user->phone,
-                'role_id' => $user->role->id,
-                'role' => $user->role->name,
-            ],
-            'ranking' => $ranking,
-            '_serialize' => ['success', 'user', 'comercial_stores', 'ranking']
-            ]
-        );
-    }
-    
-    public function all_ranking($category){
-        $this->loadModel('Users');
-        $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Roles']]);
+
         $ranking = $this->Users->Stores->ranking(null, $category, false);
+        $stores = $this->Users->Stores->getAllRanking($category);
+
+        $comercial_stores = $this->Users->Stores->getComercialStores();
+        
+        // die(debug($comercial_stores));
+        
         $count_stores = $this->Users->Stores->count_stores($category);
         $count_stores_enabled = $this->Users->Stores->count_stores($category, 'enabled');
 
-        $comercial_stores = $this->Users->ComercialStores->find('list', ['conditions'=>['user_id'=>$user->id]])->toArray();
         // die(debug($ranking));
-        foreach($ranking as $key=>$item):
-            $ranking[$key]['position'] = $key + 1;
-            $ranking[$key]['user_id'] = $item['comercial_store']['user_id'];
-            $ranking[$key]['store_id'] = $item['comercial_store']['store_id'];
+        foreach($stores as $key=>$store):
+            $stores[$key]['position'] = $key + 1;
+            foreach($comercial_stores as $comercial){
+                // die(debug($store['id']));
+                if($store['id']==$comercial['store_id']){
+                    $stores[$key]['user_id']=$comercial['user_id'];
+                    $stores[$key]['store_id']=$comercial['store_id'];
+                    break;
+                }
+            }
+            // $stores[$key]['user_id'] = $item['comercial_store']['user_id'];
+            // $stores[$key]['store_id'] = $item['comercial_store']['store_id'];
         endforeach;
+        // die(debug($stores));
         
         $this->set([
             'success' => true,
@@ -169,7 +156,57 @@ class ManagerController extends AppController
             ],
             'count_stores'=>$count_stores,
             'count_stores_enabled' => $count_stores_enabled,
-            'ranking' => $ranking,
+            'ranking' => $stores,
+            '_serialize' => ['success', 'user', 'comercial_stores', 'count_stores', 'count_stores_enabled', 'ranking']
+            ]
+        );
+    }
+    
+    public function all_ranking($category){
+        $this->loadModel('Users');
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id'], ['contain'=>['Roles']]);
+
+        $ranking = $this->Users->Stores->ranking(null, $category, false);
+        $stores = $this->Users->Stores->getAllRanking($category);
+
+        $comercial_stores = $this->Users->Stores->getComercialStores();
+        
+        // die(debug($comercial_stores));
+        
+        $count_stores = $this->Users->Stores->count_stores($category);
+        $count_stores_enabled = $this->Users->Stores->count_stores($category, 'enabled');
+
+        // die(debug($ranking));
+        foreach($stores as $key=>$store):
+            $stores[$key]['position'] = $key + 1;
+            foreach($comercial_stores as $comercial){
+                // die(debug($store['id']));
+                if($store['id']==$comercial['store_id']){
+                    $stores[$key]['user_id']=$comercial['user_id'];
+                    $stores[$key]['store_id']=$comercial['store_id'];
+                    break;
+                }
+            }
+            // $stores[$key]['user_id'] = $item['comercial_store']['user_id'];
+            // $stores[$key]['store_id'] = $item['comercial_store']['store_id'];
+        endforeach;
+        // die(debug($stores));
+        
+        $this->set([
+            'success' => true,
+            'user' => [
+                'id' => $user->id,
+                'username' => $identity['username'],
+                'name' => $identity['name'],
+                'email' => $user->email, 
+                'phone' => $user->phone,
+                'role_id' => $user->role->id,
+                'role' => $user->role->name,
+            ],
+            'count_stores'=>$count_stores,
+            'count_stores_enabled' => $count_stores_enabled,
+            'ranking' => $stores,
             '_serialize' => ['success', 'user', 'comercial_stores', 'count_stores', 'count_stores_enabled', 'ranking']
             ]
         );
