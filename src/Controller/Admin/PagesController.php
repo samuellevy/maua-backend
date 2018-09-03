@@ -182,4 +182,8 @@ class PagesController extends AppController
 
     die(debug($stores));
   }
+
+  public function endMonth(){
+    
+  }
 }
