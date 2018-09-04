@@ -49,6 +49,7 @@ class SalesController extends AppController
             $store[1] = str_replace('Verde', 'm', $store[1]);
             $store[1] = str_replace('Preto', 'g', $store[1]);
             $newStore = [
+              'id'=>$store[0],
               'name'=>$store[2],
               'category'=>$store[1],
               'total'=>0,
@@ -72,14 +73,14 @@ class SalesController extends AppController
             // die(debug($newStore));
           }
 
-          if($this->percent($store[5], $store[4]) >= 100 && $this->percent($store[5], $store[4]) <= 115){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>50, 'percent'=>$this->percent($store[5], $store[4]), 'type'=>'meta', 'month'=>'8']);
+          if($this->percent($store[7], $store[6]) >= 100 && $this->percent($store[7], $store[6]) <= 115){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>50, 'percent'=>$this->percent($store[7], $store[6]), 'type'=>'meta', 'month'=>'9']);
           }
-          if($this->percent($store[5], $store[4]) > 115 && $this->percent($store[5], $store[4]) <= 145){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>75, 'percent'=>$this->percent($store[5], $store[4]), 'type'=>'meta', 'month'=>'8']);
+          if($this->percent($store[7], $store[6]) > 115 && $this->percent($store[7], $store[6]) <= 145){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>75, 'percent'=>$this->percent($store[7], $store[6]), 'type'=>'meta', 'month'=>'9']);
           }
-          if($this->percent($store[5], $store[4]) > 145){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>100, 'percent'=>$this->percent($store[5], $store[4]), 'type'=>'meta', 'month'=>'8']);
+          if($this->percent($store[7], $store[6]) > 145){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>100, 'percent'=>$this->percent($store[7], $store[6]), 'type'=>'meta', 'month'=>'9']);
           }
         }
       }
@@ -133,7 +134,7 @@ class SalesController extends AppController
         $data['user_id'] = $lojista->id;
         $data['store_id'] = $arguments['store_id'];
         $data['type'] = 'meta';
-        $data['month'] = 8;
+        $data['month'] = 9;
 
         if($actual_points!=null){
           $point = $this->Points->get($actual_points->id);

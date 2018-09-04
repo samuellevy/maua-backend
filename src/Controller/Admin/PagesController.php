@@ -90,7 +90,7 @@ class PagesController extends AppController
   // atualizar pontuacao
   public function updatePoints(){
     $this->loadModel('Stores');
-    $stores = $this->Stores->find('all', ['contain'=>['Points']])->all()->toArray();
+    $stores = $this->Stores->find('all', ['contain'=>['Points'=>['conditions'=>['month'=>9]]]])->all()->toArray();
 
     foreach($stores as $key=>$store){
       $total = 0;
@@ -115,7 +115,7 @@ class PagesController extends AppController
 
     $this->loadModel('Stores');
     $this->loadModel('Points');
-    $stores = $this->Stores->find('all', ['contain'=>['Users'=>['conditions'=>['Users.active'=>true,'Users.role_id'=>6]], 'Users.CourseProgress']])->all();
+    $stores = $this->Stores->find('all', ['contain'=>['Users'=>['conditions'=>['Users.active'=>true,'Users.role_id'=>6]], 'Users.CourseProgress'=>['conditions'=>['CourseProgress.course_id'=>2]]]])->all();
     $store_active=0;
     $cp_active_users=0;
     $coursed_stores=0;
@@ -137,7 +137,7 @@ class PagesController extends AppController
         if($counted_cp_store == $count_active_users){
           $coursed_stores++; //registra
 
-          $data = ['title'=>'Todos os funcionários concluíram o módulo', 'point'=>25, 'user_id'=>$user->id, 'store_id'=>$user->store_id, 'type'=>'completed_module', 'month'=> 8, 'status'=>1];
+          $data = ['title'=>'Todos os funcionários concluíram o módulo', 'point'=>25, 'user_id'=>$user->id, 'store_id'=>$user->store_id, 'type'=>'completed_module', 'month'=> 9, 'status'=>1];
           // die(debug($data));
           $point = $this->Points->newEntity();
           $point = $this->Points->patchEntity($point, $data);
@@ -199,5 +199,9 @@ class PagesController extends AppController
     }
 
     die(debug($stores));
+  }
+
+  public function fixCategories(){
+
   }
 }
