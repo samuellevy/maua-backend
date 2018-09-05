@@ -100,6 +100,20 @@ class PublicController extends AppController
 
         $this->loadModel('Sales');
         $sale_base = $this->Sales->find('all', ['limit'=>1])->first();
+        
+        $this->loadModel('PushLog');
+        
+        $push = false;
+        // if($stores[$store_key]['ranking'] <= 4){
+        //     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
+        //     if(!count($pushlog_history)>0){
+        //         $pushlog = $this->PushLog->newEntity();
+        //         $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
+        //         $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
+        //         $this->PushLog->save($pushlog);
+        //         $push = true;
+        //     }
+        // }
 
         $this->set([
             'success' => true,
@@ -154,16 +168,17 @@ class PublicController extends AppController
                 'url'=>$rules->url,
             ],
             'push' => [
-                'exist'=>false,
+                'exist'=>$push,
                 'name'=>'new_ranking',
                 'title'=>'PARABÉNS!',
-                'value'=>2,
-                'subtitle'=>'Sua loja chegou ao 2º lugar!',
-                'description'=>'Ainda dá tempo de melhorar a sua premiação.',
-                'color'=>'#FCB415',
+                'value'=>$stores[$store_key]['ranking'],
+                'subtitle'=>'Você mostrou que entende do que faz e conquistou o '.$stores[$store_key]['ranking'].'º lugar no mês de Agosto!',
+                'description'=>'O prêmio para todos os balconistas que participaram desse mês está a caminho da sua loja!',
+                'color'=>'#FCAD00',
                 'image'=>'4-ranking',
                 'action'=>'Ranking',
-                'button_label'=>'Acompanhar Ranking'
+                'button_label'=>'Acompanhar Ranking',
+                'number_ranking' => $stores[$store_key]['ranking']
             ],
             'configs' => [
                 'last_update' => isset($sale_base)?$sale_base->created:0,
