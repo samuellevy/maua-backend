@@ -205,7 +205,7 @@ class UsersController extends AppController
                 $return = true;
                 // $this->processPoints(['newUser', $data['store_id'], $identity['id']]);
                 if(date('m')==8){
-                    $this->ProcessPoints->execute('new_user', $data['store_id'], $identity['id']);
+                    // $this->ProcessPoints->execute('new_user', $data['store_id'], $identity['id']);
                 }
             }else{
                 $return = false;
@@ -245,7 +245,7 @@ class UsersController extends AppController
                 $return = true;
                 // $this->processPoints(['delUser', $user['store_id'], $user['id']]);
                 if(date('m')==8){
-                    $this->ProcessPoints->execute('del_user', $user['store_id'], $identity['id'], $data['id']);
+                    // $this->ProcessPoints->execute('del_user', $user['store_id'], $identity['id'], $data['id']);
                 }
             }else{
                 $return = false;

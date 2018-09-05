@@ -134,7 +134,7 @@ class StoresTable extends Table
         $results = $connection->execute(
             "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
             JOIN stores ON stores.id=sales.store_id 
-            where stores.category = '$category' and sales.month = 8
+            where stores.category = '$category' and sales.month = 9
             GROUP BY sales.id ORDER BY total DESC, percentage DESC"
             )->fetchAll('assoc');
 
@@ -162,7 +162,7 @@ class StoresTable extends Table
         $results = $connection->execute(
             "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
             JOIN stores ON stores.id=sales.store_id 
-            where stores.category = '$category' and sales.month = 8
+            where stores.category = '$category' and sales.month = 9
             GROUP BY sales.id ORDER BY total DESC, percentage DESC"
             )->fetchAll('assoc');
 
