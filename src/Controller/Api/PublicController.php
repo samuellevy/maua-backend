@@ -112,7 +112,7 @@ class PublicController extends AppController
                     $pushlog = $this->PushLog->newEntity();
                     $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
                     $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
-                    $this->PushLog->save($pushlog);
+                    // $this->PushLog->save($pushlog);
                     $push = true;
                 }
             }
