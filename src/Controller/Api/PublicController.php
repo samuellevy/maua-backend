@@ -104,16 +104,19 @@ class PublicController extends AppController
         $this->loadModel('PushLog');
         
         $push = false;
-        // if($stores[$store_key]['ranking'] <= 4){
-        //     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
-        //     if(!count($pushlog_history)>0){
-        //         $pushlog = $this->PushLog->newEntity();
-        //         $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
-        //         $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
-        //         $this->PushLog->save($pushlog);
-        //         $push = true;
-        //     }
-        // }
+
+        if($user->role_id != 8){
+            if($stores[$store_key]['ranking'] <= 4){
+                $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
+                if(!count($pushlog_history)>0){
+                    $pushlog = $this->PushLog->newEntity();
+                    $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
+                    $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
+                    $this->PushLog->save($pushlog);
+                    $push = true;
+                }
+            }
+        }
 
         $this->set([
             'success' => true,
