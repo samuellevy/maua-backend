@@ -107,7 +107,21 @@ class PublicController extends AppController
         $place = 0;
 
         // primeiro lugar
-        if($user->store_id == 256 || $user->store_id == 281 || $user->store_id == 423){
+        if($user->store_id == 898 || 
+        $user->store_id == 900 || 
+        $user->store_id == 904 || 
+        $user->store_id == 905 || 
+        $user->store_id == 1252 || 
+        $user->store_id == 713 || 
+        $user->store_id == 714 || 
+        $user->store_id == 718 || 
+        $user->store_id == 901 || 
+        $user->store_id == 972 || 
+        $user->store_id == 1238 || 
+        $user->store_id == 801 || 
+        $user->store_id == 1215 || 
+        $user->store_id == 1216 || 
+        $user->store_id == 1250){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
@@ -119,7 +133,26 @@ class PublicController extends AppController
             }
         }
         // segundo lugar
-        if($user->store_id == 422 || $user->store_id == 625 || $user->store_id == 569){
+        if($user->store_id == 730 || 
+        $user->store_id == 731 || 
+        $user->store_id == 732 || 
+        $user->store_id == 734 || 
+        $user->store_id == 736 || 
+        $user->store_id == 737 || 
+        $user->store_id == 738 || 
+        $user->store_id == 742 || 
+        $user->store_id == 750 || 
+        $user->store_id == 788 || 
+        $user->store_id == 789 || 
+        $user->store_id == 652 || 
+        $user->store_id == 654 || 
+        $user->store_id == 660 || 
+        $user->store_id == 708 || 
+        $user->store_id == 709 || 
+        $user->store_id == 710 || 
+        $user->store_id == 711 || 
+        $user->store_id == 715 || 
+        ){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
@@ -131,7 +164,22 @@ class PublicController extends AppController
             }
         }
         // terceiro lugar
-        if($user->store_id == 304 || $user->store_id == 147 || $user->store_id == 548){
+        if($user->store_id == 706 || 
+        $user->store_id == 707 || 
+        $user->store_id == 1193 || 
+        $user->store_id == 863 || 
+        $user->store_id == 1026 || 
+        $user->store_id == 1027 || 
+        $user->store_id == 1036 || 
+        $user->store_id == 643 || 
+        $user->store_id == 644 || 
+        $user->store_id == 645 || 
+        $user->store_id == 646 || 
+        $user->store_id == 647 || 
+        $user->store_id == 648 || 
+        $user->store_id == 649 || 
+        $user->store_id == 1230
+        ){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
@@ -143,7 +191,22 @@ class PublicController extends AppController
             }
         }
         // quarto lugar
-        if($user->store_id == 288 || $user->store_id == 327 || $user->store_id == 610){
+        if($user->store_id == 848 || 
+        $user->store_id == 849 || 
+        $user->store_id == 856 || 
+        $user->store_id == 670 || 
+        $user->store_id == 672 || 
+        $user->store_id == 673 || 
+        $user->store_id == 674 || 
+        $user->store_id == 675 || 
+        $user->store_id == 676 || 
+        $user->store_id == 686 || 
+        $user->store_id == 697 || 
+        $user->store_id == 1090 || 
+        $user->store_id == 1110 || 
+        $user->store_id == 1146 || 
+        $user->store_id == 1234 || 
+        $user->store_id == 1170){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
