@@ -107,21 +107,25 @@ class PublicController extends AppController
         $place = 0;
 
         // primeiro lugar
-        if($user->store_id == 898 || 
-        $user->store_id == 900 || 
-        $user->store_id == 904 || 
-        $user->store_id == 905 || 
-        $user->store_id == 1252 || 
-        $user->store_id == 713 || 
-        $user->store_id == 714 || 
-        $user->store_id == 718 || 
-        $user->store_id == 901 || 
-        $user->store_id == 972 || 
-        $user->store_id == 1238 || 
-        $user->store_id == 801 || 
-        $user->store_id == 1215 || 
-        $user->store_id == 1216 || 
-        $user->store_id == 1250){
+        if($user->id == 898 || 
+        $user->id == 900 || 
+        $user->id == 904 || 
+        $user->id == 905 || 
+        $user->id == 1252 || 
+        $user->id == 713 || 
+        $user->id == 714 || 
+        $user->id == 718 || 
+        $user->id == 901 || 
+        $user->id == 972 || 
+        $user->id == 1238 || 
+        $user->id == 801 || 
+        $user->id == 1215 || 
+        $user->id == 1216 || 
+        $user->id == 1250 ||
+        $user->id == 256 ||
+        $user->id == 281 ||
+        $user->id == 423
+        ){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
@@ -133,25 +137,29 @@ class PublicController extends AppController
             }
         }
         // segundo lugar
-        if($user->store_id == 730 || 
-        $user->store_id == 731 || 
-        $user->store_id == 732 || 
-        $user->store_id == 734 || 
-        $user->store_id == 736 || 
-        $user->store_id == 737 || 
-        $user->store_id == 738 || 
-        $user->store_id == 742 || 
-        $user->store_id == 750 || 
-        $user->store_id == 788 || 
-        $user->store_id == 789 || 
-        $user->store_id == 652 || 
-        $user->store_id == 654 || 
-        $user->store_id == 660 || 
-        $user->store_id == 708 || 
-        $user->store_id == 709 || 
-        $user->store_id == 710 || 
-        $user->store_id == 711 || 
-        $user->store_id == 715){
+        if($user->id == 730 || 
+        $user->id == 731 || 
+        $user->id == 732 || 
+        $user->id == 734 || 
+        $user->id == 736 || 
+        $user->id == 737 || 
+        $user->id == 738 || 
+        $user->id == 742 || 
+        $user->id == 750 || 
+        $user->id == 788 || 
+        $user->id == 789 || 
+        $user->id == 652 || 
+        $user->id == 654 || 
+        $user->id == 660 || 
+        $user->id == 708 || 
+        $user->id == 709 || 
+        $user->id == 710 || 
+        $user->id == 711 || 
+        $user->id == 715 ||
+        $user->id == 422 ||
+        $user->id == 627 ||
+        $user->id == 569
+        ){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
@@ -163,21 +171,24 @@ class PublicController extends AppController
             }
         }
         // terceiro lugar
-        if($user->store_id == 706 || 
-        $user->store_id == 707 || 
-        $user->store_id == 1193 || 
-        $user->store_id == 863 || 
-        $user->store_id == 1026 || 
-        $user->store_id == 1027 || 
-        $user->store_id == 1036 || 
-        $user->store_id == 643 || 
-        $user->store_id == 644 || 
-        $user->store_id == 645 || 
-        $user->store_id == 646 || 
-        $user->store_id == 647 || 
-        $user->store_id == 648 || 
-        $user->store_id == 649 || 
-        $user->store_id == 1230
+        if($user->id == 706 || 
+        $user->id == 707 || 
+        $user->id == 1193 || 
+        $user->id == 863 || 
+        $user->id == 1026 || 
+        $user->id == 1027 || 
+        $user->id == 1036 || 
+        $user->id == 643 || 
+        $user->id == 644 || 
+        $user->id == 645 || 
+        $user->id == 646 || 
+        $user->id == 647 || 
+        $user->id == 648 || 
+        $user->id == 649 || 
+        $user->id == 1230 ||
+        $user->id == 304 ||
+        $user->id == 147 ||
+        $user->id == 548
         ){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
@@ -190,22 +201,27 @@ class PublicController extends AppController
             }
         }
         // quarto lugar
-        if($user->store_id == 848 || 
-        $user->store_id == 849 || 
-        $user->store_id == 856 || 
-        $user->store_id == 670 || 
-        $user->store_id == 672 || 
-        $user->store_id == 673 || 
-        $user->store_id == 674 || 
-        $user->store_id == 675 || 
-        $user->store_id == 676 || 
-        $user->store_id == 686 || 
-        $user->store_id == 697 || 
-        $user->store_id == 1090 || 
-        $user->store_id == 1110 || 
-        $user->store_id == 1146 || 
-        $user->store_id == 1234 || 
-        $user->store_id == 1170){
+        if($user->id == 848 || 
+        $user->id == 849 || 
+        $user->id == 856 || 
+        $user->id == 670 || 
+        $user->id == 672 || 
+        $user->id == 673 || 
+        $user->id == 674 || 
+        $user->id == 675 || 
+        $user->id == 676 || 
+        $user->id == 686 || 
+        $user->id == 697 || 
+        $user->id == 1090 || 
+        $user->id == 1110 || 
+        $user->id == 1146 || 
+        $user->id == 1234 || 
+        $user->id == 1170 ||
+        $user->id == 288 ||
+        $user->id == 327 ||
+        $user->id == 610
+        
+        ){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
@@ -275,7 +291,7 @@ class PublicController extends AppController
                 'title'=>'PARABÉNS!',
                 'value'=>$place,
                 'subtitle'=>'Você e sua equipe impressionaram nas vendas e garantiram o '.$place.'º lugar em agosto.',
-                'description'=>'Os balconistas participantes do mês já podem comemorar, o prêmio de vocês está a caminho! :)',
+                'description'=>'Os balconistas participantes do mês já podem comemorar, pois seu prêmio está a caminho!',
                 'color'=>'#FCAD00',
                 'image'=>'4-ranking',
                 'action'=>'Ranking',
