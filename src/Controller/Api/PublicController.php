@@ -151,8 +151,7 @@ class PublicController extends AppController
         $user->store_id == 709 || 
         $user->store_id == 710 || 
         $user->store_id == 711 || 
-        $user->store_id == 715 || 
-        ){
+        $user->store_id == 715){
             $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
             if(!count($pushlog_history)>0){
                 $pushlog = $this->PushLog->newEntity();
