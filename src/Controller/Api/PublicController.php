@@ -104,19 +104,56 @@ class PublicController extends AppController
         $this->loadModel('PushLog');
         
         $push = false;
+        $place = 0;
 
-        // if($user->role_id != 8){
-        //     if($stores[$store_key]['ranking'] <= 4){
-        //         $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
-        //         if(!count($pushlog_history)>0){
-        //             $pushlog = $this->PushLog->newEntity();
-        //             $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
-        //             $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
-        //             // $this->PushLog->save($pushlog);
-        //             $push = true;
-        //         }
-        //     }
-        // }
+        // primeiro lugar
+        if($user->store_id == 256 || $user->store_id == 281 || $user->store_id == 423){
+            $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
+            if(!count($pushlog_history)>0){
+                $pushlog = $this->PushLog->newEntity();
+                $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
+                $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
+                // $this->PushLog->save($pushlog);
+                $push = true;
+                $place = 1;
+            }
+        }
+        // segundo lugar
+        if($user->store_id == 422 || $user->store_id == 625 || $user->store_id == 569){
+            $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
+            if(!count($pushlog_history)>0){
+                $pushlog = $this->PushLog->newEntity();
+                $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
+                $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
+                // $this->PushLog->save($pushlog);
+                $push = true;
+                $place = 2;
+            }
+        }
+        // terceiro lugar
+        if($user->store_id == 304 || $user->store_id == 147 || $user->store_id == 548){
+            $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
+            if(!count($pushlog_history)>0){
+                $pushlog = $this->PushLog->newEntity();
+                $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
+                $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
+                // $this->PushLog->save($pushlog);
+                $push = true;
+                $place = 3;
+            }
+        }
+        // quarto lugar
+        if($user->store_id == 288 || $user->store_id == 327 || $user->store_id == 610){
+            $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
+            if(!count($pushlog_history)>0){
+                $pushlog = $this->PushLog->newEntity();
+                $pushdata = ['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1];
+                $pushlog = $this->PushLog->patchEntity($pushlog, $pushdata);
+                // $this->PushLog->save($pushlog);
+                $push = true;
+                $place = 4;
+            }
+        }
 
         $this->set([
             'success' => true,
@@ -174,14 +211,14 @@ class PublicController extends AppController
                 'exist'=>$push,
                 'name'=>'new_ranking',
                 'title'=>'PARABÉNS!',
-                'value'=>$stores[$store_key]['ranking'],
-                'subtitle'=>'Você mostrou que entende do que faz e conquistou o '.$stores[$store_key]['ranking'].'º lugar no mês de Agosto!',
+                'value'=>$place,
+                'subtitle'=>'Você mostrou que entende do que faz e conquistou o '.$place.'º lugar no mês de Agosto!',
                 'description'=>'O prêmio para todos os balconistas que participaram desse mês está a caminho da sua loja!',
                 'color'=>'#FCAD00',
                 'image'=>'4-ranking',
                 'action'=>'Ranking',
                 'button_label'=>'Acompanhar Ranking',
-                'number_ranking' => $stores[$store_key]['ranking']
+                'number_ranking' => $place
             ],
             'configs' => [
                 'last_update' => isset($sale_base)?$sale_base->created:0,
