@@ -14,7 +14,12 @@
                     if($user->role_id == 6){
                         $balconistas++;
                         if (isset($user->course_progress[0])){
-                            $quiz++;
+                            foreach($user->course_progress as $progress){
+                                if ($progress->course_id == 2){
+                                    $quiz++;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
