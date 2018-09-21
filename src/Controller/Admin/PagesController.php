@@ -102,7 +102,9 @@ class PagesController extends AppController
       $entity = $this->Stores->patchEntity($entity, $store->toArray());
       $this->Stores->save($entity);
     }
-    die(debug($stores));
+    
+    $this->Flash->success(__('Atualizado com sucesso!'));
+    return $this->redirect(['controller'=>'sales','action' => 'load']);
   }
 
 

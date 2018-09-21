@@ -93,15 +93,16 @@ class SalesController extends AppController
           $salesEntity = $this->Sales->patchEntity($salesEntity, $sale);
           $this->Sales->save($salesEntity);
         }
-        $this->Flash->success(__('Atualizado com sucesso!'));
         $sales = $this->Sales->newEntity();
+        return $this->redirect(['controller'=>'pages','action' => 'updatePoints']);
       }catch(Exception $e){
         $this->Flash->success(__('Houve um erro.'));
       }
     }
     
     $this->set(compact(['sales']));
-		$this->set('_serialize', ['sales']);
+    $this->set('_serialize', ['sales']);
+    
   }
 
   public function search_store($stores, $store_id){
