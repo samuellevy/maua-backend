@@ -72,7 +72,7 @@ class ProcessPointsComponent extends Component {
                 $count_point = count($point);
 
 
-                if($count_point==0 && $count_users == $count_cp){
+                if($count_point==0 && $count_users == $count_cp && $target == 2){
                     $this->insert_points(25, 'completed_module', 'Todos os funcionários concluíram o módulo', $store_id, $user_id);
                 }
             break;
