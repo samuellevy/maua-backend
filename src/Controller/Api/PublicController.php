@@ -51,7 +51,7 @@ class PublicController extends AppController
     public function infos(){
         $this->loadModel('Users');
         $identity = $this->Auth->identify();
-        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>(int)date('m')]], 'Stores.Points'=>['sort'=>['Points.created DESC']], 'Roles']]);
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC', 'conditions'=>['month'=>'9']], 'Stores.Points'=>['sort'=>['Points.created DESC']], 'Roles']]);
         $store_key = null;
 
         // // die(debug($user));
@@ -244,7 +244,8 @@ class PublicController extends AppController
                 'ranking' => $stores[$store_key]['ranking'],
                 'pontuacao' => $user->store->total,
                 'role_id' => $user->role->id,
-                'role' => $user->role->name
+                'role' => $user->role->name,
+                'cpf' => $user->cpf,
             ],
             'store' => [
                 'name' => $user->store->name,
