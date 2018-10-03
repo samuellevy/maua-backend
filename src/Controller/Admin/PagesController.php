@@ -90,7 +90,7 @@ class PagesController extends AppController
   // atualizar pontuacao
   public function updatePoints(){
     $this->loadModel('Stores');
-    $stores = $this->Stores->find('all', ['contain'=>['Points'=>['conditions'=>['month'=>9]]]])->all()->toArray();
+    $stores = $this->Stores->find('all', ['contain'=>['Points'=>['conditions'=>['month'=>10]]]])->all()->toArray();
 
     foreach($stores as $key=>$store){
       $total = 0;
@@ -139,7 +139,7 @@ class PagesController extends AppController
         if($counted_cp_store == $count_active_users){
           $coursed_stores++; //registra
 
-          $data = ['title'=>'Todos os funcionários concluíram o módulo', 'point'=>25, 'user_id'=>$user->id, 'store_id'=>$user->store_id, 'type'=>'completed_module', 'month'=> 9, 'status'=>1];
+          $data = ['title'=>'Todos os funcionários concluíram o módulo', 'point'=>25, 'user_id'=>$user->id, 'store_id'=>$user->store_id, 'type'=>'completed_module', 'month'=> 10, 'status'=>1];
           // die(debug($data));
           $point = $this->Points->newEntity();
           $point = $this->Points->patchEntity($point, $data);
@@ -173,7 +173,7 @@ class PagesController extends AppController
     foreach($stores as $store){
       if(count($store->users)>0){
         $owner = $this->Users->find('all', ['conditions'=>['Users.active'=>true, 'Users.role_id'=>4, 'Users.store_id'=>$store->id]])->first();
-        $data = ['title'=>'Cadastro de funcionários', 'point'=>20, 'user_id'=>$owner->id, 'store_id'=>$store->id, 'type'=>'new_user', 'month'=> 8, 'status'=>1];
+        $data = ['title'=>'Cadastro de funcionários', 'point'=>20, 'user_id'=>$owner->id, 'store_id'=>$store->id, 'type'=>'new_user', 'month'=> 10, 'status'=>1];
         // die(debug($data));
         $point = $this->Points->newEntity();
         $point = $this->Points->patchEntity($point, $data);
@@ -193,7 +193,7 @@ class PagesController extends AppController
     foreach($stores as $key=>$store){
       if(isset($store->users[0])){
         $my_ranking = $this->Stores->getMyRanking($store->category, $store->id);
-        $data = ['title'=>'Agosto '.$my_ranking.'º lugar/'.$store->total.' pts', 'point'=>0, 'user_id'=>$store->users[0]->id, 'store_id'=>$store->id, 'type'=>'module_closure', 'month'=> 8, 'status'=>1];
+        $data = ['title'=>'Setembro '.$my_ranking.'º lugar/'.$store->total.' pts', 'point'=>0, 'user_id'=>$store->users[0]->id, 'store_id'=>$store->id, 'type'=>'module_closure', 'month'=> 9, 'status'=>1];
         $point = $this->Points->newEntity();
         $point = $this->Points->patchEntity($point, $data);
         $this->Points->save($point);
