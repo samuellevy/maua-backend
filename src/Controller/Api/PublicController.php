@@ -107,24 +107,25 @@ class PublicController extends AppController
         $place = 0;
 
         // // primeiro lugar
-        // if($user->id == 898 || 
+        // if($user->id == 256 || 
+        // $user->id == 898 || 
         // $user->id == 900 || 
         // $user->id == 904 || 
         // $user->id == 905 || 
         // $user->id == 1252 || 
+        // $user->id == 281 || 
         // $user->id == 713 || 
         // $user->id == 714 || 
         // $user->id == 718 || 
         // $user->id == 901 || 
         // $user->id == 972 || 
         // $user->id == 1238 || 
-        // $user->id == 801 || 
-        // $user->id == 1215 || 
-        // $user->id == 1216 || 
-        // $user->id == 1250 ||
-        // $user->id == 256 ||
-        // $user->id == 281 ||
-        // $user->id == 423
+        // $user->id == 569 || 
+        // $user->id == 708 ||
+        // $user->id == 709 ||
+        // $user->id == 710 ||
+        // $user->id == 715 ||
+        // $user->id == 711
         // ){
         //     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
         //     if(!count($pushlog_history)>0){
@@ -137,28 +138,23 @@ class PublicController extends AppController
         //     }
         // }
         // // segundo lugar
-        // if($user->id == 730 || 
-        // $user->id == 731 || 
-        // $user->id == 732 || 
-        // $user->id == 734 || 
-        // $user->id == 736 || 
-        // $user->id == 737 || 
-        // $user->id == 738 || 
-        // $user->id == 742 || 
-        // $user->id == 750 || 
-        // $user->id == 788 || 
-        // $user->id == 789 || 
-        // $user->id == 652 || 
-        // $user->id == 654 || 
-        // $user->id == 660 || 
-        // $user->id == 708 || 
-        // $user->id == 709 || 
-        // $user->id == 710 || 
-        // $user->id == 711 || 
-        // $user->id == 715 ||
-        // $user->id == 422 ||
-        // $user->id == 627 ||
-        // $user->id == 569
+        // if($user->id == 405 || 
+        // $user->id == 1195 || 
+        // $user->id == 1996 || 
+        // $user->id == 1228 || 
+        // $user->id == 1229 || 
+        // $user->id == 1251 || 
+        // $user->id == 456 || 
+        // $user->id == 712 || 
+        // $user->id == 1167 || 
+        // $user->id == 1333 || 
+        // $user->id == 423 || 
+        // $user->id == 801 || 
+        // $user->id == 1215 || 
+        // $user->id == 1216 || 
+        // $user->id == 1330 || 
+        // $user->id == 1250
+
         // ){
         //     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
         //     if(!count($pushlog_history)>0){
@@ -171,24 +167,19 @@ class PublicController extends AppController
         //     }
         // }
         // // terceiro lugar
-        // if($user->id == 706 || 
+        // if($user->id == 304 || 
+        // $user->id == 706 || 
         // $user->id == 707 || 
         // $user->id == 1193 || 
-        // $user->id == 863 || 
-        // $user->id == 1026 || 
-        // $user->id == 1027 || 
-        // $user->id == 1036 || 
-        // $user->id == 643 || 
-        // $user->id == 644 || 
-        // $user->id == 645 || 
-        // $user->id == 646 || 
-        // $user->id == 647 || 
-        // $user->id == 648 || 
-        // $user->id == 649 || 
-        // $user->id == 1230 ||
-        // $user->id == 304 ||
-        // $user->id == 147 ||
-        // $user->id == 548
+        // $user->id == 627 || 
+        // $user->id == 652 || 
+        // $user->id == 654 || 
+        // $user->id == 660 || 
+        // $user->id == 610 || 
+        // $user->id == 1170 || 
+        // $user->id == 1261 || 
+        // $user->id == 1262 || 
+        // $user->id == 1303
         // ){
         //     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
         //     if(!count($pushlog_history)>0){
@@ -201,25 +192,32 @@ class PublicController extends AppController
         //     }
         // }
         // // quarto lugar
-        // if($user->id == 848 || 
-        // $user->id == 849 || 
-        // $user->id == 856 || 
-        // $user->id == 670 || 
-        // $user->id == 672 || 
-        // $user->id == 673 || 
-        // $user->id == 674 || 
-        // $user->id == 675 || 
-        // $user->id == 676 || 
-        // $user->id == 686 || 
-        // $user->id == 697 || 
-        // $user->id == 1090 || 
-        // $user->id == 1110 || 
-        // $user->id == 1146 || 
-        // $user->id == 1234 || 
-        // $user->id == 1170 ||
-        // $user->id == 288 ||
-        // $user->id == 327 ||
-        // $user->id == 610
+        // if($user->id == 422 || 
+        // $user->id == 730 || 
+        // $user->id == 731 || 
+        // $user->id == 732 || 
+        // $user->id == 734 || 
+        // $user->id == 736 || 
+        // $user->id == 737 || 
+        // $user->id == 738 || 
+        // $user->id == 742 || 
+        // $user->id == 750 || 
+        // $user->id == 788 || 
+        // $user->id == 147 || 
+        // $user->id == 863 || 
+        // $user->id == 1026 || 
+        // $user->id == 1027 || 
+        // $user->id == 1036 ||
+        // $user->id == 548 ||
+        // $user->id == 1336 ||
+        // $user->id == 644 ||
+        // $user->id == 645 ||
+        // $user->id == 646 ||
+        // $user->id == 647 ||
+        // $user->id == 648 ||
+        // $user->id == 1335 ||
+        // $user->id == 1230 ||
+        // $user->id == 1334
         
         // ){
         //     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
@@ -291,7 +289,7 @@ class PublicController extends AppController
                 'name'=>'new_ranking',
                 'title'=>'PARABÉNS!',
                 'value'=>$place,
-                'subtitle'=>'Você e sua equipe impressionaram nas vendas e garantiram o '.$place.'º lugar em agosto.',
+                'subtitle'=>'Você e sua equipe impressionaram nas vendas e garantiram o '.$place.'º lugar em setembro.',
                 'description'=>'Os balconistas participantes do mês já podem comemorar, pois seu prêmio está a caminho!',
                 'color'=>'#FCAD00',
                 'image'=>'4-ranking',
