@@ -73,14 +73,14 @@ class SalesController extends AppController
             // die(debug($newStore));
           }
 
-          if($this->percent($store[7], $store[6]) >= 100 && $this->percent($store[7], $store[6]) <= 115){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>50, 'percent'=>$this->percent($store[7], $store[6]), 'type'=>'meta', 'month'=>'9']);
+          if($this->percent($store[9], $store[8]) >= 100 && $this->percent($store[9], $store[8]) <= 115){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>50, 'percent'=>$this->percent($store[9], $store[8]), 'type'=>'meta', 'month'=>'10']);
           }
-          if($this->percent($store[7], $store[6]) > 115 && $this->percent($store[7], $store[6]) <= 145){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>75, 'percent'=>$this->percent($store[7], $store[6]), 'type'=>'meta', 'month'=>'9']);
+          if($this->percent($store[9], $store[8]) > 115 && $this->percent($store[9], $store[8]) <= 145){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>75, 'percent'=>$this->percent($store[9], $store[8]), 'type'=>'meta', 'month'=>'10']);
           }
-          if($this->percent($store[7], $store[6]) > 145){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>100, 'percent'=>$this->percent($store[7], $store[6]), 'type'=>'meta', 'month'=>'9']);
+          if($this->percent($store[9], $store[8]) > 145){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>100, 'percent'=>$this->percent($store[9], $store[8]), 'type'=>'meta', 'month'=>'10']);
           }
         }
       }
@@ -135,7 +135,7 @@ class SalesController extends AppController
         $data['user_id'] = $lojista->id;
         $data['store_id'] = $arguments['store_id'];
         $data['type'] = 'meta';
-        $data['month'] = 9;
+        $data['month'] = 10;
 
         if($actual_points!=null){
           $point = $this->Points->get($actual_points->id);
