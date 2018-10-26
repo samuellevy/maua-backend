@@ -47,4 +47,10 @@ class ReportController extends AppController
         $this->set(compact('stores'));
     }
 
+    public function getRanking(){
+        $this->loadModel('Stores');
+        $ranking = $this->Stores->getFinalRanking('p');
+        die(debug($ranking));
+    }
+
 }

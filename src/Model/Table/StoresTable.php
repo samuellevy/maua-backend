@@ -180,4 +180,19 @@ class StoresTable extends Table
             }
         return $position;
     }
+
+    /** reports */
+    public function getFinalRanking($category){
+        $month = date('m');
+        
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
+            JOIN stores ON stores.id=sales.store_id 
+            where sales.month = 10
+            GROUP BY sales.id ORDER BY total DESC, percentage DESC"
+            )->fetchAll('assoc');
+
+        return $results;
+    }
 }
