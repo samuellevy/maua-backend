@@ -182,7 +182,81 @@ class StoresTable extends Table
     }
 
     /** reports */
-    public function getFinalRanking($category){
+
+    # get ranking by category and by month
+    public function getRanking($category=null, $month=null){
+        if ($category!='p' && $category!='m' && $category!='g') exit('Selecione uma categoria');
+        if ($month==null) $month = date('m');
+        
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT stores.id, stores.name, sum(points.point) as sum_points, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from stores
+            join points on stores.id = points.store_id
+            join sales on stores.id = sales.store_id
+            where points.month = $month AND sales.month = $month AND stores.category = '$category'
+            GROUP BY stores.id, stores.name, percentage
+            ORDER BY sum_points DESC, percentage DESC"
+            )->fetchAll('assoc');
+
+        return $results;
+    }
+
+    /** As chamadas anteriores estão sendo usadas pelo app, por isso as novas chamadas usaremos o prefixo FETCH no lugar de GET */
+    # fetch percentage
+    # fetch points
+    # fetch categories
+    public function fetchRanking(){
+        $categories = $this->fetchCategories();
+        $months = $this->fetchMonths();
+        
+        $results = [];
+        foreach($categories as $category){
+            $category = $category['name'];
+            foreach($months as $month){
+                $month = $month['name'];
+                $connection = ConnectionManager::get('default');
+                $results[$category][$month] = $connection->execute(
+                    "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
+                    JOIN stores ON stores.id=sales.store_id 
+                    where sales.month = $month AND stores.category = '$category'
+                    GROUP BY sales.id ORDER BY total DESC, percentage DESC"
+                    )->fetchAll('assoc');
+            }
+        }
+
+        return $results;
+    }
+
+    public function fetchRankingBy($category=null){
+        $categories = $this->fetchCategories();
+        $months = $this->fetchMonths();
+        
+        $results = [];
+
+        foreach($months as $month){
+            $month = $month['name'];
+            $connection = ConnectionManager::get('default');
+            $results[$month] = $connection->execute(
+                "SELECT id, name, sum_points, percentage from (SELECT stores.id as id, stores.name, ROUND(((sales.quantity * 100)/sales.goal),2) as percentage from sales
+                JOIN stores ON stores.id=sales.store_id 
+                where sales.month = $month AND stores.category='$category'
+                GROUP BY sales.id ORDER BY total DESC, percentage DESC) as table1
+                
+                JOIN (SELECT stores.id as store_id, sum(points.point) as sum_points from stores
+                join points on stores.id = points.store_id
+                where points.month = $month
+                GROUP BY stores.id
+                ORDER BY sum_points DESC) as table2 on store_id = id
+                ORDER BY sum_points DESC, percentage DESC"
+                )->fetchAll('assoc');
+        }
+
+        return $results;
+        // die(debug($results));
+    }
+
+
+    public function getTotalRanking($category){
         $month = date('m');
         
         $connection = ConnectionManager::get('default');
@@ -191,6 +265,40 @@ class StoresTable extends Table
             JOIN stores ON stores.id=sales.store_id 
             where sales.month = 10
             GROUP BY sales.id ORDER BY total DESC, percentage DESC"
+            )->fetchAll('assoc');
+
+        return $results;
+    }
+
+
+    public function getPoints(){
+        $month = date('m');
+        
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT stores.id, stores.name, sum(points.point) as sum_points from stores
+            join points on stores.id = points.store_id
+            where points.month = 10
+            GROUP BY stores.id, stores.name
+            ORDER BY sum_points DESC"
+            )->fetchAll('assoc');
+
+        return $results;
+    }
+
+    public function fetchCategories(){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT DISTINCT category as name FROM stores where stores.category IS NOT NULL"
+            )->fetchAll('assoc');
+
+        return $results;
+    }
+
+    public function fetchMonths(){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT DISTINCT month as name FROM sales"
             )->fetchAll('assoc');
 
         return $results;

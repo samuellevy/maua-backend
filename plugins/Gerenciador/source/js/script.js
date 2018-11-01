@@ -43,7 +43,28 @@ $(document).ready(function(){
   rest.get('/public/review').then((rest)=>{
     console.log(rest);
   });
+
+  tabs_module.init();
 });
+
+
+var tabs_module = {
+  init: function(){
+    tabs_module.listener();
+    $('.tabs-module .card[data-id=8]').addClass('opened');
+    $('.tabs-module li[data-id=8]').addClass('selected');
+  },
+  listener: function(){
+    $('.tabs-module li').click(function(){
+      $('.tabs-module li').removeClass('selected');
+      $(this).toggleClass('selected');
+      var card = $(this).attr('data-id');
+
+      $('.tabs-module .card').removeClass('opened');
+      $('.tabs-module .card[data-id='+card+']').toggleClass('opened');
+    });
+  }
+}
 
 function removeFileFromServer(id){
   var responder = "";
