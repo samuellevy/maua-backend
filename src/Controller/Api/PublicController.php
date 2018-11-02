@@ -58,10 +58,11 @@ class PublicController extends AppController
         $this->loadModel('Stores');
         if($user->role_id == 8){
             // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC']])->all()->toArray();
-            $stores = $this->Stores->getAllRanking('p');
+            // $stores = $this->Stores->getAllRanking('p');
+            $stores = $this->Stores->fetchRankingByMonth('p', 10);
         }else{
             // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
-            $stores = $this->Stores->getAllRanking($user->store->category);
+            $stores = $this->Stores->fetchRankingByMonth($user->store->category);
         }
 
         // die(debug($stores));
@@ -350,7 +351,8 @@ class PublicController extends AppController
         // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
         
         $this->loadModel('Stores');
-        $stores = $this->Stores->getAllRanking($user->store->category);
+        // $stores = $this->Stores->getAllRanking($user->store->category);
+        $stores = $this->Stores->fetchRankingByMonth($user->store->category, 10);
         
         $store_key = null;
         

@@ -134,7 +134,7 @@ class StoresTable extends Table
         $results = $connection->execute(
             "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
             JOIN stores ON stores.id=sales.store_id 
-            where stores.category = '$category' and sales.month = 9
+            where stores.category = '$category' and sales.month = 10
             GROUP BY sales.id ORDER BY total DESC, percentage DESC"
             )->fetchAll('assoc');
 
@@ -159,11 +159,19 @@ class StoresTable extends Table
     public function getMyRanking($category, $store_id){
         $position = 0;
         $connection = ConnectionManager::get('default');
+        $month = 10;
         $results = $connection->execute(
-            "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
-            JOIN stores ON stores.id=sales.store_id 
-            where stores.category = '$category' and sales.month = 9
-            GROUP BY sales.id ORDER BY total DESC, percentage DESC"
+            "SELECT id, name, total, percentage from (SELECT stores.id as id, stores.name, ROUND(((sales.quantity * 100)/sales.goal),2) as percentage from sales
+            LEFT JOIN stores ON stores.id=sales.store_id 
+            where sales.month = $month AND stores.category='$category'
+            GROUP BY sales.id ORDER BY total DESC, percentage DESC) as table1
+            
+            LEFT JOIN (SELECT stores.id as store_id, sum(points.point) as total from stores
+            join points on stores.id = points.store_id
+            where points.month = $month
+            GROUP BY stores.id
+            ORDER BY total DESC) as table2 on store_id = id
+            ORDER BY total DESC, percentage DESC"
             )->fetchAll('assoc');
 
             if(empty($results)){
@@ -171,60 +179,42 @@ class StoresTable extends Table
             }
 
             foreach($results as $key=>$result){
+                $results[$key]['position']=$key+1;
                 if($result['id']==$store_id){
-                    $result['position']=$key+1;
-                    $position = $result['position'];
-                    $results = $result;
+                    $position = $key+1;
                     break;
                 }
             }
+
         return $position;
     }
-
-    /** reports */
-
-    # get ranking by category and by month
-    public function getRanking($category=null, $month=null){
-        if ($category!='p' && $category!='m' && $category!='g') exit('Selecione uma categoria');
-        if ($month==null) $month = date('m');
-        
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute(
-            "SELECT stores.id, stores.name, sum(points.point) as sum_points, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from stores
-            join points on stores.id = points.store_id
-            join sales on stores.id = sales.store_id
-            where points.month = $month AND sales.month = $month AND stores.category = '$category'
-            GROUP BY stores.id, stores.name, percentage
-            ORDER BY sum_points DESC, percentage DESC"
-            )->fetchAll('assoc');
-
-        return $results;
-    }
-
+    
     /** As chamadas anteriores estão sendo usadas pelo app, por isso as novas chamadas usaremos o prefixo FETCH no lugar de GET */
-    # fetch percentage
-    # fetch points
-    # fetch categories
-    public function fetchRanking(){
+    # utilizando no app
+    public function fetchRankingByMonth($category=null, $month=null){
         $categories = $this->fetchCategories();
         $months = $this->fetchMonths();
         
         $results = [];
-        foreach($categories as $category){
-            $category = $category['name'];
-            foreach($months as $month){
-                $month = $month['name'];
-                $connection = ConnectionManager::get('default');
-                $results[$category][$month] = $connection->execute(
-                    "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
-                    JOIN stores ON stores.id=sales.store_id 
-                    where sales.month = $month AND stores.category = '$category'
-                    GROUP BY sales.id ORDER BY total DESC, percentage DESC"
-                    )->fetchAll('assoc');
-            }
-        }
+
+        $month = 10;
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT id, name, total, percentage from (SELECT stores.id as id, stores.name, ROUND(((sales.quantity * 100)/sales.goal),2) as percentage from sales
+            JOIN stores ON stores.id=sales.store_id 
+            where sales.month = $month AND stores.category='$category'
+            GROUP BY sales.id ORDER BY total DESC, percentage DESC) as table1
+            
+            JOIN (SELECT stores.id as store_id, sum(points.point) as total from stores
+            join points on stores.id = points.store_id
+            where points.month = $month
+            GROUP BY stores.id
+            ORDER BY total DESC) as table2 on store_id = id
+            ORDER BY total DESC, percentage DESC"
+            )->fetchAll('assoc');
 
         return $results;
+        // die(debug($results));
     }
 
     public function fetchRankingBy($category=null){
