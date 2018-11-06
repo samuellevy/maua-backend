@@ -47,11 +47,11 @@ class ReportController extends AppController
         $this->set(compact('stores'));
     }
 
-    public function getRanking(){
+    public function getRanking($category=null){
         ini_set('memory_limit', '-1');
         $this->loadModel('Stores');
         // $ranking = $this->Stores->getFinalRanking('p');
-        $ranking = $this->Stores->fetchRankingBy('p');
+        $ranking = $this->Stores->fetchRankingBy($category);
         $months = $this->Stores->fetchMonths();
         $this->set(compact(['ranking', 'months']));
         // die(debug($ranking));

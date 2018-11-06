@@ -1,12 +1,12 @@
 <ul class="nav">
-
+  
   <li>
     <a href="<?= $this->Url->build(["controller" => "Messages","action" => "index"]);?>" <?=$params['controller']=='Messages'?"class='active'":""?>>
       <i class="pe-7s-mail"></i>
       <p>Mensagens</p>
     </a>
   </li>
-
+  
   <li>
     <a href="<?= $this->Url->build(["controller" => "Courses","action" => "index"]);?>" <?=$params['controller']=='Courses'?"class='active'":""?>>
       <i class="pe-7s-note2"></i>
@@ -71,21 +71,51 @@
       </li>
     </ul>
   </li>
-
-    <li>
-    <a href="<?= $this->Url->build(["controller" => "report","action" => "index"]);?>" <?=$params['controller']=='Report'?"class='active'":""?>>
+  
+  <li>
+    <a href="<?= $this->Url->build(["controller" => "report","action" => "index"]);?>" <?=$params['controller']=='Report'&&$params['action']=="index"?"class='active'":""?>>
       <i class="pe-7s-note2"></i>
       <p>Relatório Quiz</p>
     </a>
   </li>
+  
+  <li class="sidebar-dropdown" data-id='2'>
+    <a <?=$params['controller']=='Report'&&$params['action']!="index"?"class='active'":""?>>
+      <i class="pe-7s-news-paper"></i>
+      <p>Ranking</p>
+      <i class="i-absolute pe-7s-angle-right i-absolute-transform"></i>
+    </a>
+    <ul class="sidebar-dropdown">
 
+      <li>
+        <a href="<?= $this->Url->build(["controller" => "Report","action" => "getRanking","p"]);?>" <?=$params['controller']=='Report'&&$params['action']=="getRanking"&&$params['pass'][0]=='p'?"class='active'":""?>>
+          <i class="pe-7s-angle-right"></i>
+          <p>Amarela (P)</p>
+        </a>
+      </li>
+      <li>
+        <a href="<?= $this->Url->build(["controller" => "Report","action" => "getRanking","m"]);?>" <?=$params['controller']=='Report'&&$params['action']=="getRanking"&&$params['pass'][0]=='m'?"class='active'":""?>>
+          <i class="pe-7s-angle-right"></i>
+          <p>Verde (M)</p>
+        </a>
+      </li>
+      <li>
+        <a href="<?= $this->Url->build(["controller" => "Report","action" => "getRanking","g"]);?>" <?=$params['controller']=='Report'&&$params['action']=="getRanking"&&$params['pass'][0]=='g'?"class='active'":""?>>
+          <i class="pe-7s-angle-right"></i>
+          <p>Preta (G)</p>
+        </a>
+      </li>
+      
+    </ul>
+  </li>
+  
   <li>
     <a href="<?= $this->Url->build(["controller" => "Report","action" => "resultados"]);?>">
       <i class="pe-7s-download"></i>
       <p>Gerar CSV Resultados</p>
     </a>
   </li>
-
+  
   <li>
     <a href="<?= $this->Url->build(["controller" => "Report","action" => "participantes"]);?>">
       <i class="pe-7s-download"></i>

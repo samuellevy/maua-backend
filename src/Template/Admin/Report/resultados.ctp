@@ -15,7 +15,7 @@
                         $balconistas++;
                         if (isset($user->course_progress[0])){
                             foreach($user->course_progress as $progress){
-                                if ($progress->course_id == 2){
+                                if ($progress->course_id == 3){
                                     $quiz++;
                                     break;
                                 }
