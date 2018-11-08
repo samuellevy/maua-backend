@@ -192,9 +192,9 @@ class PagesController extends AppController
 
     foreach($stores as $key=>$store){
       if(isset($store->users[0])){
-        $my_ranking = $this->Stores->getMyRanking($store->category, $store->id, date('m')-1);
-        echo($store->id . ' - ' . $my_ranking."\n");
-        $data = ['title'=>'Outubro '.$my_ranking.'º lugar/'.$store->total.' pts', 'point'=>0, 'user_id'=>$store->users[0]->id, 'store_id'=>$store->id, 'type'=>'module_closure', 'month'=> $month, 'status'=>1];
+        $store_properties = $this->Stores->getMyRanking($store->category, $store->id, date('m')-1);
+        echo($store->id . ' - ' . $store_properties['position']."\n");
+        $data = ['title'=>'Outubro '.$store_properties['position'].'º lugar/'.$store_properties['total'].' pts', 'point'=>0, 'user_id'=>$store->users[0]->id, 'store_id'=>$store->id, 'type'=>'module_closure', 'month'=> $month, 'status'=>1];
         $point = $this->Points->newEntity();
         $point = $this->Points->patchEntity($point, $data);
         $this->Points->save($point);

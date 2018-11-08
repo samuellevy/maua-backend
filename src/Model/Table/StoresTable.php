@@ -161,7 +161,7 @@ class StoresTable extends Table
         $connection = ConnectionManager::get('default');
         $month = 10;
         $results = $connection->execute(
-            "SELECT id, name, total, percentage from (SELECT stores.id as id, stores.name, ROUND(((sales.quantity * 100)/sales.goal),2) as percentage from sales
+            "SELECT id, name, case when total is null then 0 else total end as total, percentage from (SELECT stores.id as id, stores.name, ROUND(((sales.quantity * 100)/sales.goal),2) as percentage from sales
             LEFT JOIN stores ON stores.id=sales.store_id 
             where sales.month = $month AND stores.category='$category'
             GROUP BY sales.id ORDER BY total DESC, percentage DESC) as table1
@@ -179,14 +179,16 @@ class StoresTable extends Table
             }
 
             foreach($results as $key=>$result){
-                $results[$key]['position']=$key+1;
+                $position = $key+1;
+                $results[$key]['position']=$position;
+                $result['position']=$position;
                 if($result['id']==$store_id){
-                    $position = $key+1;
+                    $store_properties = $result;
                     break;
                 }
             }
 
-        return $position;
+        return $store_properties;
     }
     
     /** As chamadas anteriores estão sendo usadas pelo app, por isso as novas chamadas usaremos o prefixo FETCH no lugar de GET */
