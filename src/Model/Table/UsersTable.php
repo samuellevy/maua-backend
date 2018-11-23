@@ -139,4 +139,16 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+
+    public function getActiveUsers($store_id, $month){
+        $return = $this->find('all', ['conditions'=>[
+                'store_id'=>$store_id,
+                'active'=>1,
+                'created <'=>'2018-'.$month.'-31 23:59:59',
+            ]
+        ]);
+
+        return $return->all();
+    }
 }

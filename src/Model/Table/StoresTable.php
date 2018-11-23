@@ -178,6 +178,8 @@ class StoresTable extends Table
                 $results = [];
             }
 
+            $store_properties = null;
+
             foreach($results as $key=>$result){
                 $position = $key+1;
                 $results[$key]['position']=$position;
