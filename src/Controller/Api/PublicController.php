@@ -186,10 +186,11 @@ class PublicController extends AppController
                     'subtitle'=>'Em função dos feriados de novembro, a entrega de alguns cartões pode atrasar. Se você ainda não recebeu o seu, tudo bem! Ele está a caminho!',
                     'description'=>'',
                     'color'=>'#FCAD00',
+                    'image_type'=>'external',
                     'image'=>'4-ranking',
                     'action'=>'Ranking',
                     'button_label'=>'Acompanhar Ranking',
-                    'number_ranking' => 0
+                    'number_ranking' => 0,
                 ];    
             endif;
             
