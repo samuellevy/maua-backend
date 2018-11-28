@@ -349,6 +349,33 @@ class PublicController extends AppController
         );
     }
 
+    public function general_ranking(){
+        $this->loadModel('Users');
+        $identity = $this->Auth->identify();
+        $user = $this->Users->get($identity['id'], ['contain'=>['Stores.Sales'=>['sort'=>'month DESC'], 'Stores.Points', 'Roles']]);
+        // $stores = $this->Users->Stores->find('all', ['order'=>['total DESC'], 'conditions'=>['Stores.category'=>$user->store->category]])->all()->toArray();
+        
+        $this->loadModel('Stores');
+        // $stores = $this->Stores->getAllRanking($user->store->category);
+        $stores = $this->Stores->fetchGeneralRanking($user->store->category);
+        
+        $store_key = null;
+        
+        foreach($stores as $key=>$store):
+            $stores[$key]['ranking'] = $key + 1;
+            $store_key = $store['id']==$user['store_id']?$key:$store_key;
+        endforeach;
+        // die(debug($stores));
+
+        $this->set([
+            'success' => true,
+            'my_store' => $stores[$store_key],
+            'stores' => $stores,
+            '_serialize' => ['success', 'my_store', 'stores']
+            ]
+        );
+    }
+
     public function contact(){
         $this->loadModel('Users');
         $identity = $this->Auth->identify();

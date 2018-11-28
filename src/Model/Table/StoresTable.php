@@ -297,4 +297,20 @@ class StoresTable extends Table
 
         return $results;
     }
+
+    public function fetchGeneralRanking($category){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT id, name, quantity, goal, percentage, total FROM 
+            (SELECT store_id as id, stores.name, sum(quantity) as quantity, sum(goal) as goal, ROUND(((sum(quantity) * 100)/sum(goal)),2) as percentage FROM  sales
+            JOIN stores on store_id = stores.id where stores.category = '$category' group by store_id) as table1 
+            JOIN (SELECT stores.id as point_id, sum(points.point) as total FROM stores
+            JOIN points on stores.id = points.store_id
+            GROUP BY stores.id
+            ORDER BY store_id ASC) as table2 ON id=point_id
+            ORDER by total DESC, percentage DESC"
+            )->fetchAll('assoc');
+
+        return $results;
+    }
 }
