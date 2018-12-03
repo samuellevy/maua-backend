@@ -177,21 +177,38 @@ class PublicController extends AppController
             //     'button_label'=>'Acompanhar Ranking',
             //     'number_ranking' => $place
             // ];
-            if($user->role_id == 6):
+            if($user->role_id == 4):
                 $push_configs = [
                     'exist'=>true,
                     'name'=>'new_warning',
-                    'title'=>'AVISO!',
+                    'title'=>'ESTÁ CHEGANDO!',
                     'value'=>0,
-                    'subtitle'=>'Em função dos feriados de novembro, a entrega de alguns cartões pode atrasar. Se você ainda não recebeu o seu, tudo bem! Ele está a caminho!',
+                    'subtitle'=>'O PRÊMIO FINAL está perto! Conclua o módulo de dezembro e aumente as suas chances de ganhar!',
                     'description'=>'',
-                    'color'=>'#FCAD00',
+                    'background'=>'#00985B',
+                    'color'=>'#5DFFB6',
                     'image_type'=>'external',
-                    'image'=>'4-ranking',
+                    'image'=>'http://192.168.2.71/lafarge-backend/img/push_premiofinal.png',
                     'action'=>'Ranking',
                     'button_label'=>'Acompanhar Ranking',
                     'number_ranking' => 0,
-                ];    
+                ];
+            elseif($user->role_id == 6):
+                $push_configs = [
+                    'exist'=>true,
+                    'name'=>'new_warning',
+                    'title'=>'ATENÇÃO!',
+                    'value'=>0,
+                    'subtitle'=>'O último módulo de capacitação estará disponível em dezembro. Fique ligado, pois os 100 primeiros balconistas a concluírem todos os módulos ganharão um prêmio extra no valor de R$ 200, via Vale Presente. Não perca essa chance!',
+                    'description'=>'',
+                    'background'=>'#FCB415',
+                    'color'=>'#E07C00',
+                    'image_type'=>'external',
+                    'image'=>'http://192.168.2.71/lafarge-backend/img/push_100primeiros.png',
+                    'action'=>'Ranking',
+                    'button_label'=>'Acompanhar Ranking',
+                    'number_ranking' => 0,
+                ];
             endif;
             
         elseif($push_warning):
