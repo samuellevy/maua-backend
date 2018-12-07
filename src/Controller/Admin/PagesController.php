@@ -87,6 +87,17 @@ class PagesController extends AppController
     return $this->redirect(['action' => 'index']);
   }
 
+  /** funcoes de atualizacao de pontuacao */
+  /**
+   * função que organiza o sistema de points
+   */
+  public function organizePoints(){
+
+  }
+
+
+  /** remover daqui pra baixo */
+
   // atualizar pontuacao
   public function updatePoints(){
     $this->loadModel('Stores');
@@ -107,17 +118,30 @@ class PagesController extends AppController
     return $this->redirect(['controller'=>'sales','action' => 'load']);
   }
 
-
   public function updateCourseProgress(){
     /**
      * 1 - identificar quantidade de usuarios por loja
      * 2 - identifica quantidade de course progress
-     * 3 - se for igual, roda por course_progress e verifica sse os usuarios tem active = 1
+     * 3 - se for igual, roda por course_progress e verifica se os usuarios tem active = 1
      */
 
     $this->loadModel('Stores');
     $this->loadModel('Points');
-    $stores = $this->Stores->find('all', ['contain'=>['Users'=>['conditions'=>['Users.active'=>true,'Users.role_id'=>6]], 'Users.CourseProgress'=>['conditions'=>['CourseProgress.course_id'=>4]]]])->all();
+    $stores = $this->Stores->find('all', [
+      'contain'=>[
+        'Users'=>[
+          'conditions'=>[
+            'Users.active'=>true,
+            'Users.role_id'=>6]
+        ], 
+        'Users.CourseProgress'=>[
+          'conditions'=>[
+            'CourseProgress.course_id'=>4
+          ]
+        ]
+      ]
+    ])->all();
+    
     $store_active=0;
     $cp_active_users=0;
     $coursed_stores=0;
@@ -143,7 +167,7 @@ class PagesController extends AppController
           // die(debug($data));
           $point = $this->Points->newEntity();
           $point = $this->Points->patchEntity($point, $data);
-          $this->Points->save($point);
+          // $this->Points->save($point);
 
         }
         echo($counted_cp_store . ' - ' . $count_active_users);
@@ -206,5 +230,16 @@ class PagesController extends AppController
 
   public function fixCategories(){
 
+  }
+
+
+  // melhores 100
+  public function topHundred(){
+    $this->loadModel('Users');
+    $users = $this->Users->find('all', [
+      'contain'=>['CourseProgress'],
+    ])->all();
+
+    $this->set(compact('users'));
   }
 }

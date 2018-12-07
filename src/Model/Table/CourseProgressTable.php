@@ -38,7 +38,7 @@ class CourseProgressTable extends Table
         parent::initialize($config);
 
         $this->setTable('course_progress');
-        $this->setDisplayField('id');
+        $this->setDisplayField('progress');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -46,6 +46,7 @@ class CourseProgressTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'
         ]);
+        
         $this->belongsTo('Courses', [
             'foreignKey' => 'course_id'
         ]);

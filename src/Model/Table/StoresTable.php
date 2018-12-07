@@ -30,8 +30,7 @@ class StoresTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config){
         parent::initialize($config);
 
         $this->setTable('stores');
@@ -55,14 +54,7 @@ class StoresTable extends Table
         ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator){
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
@@ -79,83 +71,9 @@ class StoresTable extends Table
 
         return $validator;
     }
-
-    public function ranking($user_id=null, $category=null, $limit=null){
-        if($limit==false){
-            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>['ComercialStores', 'Sales']])->toArray();
-        }else{
-            $ranking = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'limit'=>$limit, 'contain'=>['ComercialStores', 'Sales']])->toArray();
-        }
-
-        return $ranking;
-    }
-
-    public function store_ranking($store_id=null){
-        $my_store = $this->find('all',['conditions'=>['id'=>$store_id]])->first();
-        $category = $my_store->category;
-        $stores = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->toArray();
-        $position = 0;
-
-        foreach($stores as $key=>$store){
-            if($store->id == $my_store->id){
-                $position = $key+1;
-            }
-        }
-        // die(debug($position));
-        return $position;
-    }
-
-
-    public function count_stores($category=null, $type=null){
-        if($type == null){
-            $total = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>'ComercialStores'])->all();
-            $total = count($total);
-        }
-        elseif($type=='enabled'){
-            $total = $this->find('all',['conditions'=>['category'=>$category], 'order'=>'total DESC', 'contain'=>['ComercialStores', 'Users']])->all()->toArray();
-            
-            foreach($total as $key=>$store){
-                // die(debug($total[$key]['users'][0]['first_access']));
-                if(isset($total[$key]['users'][0])){
-                    if($total[$key]['users'][0]['first_access']){
-                        unset($total[$key]);
-                    }
-                }else{
-                    unset($total[$key]);
-                }
-            }
-            $total = count($total);
-        }
-        return $total;
-    }
-
-    public function getAllRanking($category){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute(
-            "SELECT *, ROUND(((sales.quantity * 100)/sales.goal),0) as percentage from sales
-            JOIN stores ON stores.id=sales.store_id 
-            where stores.category = '$category' and sales.month = 10
-            GROUP BY sales.id ORDER BY total DESC, percentage DESC"
-            )->fetchAll('assoc');
-
-            if(empty($results)){
-                $results = [];
-            }
-        return $results;
-    }
-
-    public function getComercialStores(){
-        $connection = ConnectionManager::get('default');
-        $results = $connection->execute(
-            "SELECT comercial_stores.store_id, comercial_stores.user_id from comercial_stores"
-            )->fetchAll('assoc');
-
-            if(empty($results)){
-                $results = [];
-            }
-        return $results;
-    }
-
+    
+    /** As chamadas anteriores estão sendo usadas pelo app, por isso as novas chamadas usaremos o prefixo FETCH no lugar de GET */
+    # utilizando no app
     public function getMyRanking($category, $store_id){
         $position = 0;
         $connection = ConnectionManager::get('default');
@@ -193,8 +111,6 @@ class StoresTable extends Table
         return $store_properties;
     }
     
-    /** As chamadas anteriores estão sendo usadas pelo app, por isso as novas chamadas usaremos o prefixo FETCH no lugar de GET */
-    # utilizando no app
     public function fetchRankingByMonth($category=null, $month=null){
         $categories = $this->fetchCategories();
         $months = $this->fetchMonths();
@@ -249,7 +165,6 @@ class StoresTable extends Table
         // die(debug($results));
     }
 
-
     public function getTotalRanking($category){
         $month = date('m');
         
@@ -263,7 +178,6 @@ class StoresTable extends Table
 
         return $results;
     }
-
 
     public function getPoints(){
         $month = date('m');

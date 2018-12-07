@@ -45,10 +45,13 @@ class UsersTable extends Table
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id'
         ]);
+        
         $this->belongsTo('Stores', [
             'foreignKey' => 'store_id'
         ]);
+
         $this->hasMany('CourseProgress', [
+            'className'=>'CourseProgress',
             'foreignKey' => 'user_id'
         ]);
 

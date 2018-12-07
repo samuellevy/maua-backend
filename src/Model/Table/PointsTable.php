@@ -79,4 +79,35 @@ class PointsTable extends Table
             }
         return $results;
     }
+
+    /**
+     * course_progress dos usuarios de uma determinada loja
+     */
+    public function progressByStore($store_id=null){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT cp.id as cp_id, cp.course_id, users.id as user_id, users.name as user_name, users.store_id as store_id from course_progress as cp
+            left join users on cp.user_id = users.id
+            where cp.course_id = 4 and store_id = $store_id"
+            )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
+        return $results;
+    }
+
+    /** active users before determined month */
+    public function listActiveUsersBefore($store_id=null,$month=null){
+        $month = 12;
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute(
+            "SELECT * from users where store_id = $store_id and active=1 and created < '2018-$month-01 00:00:00'"
+            )->fetchAll('assoc');
+
+            if(empty($results)){
+                $results = [];
+            }
+        return $results;
+    }
 }

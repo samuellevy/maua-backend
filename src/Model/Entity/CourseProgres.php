@@ -29,12 +29,6 @@ class CourseProgres extends Entity
      * @var array
      */
     protected $_accessible = [
-        'user_id' => true,
-        'course_id' => true,
-        'progress' => true,
-        'created' => true,
-        'modified' => true,
-        'user' => true,
-        'course' => true
+        '*' => true,
     ];
 }
