@@ -292,12 +292,13 @@ class PublicController extends AppController
                 'url'=>$rules->url,
             ],
             'push' => $push_configs,
+            'banner'=>'http://192.168.2.71/lafarge-backend/img/lafarge_banner.png',
             
             'configs' => [
                 'last_update' => isset($sale_base)?$sale_base->created:0,
                 'clean_cache' => false,
             ],
-            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'rules', 'push', 'configs','page']
+            '_serialize' => ['success', 'user', 'store', 'points', 'sales', 'post', 'rules', 'push', 'configs','page','banner']
             // '_serialize' => ['push']
             ]
         );
