@@ -188,7 +188,7 @@ class PublicController extends AppController
                     'background'=>'#00985B',
                     'color'=>'#5DFFB6',
                     'image_type'=>'external',
-                    'image'=>'http://192.168.2.71/lafarge-backend/img/push_premiofinal.png',
+                    'image'=>'http://dev2.3aww.com.br/lafargemaua/img/push_premiofinal.png',
                     'action'=>'Ranking',
                     'button_label'=>'Acompanhar Ranking',
                     'number_ranking' => 0,
@@ -204,7 +204,7 @@ class PublicController extends AppController
                     'background'=>'#FCB415',
                     'color'=>'#E07C00',
                     'image_type'=>'external',
-                    'image'=>'http://192.168.2.71/lafarge-backend/img/push_100primeiros.png',
+                    'image'=>'http://dev2.3aww.com.br/lafargemaua/img/push_100primeiros.png',
                     'action'=>'Ranking',
                     'button_label'=>'Acompanhar Ranking',
                     'number_ranking' => 0,
@@ -292,7 +292,7 @@ class PublicController extends AppController
                 'url'=>$rules->url,
             ],
             'push' => $push_configs,
-            'banner'=>'http://192.168.2.71/lafarge-backend/img/lafarge_banner.png',
+            'banner'=>'http://dev2.3aww.com.br/lafargemaua/img/lafarge_banner.png',
             
             'configs' => [
                 'last_update' => isset($sale_base)?$sale_base->created:0,
