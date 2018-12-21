@@ -115,7 +115,8 @@ class PublicController extends AppController
 
         // push
         if($push_ranking):
-            $my_ranking = $this->Stores->getMyRanking('p', $user->store_id);
+            $my_ranking = $this->Stores->getMyRanking(11, $user->store->category, $user->store_id);
+            
             switch($my_ranking['position']):
                 case 1:
                     $pushlog_history = $this->PushLog->find('all',['conditions'=>['push_uid'=>'001', 'user_id'=>$user->id, 'readed'=>1]])->all();
@@ -164,31 +165,19 @@ class PublicController extends AppController
                 default:
                 break;
             endswitch;
-            // $push_configs = [
-            //     'exist'=>true,
-            //     'name'=>'new_ranking',
-            //     'title'=>'PARABÉNS!',
-            //     'value'=>$place,
-            //     'subtitle'=>'Você e sua equipe impressionaram nas vendas e garantiram o '.$place.'º lugar em setembro.',
-            //     'description'=>'Os balconistas participantes do mês já podem comemorar, pois seu prêmio está a caminho!',
-            //     'color'=>'#FCAD00',
-            //     'image'=>'4-ranking',
-            //     'action'=>'Ranking',
-            //     'button_label'=>'Acompanhar Ranking',
-            //     'number_ranking' => $place
-            // ];
+
             if($user->role_id == 4):
                 $push_configs = [
                     'exist'=>true,
                     'name'=>'new_warning',
-                    'title'=>'ESTÁ CHEGANDO!',
+                    'title'=>'PARABÉNS!',
                     'value'=>0,
-                    'subtitle'=>'O PRÊMIO FINAL está perto! Conclua o módulo de dezembro e aumente as suas chances de ganhar!',
+                    'subtitle'=>'Você e sua equipe impressionaram nas vendas e garantiram o '.$place.'º lugar em novembro. Devido aos feriados de fim de ano, alguns vales poderão chegar até a primeira quinzena de janeiro.',
                     'description'=>'',
-                    'background'=>'#00985B',
-                    'color'=>'#5DFFB6',
+                    'background'=>$place==1?'#00985B':'#edf4f3', //edf4f3
+                    'color'=>$place==1?'#5DFFB6':'#00985B',
                     'image_type'=>'external',
-                    'image'=>'http://dev2.3aww.com.br/lafargemaua/img/push_premiofinal.png',
+                    'image'=>'http://dev2.3aww.com.br/lafargemaua/img/'.$place.'-ranking.png',
                     'action'=>'Ranking',
                     'button_label'=>'Acompanhar Ranking',
                     'number_ranking' => 0,

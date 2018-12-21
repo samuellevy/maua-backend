@@ -74,10 +74,9 @@ class StoresTable extends Table
     
     /** As chamadas anteriores estão sendo usadas pelo app, por isso as novas chamadas usaremos o prefixo FETCH no lugar de GET */
     # utilizando no app
-    public function getMyRanking($category, $store_id){
+    public function getMyRanking($month, $category, $store_id){
         $position = 0;
         $connection = ConnectionManager::get('default');
-        $month = 10;
         $results = $connection->execute(
             "SELECT id, name, case when total is null then 0 else total end as total, percentage from (SELECT stores.id as id, stores.name, ROUND(((sales.quantity * 100)/sales.goal),2) as percentage from sales
             LEFT JOIN stores ON stores.id=sales.store_id 
