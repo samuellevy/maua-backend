@@ -17,7 +17,7 @@
             </thead>
             <tbody>
               <?php foreach ($users as $user): ?>
-                <?php if($user->course_progress != null && count($user->course_progress)==2 && $user->active): ?>
+                <?php if($user->course_progress != null && count($user->course_progress)==5 && $user->active): ?>
                     <tr>
                         <td><?=$user->id;?></td>
                         <td><?=$user->name;?></td>
@@ -31,7 +31,7 @@
                             <?php 
                             foreach ($user->course_progress as $cp):
                                 switch($cp->course_id):
-                                    case 4:
+                                    case 5:
                                         // $date = $cp->created->year.'-'.$cp->created->month.'-'.$cp->created->day;
                                         echo $cp->created;
                                         // echo strtotime($date)<strtotime('01-12-2018')?'s':'n';
