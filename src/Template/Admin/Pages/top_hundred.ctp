@@ -13,6 +13,7 @@
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('store_id') ?></th>
                 <th scope="col">Nome da loja</th>
+                <th scope="col">Categoria</th>
                 <th scope="col">Módulos feitos</th>
               </tr>
             </thead>
@@ -24,6 +25,7 @@
                         <td><?=$user->name;?></td>
                         <td><?=$user->store_id;?></td>
                         <td><?=$user->store->name;?></td>
+                        <td><?=$user->store->category;?></td>
                         <td>
                             <?php foreach ($user->course_progress as $cp): ?>
                                 <?=$cp->course_id;?> | 
