@@ -151,7 +151,7 @@ class StoresTable extends Table
                 where sales.month = $month AND stores.category='$category'
                 GROUP BY sales.id ORDER BY total DESC, percentage DESC) as table1
                 
-                JOIN (SELECT stores.id as store_id, sum(points.point) as sum_points from stores
+                left JOIN (SELECT stores.id as store_id, sum(points.point) as sum_points from stores
                 join points on stores.id = points.store_id
                 where points.month = $month
                 GROUP BY stores.id
