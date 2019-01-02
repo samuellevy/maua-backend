@@ -101,7 +101,7 @@ class PagesController extends AppController
   // atualizar pontuacao
   public function updatePoints(){
     $this->loadModel('Stores');
-    $stores = $this->Stores->find('all', ['contain'=>['Points'=>['conditions'=>['month'=>11]]]])->all()->toArray();
+    $stores = $this->Stores->find('all', ['contain'=>['Points'=>['conditions'=>['month'=>12]]]])->all()->toArray();
 
     foreach($stores as $key=>$store){
       $total = 0;
