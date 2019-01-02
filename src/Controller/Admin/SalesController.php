@@ -135,7 +135,7 @@ class SalesController extends AppController
         $data['user_id'] = $lojista->id;
         $data['store_id'] = $arguments['store_id'];
         $data['type'] = 'meta';
-        $data['month'] = 11;
+        $data['month'] = 12;
 
         if($actual_points!=null){
           $point = $this->Points->get($actual_points->id);
