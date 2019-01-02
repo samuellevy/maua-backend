@@ -237,7 +237,7 @@ class PagesController extends AppController
   public function topHundred(){
     $this->loadModel('Users');
     $users = $this->Users->find('all', [
-      'contain'=>['CourseProgress'],
+      'contain'=>['CourseProgress', 'Stores'],
     ])->all();
 
     $this->set(compact('users'));
