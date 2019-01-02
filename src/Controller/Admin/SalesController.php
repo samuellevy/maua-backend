@@ -73,14 +73,14 @@ class SalesController extends AppController
             // die(debug($newStore));
           }
 
-          if($this->percent($store[11], $store[10]) >= 100 && $this->percent($store[11], $store[10]) <= 115){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>50, 'percent'=>$this->percent($store[11], $store[10]), 'type'=>'meta', 'month'=>'11']);
+          if($this->percent($store[13], $store[12]) >= 100 && $this->percent($store[13], $store[12]) <= 115){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>50, 'percent'=>$this->percent($store[13], $store[12]), 'type'=>'meta', 'month'=>'12']);
           }
-          if($this->percent($store[11], $store[10]) > 115 && $this->percent($store[11], $store[10]) <= 145){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>75, 'percent'=>$this->percent($store[11], $store[10]), 'type'=>'meta', 'month'=>'11']);
+          if($this->percent($store[13], $store[12]) > 115 && $this->percent($store[13], $store[12]) <= 145){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>75, 'percent'=>$this->percent($store[13], $store[12]), 'type'=>'meta', 'month'=>'12']);
           }
-          if($this->percent($store[11], $store[10]) > 145){
-            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>100, 'percent'=>$this->percent($store[11], $store[10]), 'type'=>'meta', 'month'=>'11']);
+          if($this->percent($store[13], $store[12]) > 145){
+            $this->processPoints(['action'=>'setPoint', 'store_id'=>$store[0], 'points'=>100, 'percent'=>$this->percent($store[13], $store[12]), 'type'=>'meta', 'month'=>'12']);
           }
         }
       }
