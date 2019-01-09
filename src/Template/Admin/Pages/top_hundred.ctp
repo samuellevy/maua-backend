@@ -11,6 +11,7 @@
               <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('cpf') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('store_id') ?></th>
                 <th scope="col">Nome da loja</th>
                 <th scope="col">Categoria</th>
@@ -19,10 +20,11 @@
             </thead>
             <tbody>
               <?php foreach ($users as $user): ?>
-                <?php if($user->course_progress != null && count($user->course_progress)==5 && $user->active): ?>
+                <?php if($user->course_progress != null && count($user->course_progress)==5 && $user->active && $user->store->category=='g'): ?>
                     <tr>
                         <td><?=$user->id;?></td>
                         <td><?=$user->name;?></td>
+                        <td><?=$user->cpf;?></td>
                         <td><?=$user->store_id;?></td>
                         <td><?=$user->store->name;?></td>
                         <td><?=$user->store->category;?></td>
