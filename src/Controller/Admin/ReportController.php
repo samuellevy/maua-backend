@@ -52,9 +52,10 @@ class ReportController extends AppController
         $this->loadModel('Stores');
         // $ranking = $this->Stores->getFinalRanking('p');
         $ranking = $this->Stores->fetchRankingBy($category);
+        $general_ranking = $this->Stores->fetchGeneralRanking($category);
         $months = $this->Stores->fetchMonths();
-        $this->set(compact(['ranking', 'months']));
-        // die(debug($ranking));
+        $this->set(compact(['ranking', 'months', 'general_ranking']));
+        // die(debug($general_ranking));
     }
 
 }

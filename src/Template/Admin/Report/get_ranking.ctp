@@ -20,6 +20,7 @@ $month_name[12]='Dezembro';
                     <?php foreach($months as $key=>$month):?>
                         <li data-id='<?=$month['name']?>'><?=$month_name[$month['name']]?></li>
                     <?php endforeach;?>
+                    <li data-id='13'>Geral</li>
                     </ul>
                 </div>
                 
@@ -50,6 +51,17 @@ $month_name[12]='Dezembro';
                             </tbody>
                         <?php endforeach;?>
                         
+                        <tbody class="card" data-id='13'>
+                            <?php foreach($general_ranking as $key=>$store):?>
+                                <tr>
+                                    <td>#<?=++$key?></td>
+                                    <td><?=$store['id'];?></td>
+                                    <td><?=$store['name'];?></td>
+                                    <td><?=$store['total'];?></td>
+                                    <td><?=$store['percentage'];?>%</td>
+                                </tr>
+                            <?php endforeach;?>
+                        </tbody>
                     </table>
                 </div>
             </div>
